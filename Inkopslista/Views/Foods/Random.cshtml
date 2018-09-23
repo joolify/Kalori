@@ -1,0 +1,31 @@
+﻿@model Inkopslista.ViewModels.RandomFoodViewModel
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*
+    This is a comment
+    On multiple lines
+*@
+
+
+@{
+    var className = Model.Products.Count > 0 ? "popular" : null;
+}
+
+<h2 class="@className">@Model.Food.Name</h2>
+
+@if (Model.Products.Count == 0)
+{
+    <text>No foods available.</text>
+}
+else
+{
+    <ul>
+        @foreach (var product in Model.Products)
+        {
+            <li>@product.Price</li>
+        }
+    </ul>
+}
