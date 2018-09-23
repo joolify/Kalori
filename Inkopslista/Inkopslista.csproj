@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=7.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.7.1.1\lib\net45\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Seeder.EF6, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Seeder.EF6.0.4.0\lib\EntityFramework.Seeder.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -208,6 +214,26 @@
     <Compile Include="Migrations\201809230716031_InitialModel.Designer.cs">
       <DependentUpon>201809230716031_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809230733095_AddIsSubscribedToCustomer.cs" />
+    <Compile Include="Migrations\201809230733095_AddIsSubscribedToCustomer.Designer.cs">
+      <DependentUpon>201809230733095_AddIsSubscribedToCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809230738441_AddMembershipType.cs" />
+    <Compile Include="Migrations\201809230738441_AddMembershipType.Designer.cs">
+      <DependentUpon>201809230738441_AddMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809230740519_AddFoodId.cs" />
+    <Compile Include="Migrations\201809230740519_AddFoodId.Designer.cs">
+      <DependentUpon>201809230740519_AddFoodId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809230745185_PopulateMembershipTypes.cs" />
+    <Compile Include="Migrations\201809230745185_PopulateMembershipTypes.Designer.cs">
+      <DependentUpon>201809230745185_PopulateMembershipTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809230752267_ApplyAnnotationsToCustomerName.cs" />
+    <Compile Include="Migrations\201809230752267_ApplyAnnotationsToCustomerName.Designer.cs">
+      <DependentUpon>201809230752267_ApplyAnnotationsToCustomerName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -215,6 +241,7 @@
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -236,6 +263,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SeedData\LivsmedelsDB_20180923.csv" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -292,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -309,6 +338,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201809230716031_InitialModel.resx">
       <DependentUpon>201809230716031_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809230733095_AddIsSubscribedToCustomer.resx">
+      <DependentUpon>201809230733095_AddIsSubscribedToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809230738441_AddMembershipType.resx">
+      <DependentUpon>201809230738441_AddMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809230740519_AddFoodId.resx">
+      <DependentUpon>201809230740519_AddFoodId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809230745185_PopulateMembershipTypes.resx">
+      <DependentUpon>201809230745185_PopulateMembershipTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809230752267_ApplyAnnotationsToCustomerName.resx">
+      <DependentUpon>201809230752267_ApplyAnnotationsToCustomerName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
