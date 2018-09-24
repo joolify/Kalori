@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Inkopslista.Models;
@@ -21,16 +22,26 @@ namespace Inkopslista.Controllers
 
         public ViewResult Index()
         {
-            var movies = _context.Food.ToList();
-            movies = movies.OrderBy(o => o.Name).ToList();
-
             return View();
         }
 
         public ActionResult GetFood(string term)
         {
-            return Json(_context.Food.Where(c => c.Name.StartsWith(term)).Select(a => new { label = a.Name, id = a.Id }), JsonRequestBehavior.AllowGet);
+            var food = _context.Food.Where(c => c.Name.Contains(term)).OrderBy(c => c.Name)
+                .Select(a => new {label = a.Name, id = a.Id}).Take(20);
+            return Json(food, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GetFoodList(string input)
+        {
+            if (input == null)
+                input = "1";
+            var id = int.Parse(input);
+            var food = _context.Food.FirstOrDefault(c => c.Id == id);
+            System.Diagnostics.Debug.WriteLine("food: " + food.Name);
+            return Json(food, JsonRequestBehavior.AllowGet);
+        }
+
         /*
         public ActionResult Details(int id)
         {

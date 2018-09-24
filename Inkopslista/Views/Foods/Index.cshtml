@@ -7,18 +7,25 @@
 }
 
 <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
-<p>
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.HiddenFor(model => model.Id)
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.HiddenFor(model => model.Id)
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-md-10">
+        @Html.ActionLink("Lägg till", "GetFoodList", "Foods", null, new { id = "Laggtill" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-10">
+        <div id="foodList">
         </div>
     </div>
-    <div class="btn-group">
-            <button type="button" class="btn btn-primary">Lägg till</button>
-    </div>
-</p>
+</div>
+
+    
 
 @section Scripts {
 
@@ -40,6 +47,23 @@
                     this.value = ui.item.value;
                     return false;
                 }
+            }),
+
+            $( "#Laggtill" ).click(function() {
+                    //alert( $("#Id").val());
+                    $.ajax({
+                        url: this.href,
+                        type: 'POST',
+                        data: { input: $('#Id').val() },
+                        success: function (ui) {
+                            console.log(ui);
+                            $("#foodList").append(ui.Name);
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                    return false;
             });
         });
     </script>
