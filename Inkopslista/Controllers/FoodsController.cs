@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Inkopslista.Models;
 using Inkopslista.ViewModels;
@@ -8,40 +9,38 @@ namespace Inkopslista.Controllers
 {
     public class FoodsController : Controller
     {
-        // GET: Foods
+        private ApplicationDbContext _context;
+        public FoodsController()
+        {
+            _context = new ApplicationDbContext();
+        }
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
         public ViewResult Index()
         {
-            var movies = GetFoods();
+            var movies = _context.Food.ToList();
+            movies = movies.OrderBy(o => o.Name).ToList();
 
-            return View(movies);
+            return View();
         }
 
-        private IEnumerable<Food> GetFoods()
+        public ActionResult GetFood(string term)
         {
-            return new List<Food>
-            {
-                new Food { Id = 1, Name = "Apelsin" },
-                new Food { Id = 2, Name = "Banan" }
-            };
+            return Json(_context.Food.Where(c => c.Name.StartsWith(term)).Select(a => new { label = a.Name, id = a.Id }), JsonRequestBehavior.AllowGet);
         }
-
-        // GET: Foods/Random
-        public ActionResult Random()
+        /*
+        public ActionResult Details(int id)
         {
-            var food = new Food() { Name = "Choklad" };
-            var products = new List<Product>
-            {
-                new Product { Price = 30 },
-                new Product { Price = 20 }
-            };
+            var customer = _context.Food.SingleOrDefault(c => c.Id == id);
 
-            var viewModel = new RandomFoodViewModel
-            {
-                Food = food,
-                Products = products
-            };
+            if (customer == null)
+                return HttpNotFound();
 
-            return View(viewModel);
+            //return View(customer);
         }
+        */
     }
 }

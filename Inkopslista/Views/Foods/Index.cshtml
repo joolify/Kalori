@@ -1,23 +1,46 @@
-﻿@model IEnumerable<Inkopslista.Models.Food>
+﻿@model Inkopslista.Models.Food
+
 
 @{
     ViewBag.Title = "Movies";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Movies</h2>
-<table class="table table-bordered table-hover">
-    <thead>
-    <tr>
-        <th>Food</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var food in Model)
-    {
-        <tr>
-            <td>@food.Name</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<p>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.HiddenFor(model => model.Id)
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="btn-group">
+            <button type="button" class="btn btn-primary">Lägg till</button>
+    </div>
+</p>
+
+@section Scripts {
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Name').autocomplete({
+                //source: countries
+                source: '/Foods/GetFood',
+                select: function (event, ui) {
+                    //set tagids to save
+                    //alert(ui.item.id);
+                    $("#Id").val(ui.item.id);
+
+
+                    //Tags for display
+                    this.value = ui.item.value;
+                    return false;
+                }
+            });
+        });
+    </script>
+}
