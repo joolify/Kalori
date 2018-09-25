@@ -25,9 +25,33 @@ namespace Inkopslista.Controllers
             return View();
         }
 
+        public ViewResult New()
+        {
+            var foods = _context.Foods.ToList();
+            var viewModel = new NewFoodViewModel()
+            {
+                Product = new Product(),
+                Food = foods
+            };
+            return View(viewModel);
+        }
+        public ActionResult Create(NewFoodViewModel viewModel)
+        {
+            var product = new Product
+            {
+                Food = _context.Foods.FirstOrDefault(c => c.Id == viewModel.Product.FoodId),
+                FoodId = viewModel.Product.FoodId,
+                Price = viewModel.Product.Price
+            };
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Foods");
+        }
+
         public ActionResult GetFood(string term)
         {
-            var food = _context.Food.Where(c => c.Name.Contains(term)).OrderBy(c => c.Name)
+            var food = _context.Foods.Where(c => c.Name.Contains(term)).OrderBy(c => c.Name)
                 .Select(a => new {label = a.Name, id = a.Id}).Take(20);
             return Json(food, JsonRequestBehavior.AllowGet);
         }
@@ -37,7 +61,7 @@ namespace Inkopslista.Controllers
             if (input == null)
                 input = "1";
             var id = int.Parse(input);
-            var food = _context.Food.FirstOrDefault(c => c.Id == id);
+            var food = _context.Foods.FirstOrDefault(c => c.Id == id);
             System.Diagnostics.Debug.WriteLine("food: " + food.Name);
             return Json(food, JsonRequestBehavior.AllowGet);
         }
@@ -45,7 +69,7 @@ namespace Inkopslista.Controllers
         /*
         public ActionResult Details(int id)
         {
-            var customer = _context.Food.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Foods.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 return HttpNotFound();

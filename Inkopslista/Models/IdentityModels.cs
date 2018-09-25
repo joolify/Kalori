@@ -21,9 +21,10 @@ namespace Inkopslista.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Movie> Movie { get; set; }
-        public DbSet<Food> Food { get; set; }
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<MembershipType> MembershipTypes { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

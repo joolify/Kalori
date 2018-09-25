@@ -1,0 +1,66 @@
+﻿@model Inkopslista.ViewModels.NewFoodViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New</h2>
+
+@using (Html.BeginForm("Create", "Foods"))
+{
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Food:
+            </label>
+            <div class="col-md-10">
+                @Html.HiddenFor(m => m.Product.FoodId, new { @id = "id"})
+                <input type="text" class="form-control" id="searchInput" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                @Html.LabelFor(m => m.Product.Price):
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Product.Price, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add product</button>
+        </div>
+    </fieldset>
+        }
+        @section Scripts {
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+            <script type="text/javascript">
+        $(document).ready(function() {
+
+                $("#searchInput").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("GetFood","Foods")',
+                            dataType: "json",
+                            data: { term: $("#searchInput").val() },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.label, value: item.label, id: item.id };
+                                }));
+                            },
+                            error: function (xhr, status, error) {
+                                alert("Error");
+                            }
+                        });
+                    },
+                    select: function(event, ui) {
+                        $("#id").val(ui.item.id);
+                        $("#searchInput").val(ui.item.label);
+                        return false;
+                    }
+                });
+        });
+            </script>
+        }

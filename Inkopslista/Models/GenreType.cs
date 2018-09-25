@@ -6,14 +6,10 @@ using System.Web;
 
 namespace Inkopslista.Models
 {
-    public class MembershipType
+    public class GenreType
     {
-
         [Key]
         public byte Id { get; set; }
         public string Name { get; set; }
-        public short SignupFee { get; set; }
-        public byte DurationInMonths { get; set; }
-        public byte DiscountRate { get; set; }
     }
 }
