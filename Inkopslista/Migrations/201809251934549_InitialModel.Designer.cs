@@ -7,13 +7,13 @@ namespace Inkopslista.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UpdateMovie : IMigrationMetadata
+    public sealed partial class InitialModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateMovie));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809250553264_UpdateMovie"; }
+            get { return "201809251934549_InitialModel"; }
         }
         
         string IMigrationMetadata.Source

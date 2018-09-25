@@ -3,11 +3,8 @@
     ViewBag.Title = "New";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<p>
-    <br />
-<h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary"})</h4>
-</p>
 <h2>Ny vara</h2>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary"})</h4>
 
 @using (Html.BeginForm("Create", "Foods"))
 {

@@ -7,13 +7,13 @@ namespace Inkopslista.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UpdateGenreTypeId : IMigrationMetadata
+    public sealed partial class SeedGenre : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateGenreTypeId));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedGenre));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809251920071_UpdateGenreTypeId"; }
+            get { return "201809251935180_SeedGenre"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,10 +1,11 @@
 ﻿@model Inkopslista.ViewModels.MovieFormViewModel
 @{
-    ViewBag.Title = "New Customer";
+    ViewBag.Title = "New Movie";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>New Customer</h2>
+<h2>New Movie</h2>
+<h4>@Html.ActionLink("Back", "Index", "Movies", null, new { @class = "btn btn-primary"})</h4>
 
 @using (Html.BeginForm("Save", "Movies"))
 {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,7 +15,9 @@ namespace Inkopslista.Models
         [Display(Name = "Pris:")]
         public float Price { get; set; }
         [Display(Name = "Vara:")]
-        public Food Food { get; set; }
+
+        [ForeignKey("Food")]
         public int FoodId { get; set; }
+        public Food Food { get; set; }
     }
 }

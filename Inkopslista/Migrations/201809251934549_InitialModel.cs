@@ -15,6 +15,7 @@ namespace Inkopslista.Migrations
                         Name = c.String(nullable: false, maxLength: 255),
                         IsSubscribedToNewsLetter = c.Boolean(nullable: false),
                         MembershipTypeId = c.Byte(nullable: false),
+                        BirthDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.MembershipTypes", t => t.MembershipTypeId, cascadeDelete: true)
@@ -25,6 +26,7 @@ namespace Inkopslista.Migrations
                 c => new
                     {
                         Id = c.Byte(nullable: false),
+                        Name = c.String(),
                         SignupFee = c.Short(nullable: false),
                         DurationInMonths = c.Byte(nullable: false),
                         DiscountRate = c.Byte(nullable: false),
@@ -103,13 +105,28 @@ namespace Inkopslista.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Movies",
+                "dbo.GenreTypes",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Movies",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        GenreTypeId = c.Int(nullable: false),
+                        ReleaseDate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        DateAdded = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        NumberInStock = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.GenreTypes", t => t.GenreTypeId, cascadeDelete: true)
+                .Index(t => t.GenreTypeId);
             
             CreateTable(
                 "dbo.Products",
@@ -200,6 +217,7 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
+            DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
             DropForeignKey("dbo.Customers", "MembershipTypeId", "dbo.MembershipTypes");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
@@ -208,6 +226,7 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Products", new[] { "FoodId" });
+            DropIndex("dbo.Movies", new[] { "GenreTypeId" });
             DropIndex("dbo.Customers", new[] { "MembershipTypeId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
@@ -216,6 +235,7 @@ namespace Inkopslista.Migrations
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Products");
             DropTable("dbo.Movies");
+            DropTable("dbo.GenreTypes");
             DropTable("dbo.Foods");
             DropTable("dbo.MembershipTypes");
             DropTable("dbo.Customers");

@@ -7,7 +7,6 @@ namespace Inkopslista.Migrations
     {
         public override void Up()
         {
-
             Sql("INSERT INTO GenreTypes (Name) VALUES ('Action')");
             Sql("INSERT INTO GenreTypes (Name) VALUES ('Thriller')");
             Sql("INSERT INTO GenreTypes (Name) VALUES ('Family')");

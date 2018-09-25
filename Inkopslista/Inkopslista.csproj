@@ -210,49 +210,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809241949425_InitialModel.cs" />
-    <Compile Include="Migrations\201809241949425_InitialModel.Designer.cs">
-      <DependentUpon>201809241949425_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201809251934549_InitialModel.cs" />
+    <Compile Include="Migrations\201809251934549_InitialModel.Designer.cs">
+      <DependentUpon>201809251934549_InitialModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809250524387_UpdateMembershipType.cs" />
-    <Compile Include="Migrations\201809250524387_UpdateMembershipType.Designer.cs">
-      <DependentUpon>201809250524387_UpdateMembershipType.cs</DependentUpon>
+    <Compile Include="Migrations\201809251935180_SeedGenre.cs" />
+    <Compile Include="Migrations\201809251935180_SeedGenre.Designer.cs">
+      <DependentUpon>201809251935180_SeedGenre.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809250534563_UpdateCustomer.cs" />
-    <Compile Include="Migrations\201809250534563_UpdateCustomer.Designer.cs">
-      <DependentUpon>201809250534563_UpdateCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809250551584_AddGenreType.cs" />
-    <Compile Include="Migrations\201809250551584_AddGenreType.Designer.cs">
-      <DependentUpon>201809250551584_AddGenreType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809250553264_UpdateMovie.cs" />
-    <Compile Include="Migrations\201809250553264_UpdateMovie.Designer.cs">
-      <DependentUpon>201809250553264_UpdateMovie.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809250612218_SeedGenre.cs" />
-    <Compile Include="Migrations\201809250612218_SeedGenre.Designer.cs">
-      <DependentUpon>201809250612218_SeedGenre.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809250616150_AddedKeys.cs" />
-    <Compile Include="Migrations\201809250616150_AddedKeys.Designer.cs">
-      <DependentUpon>201809250616150_AddedKeys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809250618101_SeedGenre2.cs" />
-    <Compile Include="Migrations\201809250618101_SeedGenre2.Designer.cs">
-      <DependentUpon>201809250618101_SeedGenre2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251836528_AddGenreTypeId.cs" />
-    <Compile Include="Migrations\201809251836528_AddGenreTypeId.Designer.cs">
-      <DependentUpon>201809251836528_AddGenreTypeId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251858094_MovieDateTime2.cs" />
-    <Compile Include="Migrations\201809251858094_MovieDateTime2.Designer.cs">
-      <DependentUpon>201809251858094_MovieDateTime2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251920071_UpdateGenreTypeId.cs" />
-    <Compile Include="Migrations\201809251920071_UpdateGenreTypeId.Designer.cs">
-      <DependentUpon>201809251920071_UpdateGenreTypeId.cs</DependentUpon>
+    <Compile Include="Migrations\201809251937457_SeedFood.cs" />
+    <Compile Include="Migrations\201809251937457_SeedFood.Designer.cs">
+      <DependentUpon>201809251937457_SeedFood.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -403,38 +371,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201809241949425_InitialModel.resx">
-      <DependentUpon>201809241949425_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809251934549_InitialModel.resx">
+      <DependentUpon>201809251934549_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250524387_UpdateMembershipType.resx">
-      <DependentUpon>201809250524387_UpdateMembershipType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809251935180_SeedGenre.resx">
+      <DependentUpon>201809251935180_SeedGenre.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250534563_UpdateCustomer.resx">
-      <DependentUpon>201809250534563_UpdateCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250551584_AddGenreType.resx">
-      <DependentUpon>201809250551584_AddGenreType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250553264_UpdateMovie.resx">
-      <DependentUpon>201809250553264_UpdateMovie.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250612218_SeedGenre.resx">
-      <DependentUpon>201809250612218_SeedGenre.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250616150_AddedKeys.resx">
-      <DependentUpon>201809250616150_AddedKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809250618101_SeedGenre2.resx">
-      <DependentUpon>201809250618101_SeedGenre2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251836528_AddGenreTypeId.resx">
-      <DependentUpon>201809251836528_AddGenreTypeId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251858094_MovieDateTime2.resx">
-      <DependentUpon>201809251858094_MovieDateTime2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251920071_UpdateGenreTypeId.resx">
-      <DependentUpon>201809251920071_UpdateGenreTypeId.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809251937457_SeedFood.resx">
+      <DependentUpon>201809251937457_SeedFood.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

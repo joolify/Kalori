@@ -5,12 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p>
-    <br />
+<h2>@Model.Food.Name</h2>
 <h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary"})</h4>
 
-</p>
-<h2>@Model.Food.Name</h2>
 
 <div id="chartContainer" style="height: 200px; width: 100%;"></div>
 

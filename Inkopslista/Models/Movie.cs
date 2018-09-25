@@ -12,8 +12,11 @@ namespace Inkopslista.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public GenreType GenreType { get; set; }
+
+        [ForeignKey("GenreType")]
         public int GenreTypeId { get; set; }
+        public GenreType GenreType { get; set; }
+
         [Column(TypeName = "datetime2")]
         public DateTime ReleaseDate { get; set; }
         [Column(TypeName = "datetime2")]
