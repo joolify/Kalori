@@ -7,7 +7,8 @@
 
 <p>
     <br />
-    @Html.ActionLink("Tillbaka", "Index", "Foods", null, null)
+<h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary"})</h4>
+
 </p>
 <h2>@Model.Food.Name</h2>
 
@@ -47,6 +48,10 @@
         <tr>
             <td>Alkohol (g): </td>
             <td>@Model.Food.Alkohol</td>
+        </tr>
+        <tr>
+            <td>Vatten (g): </td>
+            <td>@Model.Food.Vatten</td>
         </tr
         <tr>
             <td>Fibrer (g): </td>
@@ -69,7 +74,7 @@
             <td>@Model.Food.SummaEnkelOmattadeFettsyror</td>
         </tr>
         <tr>
-            <td>Summa fleromättade fettsyror (g): </td>
+            <td>Summa fleromättae fettsyror (g): </td>
             <td>@Model.Food.SummaFleromattadeFettsyror</td>
         </tr>
         <tr>

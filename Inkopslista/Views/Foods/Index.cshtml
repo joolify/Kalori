@@ -7,7 +7,7 @@
 
 <h2>Inköpslista</h2>
 
-<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, null)</h4>
+<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary"})</h4>
 
 @if (!Model.Any())
 {

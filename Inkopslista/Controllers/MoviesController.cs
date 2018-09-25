@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -21,9 +22,11 @@ namespace Inkopslista.Controllers
         {
             _context.Dispose();
         }
-        public ViewResult Index()
+        public ActionResult Index()
         {
             var movies = _context.Movies.Include(c => c.GenreType).ToList();
+            if (movies == null)
+                return HttpNotFound();
             return View(movies);
         }
         public ActionResult Details(int id)
@@ -36,6 +39,38 @@ namespace Inkopslista.Controllers
 
             return View(movie);
         }
+        [HttpPost]
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+            {
+                _context.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movies.Single(c => c.Id == movie.Id);
+
+                movieInDb.Name = movie.Name;
+                movieInDb.GenreTypeId = movie.GenreTypeId;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+                movieInDb.NumberInStock = movie.NumberInStock;
+                movieInDb.DateAdded = DateTime.Now;
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Movies");
+        }
+        public ActionResult New()
+        {
+            var genreTypes = _context.GenreTypes.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Movie = new Movie(),
+                GenreTypes = genreTypes
+            };
+            return View("MovieForm", viewModel);
+        }
+
         // GET: Movies/Random
         public ActionResult Random()
         {
