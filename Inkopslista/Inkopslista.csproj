@@ -346,7 +346,6 @@
     <Content Include="Views\Movies\Random.cshtml" />
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="SeedData\LivsmedelsDB_20180923_new.csv" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Movies\Details.cshtml" />
     <Content Include="Views\Movies\Index.cshtml" />
@@ -354,6 +353,7 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
+    <Content Include="SeedData\LivsmedelsDB_20180925.csv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
