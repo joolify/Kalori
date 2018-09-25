@@ -11,7 +11,9 @@ namespace Inkopslista.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Pris:")]
         public float Price { get; set; }
+        [Display(Name = "Vara:")]
         public Food Food { get; set; }
         public int FoodId { get; set; }
     }

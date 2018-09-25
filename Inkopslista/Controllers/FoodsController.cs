@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web.Mvc;
 using Inkopslista.Models;
 using Inkopslista.ViewModels;
@@ -22,8 +23,11 @@ namespace Inkopslista.Controllers
 
         public ViewResult Index()
         {
-            return View();
+            var products = _context.Products.Include(c => c.Food).ToList();
+
+            return View(products);
         }
+
 
         public ViewResult New()
         {
@@ -35,6 +39,7 @@ namespace Inkopslista.Controllers
             };
             return View(viewModel);
         }
+        [HttpPost]
         public ActionResult Create(NewFoodViewModel viewModel)
         {
             var product = new Product
@@ -66,16 +71,14 @@ namespace Inkopslista.Controllers
             return Json(food, JsonRequestBehavior.AllowGet);
         }
 
-        /*
         public ActionResult Details(int id)
         {
-            var customer = _context.Foods.SingleOrDefault(c => c.Id == id);
+            var product = _context.Products.Include(c => c.Food).SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
+            if (product == null)
                 return HttpNotFound();
 
-            //return View(customer);
+            return View(product);
         }
-        */
     }
 }

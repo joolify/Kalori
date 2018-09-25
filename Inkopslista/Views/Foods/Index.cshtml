@@ -1,73 +1,44 @@
-﻿@model Inkopslista.Models.Food
-
+﻿@model IEnumerable<Inkopslista.Models.Product>
 
 @{
-    ViewBag.Title = "Movies";
+    ViewBag.Title = "Customers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<h2>Inköpslista</h2>
 
-<div class="form-group">
-    <div class="col-md-10">
-        @Html.HiddenFor(model => model.Id)
-        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-    </div>
-    <div class="col-md-10">
-        @Html.ActionLink("Lägg till", "GetFoodList", "Foods", null, new { id = "Laggtill" })
-    </div>
-    <div class="col-md-10">
-        @Html.ActionLink("Ny", "New", "Foods", null, new { id = "Laggtill" })
-    </div>
-</div>
-<div class="form-group">
-    <div class="col-md-10">
-        <div id="foodList">
-        </div>
-    </div>
-</div>
+<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, null)</h4>
 
-    
-
-@section Scripts {
-
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $('#Name').autocomplete({
-                //source: countries
-                source: '/Foods/GetFood',
-                select: function (event, ui) {
-                    //set tagids to save
-                    //alert(ui.item.id);
-                    $("#Id").val(ui.item.id);
-
-
-                    //Tags for display
-                    this.value = ui.item.value;
-                    return false;
-                }
-            }),
-
-            $( "#Laggtill" ).click(function() {
-                    //alert( $("#Id").val());
-                    $.ajax({
-                        url: this.href,
-                        type: 'POST',
-                        data: { input: $('#Id').val() },
-                        success: function (ui) {
-                            console.log(ui);
-                            $("#foodList").append(ui.Name);
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-                    return false;
-            });
-        });
-    </script>
+@if (!Model.Any())
+{
+    <p>No products in the list yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Vara:</th>
+                <th>Pris:</th>
+                <th>Ändra:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)</td>
+                    <td>@product.Price kr</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>Total kostnad: </td>
+            <td>@Model.Sum(i => i.Price) kr</td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
 }
