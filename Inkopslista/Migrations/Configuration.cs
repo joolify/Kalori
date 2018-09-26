@@ -1,7 +1,11 @@
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using CsvHelper;
+using CsvHelper.TypeConversion;
 using EntityFramework.Seeder;
 using Inkopslista.Models;
 
@@ -15,23 +19,47 @@ namespace Inkopslista.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = false; 
         }
          protected override void Seed(Inkopslista.Models.ApplicationDbContext context)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            string resourceName = "LivsmedelsDB_20180925.csv"; 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            Assembly assembly;
+            assembly = Assembly.GetExecutingAssembly();
+            string resourceName = "Inkopslista.SeedData.LivsmedelsDB_20180925.csv";
+            Stream stream = assembly.GetManifestResourceStream(resourceName);
+
+            using (stream)
             {
-                Console.WriteLine(stream);
                 using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                 {
-                    CsvReader csvReader = new CsvReader(reader);
-                    csvReader.Configuration.MissingFieldFound = null;
-                    var foods = csvReader.GetRecords<Food>().ToArray();
-                    context.Foods.AddOrUpdate(c => c.Id, foods);
+                    try
+                    {
+                        CsvReader csvReader = new CsvReader(reader);
+                        csvReader.Configuration.Delimiter = ";";
+                        csvReader.Configuration.MissingFieldFound = null;
+                        csvReader.Configuration.HasHeaderRecord = true;
+                        csvReader.Configuration.PrepareHeaderForMatch = (header) => header.ToLower();
+
+                        var floatOptions = new TypeConverterOptions
+                        {
+                            CultureInfo = new CultureInfo("sv-SE"),
+                            NumberStyle = NumberStyles.Float
+                        };
+                        csvReader.Configuration.TypeConverterOptionsCache.AddOptions(typeof(float), floatOptions);
+
+                        var foods = csvReader.GetRecords<Food>().ToArray();
+                        context.Foods.AddOrUpdate(c => c.Name, foods);
+                        context.SaveChanges();
+                    }
+                    catch (CsvHelperException e)
+                    {
+                        Console.WriteLine(e.Data.Values);
+                        throw;
+                    }
+                    
                 }
             }
         }
+
     }
 }

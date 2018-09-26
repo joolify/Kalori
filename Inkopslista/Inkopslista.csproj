@@ -222,6 +222,14 @@
     <Compile Include="Migrations\201809251937457_SeedFood.Designer.cs">
       <DependentUpon>201809251937457_SeedFood.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809260802020_UpdateFoodId.cs" />
+    <Compile Include="Migrations\201809260802020_UpdateFoodId.Designer.cs">
+      <DependentUpon>201809260802020_UpdateFoodId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809260804373_RemoveFoodIdReq.cs" />
+    <Compile Include="Migrations\201809260804373_RemoveFoodIdReq.Designer.cs">
+      <DependentUpon>201809260804373_RemoveFoodIdReq.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryType.cs" />
@@ -305,6 +313,13 @@
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <EmbeddedResource Include="Migrations\201809260802020_UpdateFoodId.resx">
+      <DependentUpon>201809260802020_UpdateFoodId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809260804373_RemoveFoodIdReq.resx">
+      <DependentUpon>201809260804373_RemoveFoodIdReq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925_test.csv" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -353,7 +368,7 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
-    <Content Include="SeedData\LivsmedelsDB_20180925.csv" />
+    <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
