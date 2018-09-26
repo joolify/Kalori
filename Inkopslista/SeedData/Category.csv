@@ -1,0 +1,30 @@
+Id;Category;Name;Icon
+0;0;Bröd;0_brod.svg
+1;1;Bullar, kakor, tårtor;1_bullar.svg
+2;2;Dryck;2_dryck.svg
+3;3;Fett, olja;3_fett.svg
+4;4;Fisk, skaldjur;4_fisk.svg
+5;5;Flingor, frukostflingor, müsli, gröt, välling;5_flingor.svg
+6;6;Frukt, bär;6_frukt.svg
+7;7;Glass;7_glass.svg
+8;8;Godis;8_godis.svg
+9;9;Grönsaker, baljväxter, svamp;9_gronsaker.svg
+10;10;Korv;10_korv.svg
+11;11;Kyckling, fågel;11_kyckling.svg
+12;12;Kött;12_kott.svg
+13;13;Lever, njure, tunga etc.;13_lever.svg
+14;14;Mejeri;14_mejeri.svg
+15;15;Mjöl;15_mjol.svg
+16;16;Måltidsersättning, sportpreparat;16_sportpreparat.svg
+17;17;Nötter, frön;17_notter.svg
+18;18;Ost;18_ost.svg
+19;19;Pasta, ris, gryn;19_pasta.svg
+20;20;Potatis;20_potatis.svg
+21;21;Pålägg;21_palagg.svg
+22;22;Quorn, sojaprotein, vegetariska produkter;22_quorn.svg
+23;23;Rätter;23_ratter.svg
+24;24;Smaksättare;24_smaksattare.svg
+25;25;Snacks;25_snacks.svg
+26;26;Sylt, marmelad, gelé, chutney;26_sylt.svg
+27;27;Ägg, rom, kaviar;27_agg.svg
+28;28;Övrigt;28_ovrigt.svg

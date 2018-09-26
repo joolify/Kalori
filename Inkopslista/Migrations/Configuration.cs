@@ -23,12 +23,10 @@ namespace Inkopslista.Migrations
         }
          protected override void Seed(Inkopslista.Models.ApplicationDbContext context)
         {
-            Assembly assembly;
-            assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
             string resourceName = "Inkopslista.SeedData.LivsmedelsDB_20180925.csv";
-            Stream stream = assembly.GetManifestResourceStream(resourceName);
 
-            using (stream)
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                 {
@@ -56,7 +54,34 @@ namespace Inkopslista.Migrations
                         Console.WriteLine(e.Data.Values);
                         throw;
                     }
-                    
+
+                }
+            }
+
+            resourceName = "Inkopslista.SeedData.Category.csv";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    try
+                    {
+                        CsvReader csvReader = new CsvReader(reader);
+                        csvReader.Configuration.Delimiter = ";";
+                        csvReader.Configuration.MissingFieldFound = null;
+                        csvReader.Configuration.HasHeaderRecord = true;
+                        csvReader.Configuration.PrepareHeaderForMatch = (header) => header.ToLower();
+
+                        var categoryTypes = csvReader.GetRecords<CategoryType>().ToArray();
+                        context.CategoryTypes.AddOrUpdate(c => c.Category, categoryTypes);
+                        context.SaveChanges();
+                    }
+                    catch (CsvHelperException e)
+                    {
+                        Console.WriteLine(e.Data.Values);
+                        throw;
+                    }
+
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Inkopslista.Models.Product>
+﻿@model Inkopslista.ViewModels.IndexFoodViewModel
 
 @{
     ViewBag.Title = "Customers";
@@ -9,7 +9,7 @@
 
 <h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary"})</h4>
 
-@if (!Model.Any())
+@if (!Model.Products.Any())
 {
     <p>Inga produkter i listan än.</p>
 }
@@ -24,10 +24,11 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var product in Model)
+            @foreach (var product in Model.Products)
             {
                 <tr>
-                    <td>@Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)</td>
+                    <td><img src="..\Icons\@Model.CategoryTypes.FirstOrDefault(c => c.Category == product.Food.Category1).Icon" width="20" height="20"/>
+                    @Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)</td>
                     <td>@product.Price kr</td>
                     <td></td>
                 </tr>
@@ -36,7 +37,7 @@ else
         <tfoot>
         <tr>
             <td>Total kostnad: </td>
-            <td>@Model.Sum(i => i.Price) kr</td>
+            <td>@Model.Products.Sum(i => i.Price) kr</td>
             <td></td>
         </tr>
         </tfoot>

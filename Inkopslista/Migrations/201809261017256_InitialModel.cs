@@ -8,6 +8,17 @@ namespace Inkopslista.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.CategoryTypes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Category = c.Byte(nullable: false),
+                        Name = c.String(),
+                        Icon = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.Customers",
                 c => new
                     {
@@ -239,6 +250,7 @@ namespace Inkopslista.Migrations
             DropTable("dbo.Foods");
             DropTable("dbo.MembershipTypes");
             DropTable("dbo.Customers");
+            DropTable("dbo.CategoryTypes");
         }
     }
 }

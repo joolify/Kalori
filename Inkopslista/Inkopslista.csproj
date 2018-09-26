@@ -210,25 +210,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809251934549_InitialModel.cs" />
-    <Compile Include="Migrations\201809251934549_InitialModel.Designer.cs">
-      <DependentUpon>201809251934549_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251935180_SeedGenre.cs" />
-    <Compile Include="Migrations\201809251935180_SeedGenre.Designer.cs">
-      <DependentUpon>201809251935180_SeedGenre.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809251937457_SeedFood.cs" />
-    <Compile Include="Migrations\201809251937457_SeedFood.Designer.cs">
-      <DependentUpon>201809251937457_SeedFood.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809260802020_UpdateFoodId.cs" />
-    <Compile Include="Migrations\201809260802020_UpdateFoodId.Designer.cs">
-      <DependentUpon>201809260802020_UpdateFoodId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809260804373_RemoveFoodIdReq.cs" />
-    <Compile Include="Migrations\201809260804373_RemoveFoodIdReq.Designer.cs">
-      <DependentUpon>201809260804373_RemoveFoodIdReq.cs</DependentUpon>
+    <Compile Include="Migrations\201809261017256_InitialModel.cs" />
+    <Compile Include="Migrations\201809261017256_InitialModel.Designer.cs">
+      <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -244,6 +228,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel - Copy.cs" />
+    <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
     <Compile Include="ViewModels\IndexFoodViewModel.cs" />
     <Compile Include="ViewModels\NewFoodViewModel.cs" />
     <Compile Include="ViewModels\MovieFormViewModel.cs" />
@@ -302,6 +287,35 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <EmbeddedResource Include="Icons\0_brod.svg" />
+    <EmbeddedResource Include="Icons\10_korv.svg" />
+    <EmbeddedResource Include="Icons\11_kyckling.svg" />
+    <EmbeddedResource Include="Icons\12_kott.svg" />
+    <EmbeddedResource Include="Icons\13_lever.svg" />
+    <EmbeddedResource Include="Icons\14_mejeri.svg" />
+    <EmbeddedResource Include="Icons\15_mjol.svg" />
+    <EmbeddedResource Include="Icons\16_sportpreparat.svg" />
+    <EmbeddedResource Include="Icons\17_notter.svg" />
+    <EmbeddedResource Include="Icons\18_ost.svg" />
+    <EmbeddedResource Include="Icons\19_pasta.svg" />
+    <EmbeddedResource Include="Icons\1_bullar.svg" />
+    <EmbeddedResource Include="Icons\20_potatis.svg" />
+    <EmbeddedResource Include="Icons\21_palagg.svg" />
+    <EmbeddedResource Include="Icons\22_quorn.svg" />
+    <EmbeddedResource Include="Icons\23_ratter.svg" />
+    <EmbeddedResource Include="Icons\24_smaksattare.svg" />
+    <EmbeddedResource Include="Icons\25_snacks.svg" />
+    <EmbeddedResource Include="Icons\26_sylt.svg" />
+    <EmbeddedResource Include="Icons\27_agg.svg" />
+    <EmbeddedResource Include="Icons\28_ovrigt.svg" />
+    <EmbeddedResource Include="Icons\2_dryck.svg" />
+    <EmbeddedResource Include="Icons\3_olja.svg" />
+    <EmbeddedResource Include="Icons\4_fisk.svg" />
+    <EmbeddedResource Include="Icons\5_flingor.svg" />
+    <EmbeddedResource Include="Icons\6_frukt.svg" />
+    <EmbeddedResource Include="Icons\7_glass.svg" />
+    <EmbeddedResource Include="Icons\8_godis.svg" />
+    <EmbeddedResource Include="Icons\9_gronsaker.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -313,13 +327,6 @@
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <EmbeddedResource Include="Migrations\201809260802020_UpdateFoodId.resx">
-      <DependentUpon>201809260802020_UpdateFoodId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809260804373_RemoveFoodIdReq.resx">
-      <DependentUpon>201809260804373_RemoveFoodIdReq.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925_test.csv" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -368,7 +375,11 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
+    <EmbeddedResource Include="Migrations\201809261017256_InitialModel.resx">
+      <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
+    <EmbeddedResource Include="SeedData\Category.csv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -384,17 +395,6 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201809251934549_InitialModel.resx">
-      <DependentUpon>201809251934549_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251935180_SeedGenre.resx">
-      <DependentUpon>201809251935180_SeedGenre.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809251937457_SeedFood.resx">
-      <DependentUpon>201809251937457_SeedFood.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

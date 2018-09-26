@@ -24,8 +24,15 @@ namespace Inkopslista.Controllers
         public ViewResult Index()
         {
             var products = _context.Products.Include(c => c.Food).ToList();
+            var categoryTypes = _context.CategoryTypes.ToList();
 
-            return View(products);
+            var viewModel = new IndexFoodViewModel()
+            {
+                Products = products,
+                CategoryTypes = categoryTypes
+            };
+
+            return View(viewModel);
         }
 
 
@@ -78,7 +85,16 @@ namespace Inkopslista.Controllers
             if (product == null)
                 return HttpNotFound();
 
-            return View(product);
+            var categoryTypes = _context.CategoryTypes.ToList();
+
+            var viewModel = new DetailsFoodViewModel()
+            {
+                Product = product,
+                CategoryTypes = categoryTypes
+            };
+
+            return View(viewModel);
+
         }
     }
 }

@@ -6,9 +6,9 @@ using Inkopslista.Models;
 
 namespace Inkopslista.ViewModels
 {
-    public class IndexFoodViewModel
+    public class DetailsFoodViewModel
     {
-        public IEnumerable<Product> Products { get; set; }
+        public Product Product { get; set; }
         public IEnumerable<CategoryType> CategoryTypes { get; set; }
     }
 }
