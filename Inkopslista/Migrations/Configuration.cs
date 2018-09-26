@@ -84,6 +84,60 @@ namespace Inkopslista.Migrations
 
                 }
             }
+
+            resourceName = "Inkopslista.SeedData.GenreTypes.csv";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    try
+                    {
+                        CsvReader csvReader = new CsvReader(reader);
+                        csvReader.Configuration.Delimiter = ";";
+                        csvReader.Configuration.MissingFieldFound = null;
+                        csvReader.Configuration.HasHeaderRecord = true;
+                        csvReader.Configuration.PrepareHeaderForMatch = (header) => header.ToLower();
+
+                        var genreTypes = csvReader.GetRecords<GenreType>().ToArray();
+                        context.GenreTypes.AddOrUpdate(c => c.Name, genreTypes);
+                        context.SaveChanges();
+                    }
+                    catch (CsvHelperException e)
+                    {
+                        Console.WriteLine(e.Data.Values);
+                        throw;
+                    }
+
+                }
+            }
+
+            resourceName = "Inkopslista.SeedData.MembershipTypes.csv";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    try
+                    {
+                        CsvReader csvReader = new CsvReader(reader);
+                        csvReader.Configuration.Delimiter = ";";
+                        csvReader.Configuration.MissingFieldFound = null;
+                        csvReader.Configuration.HasHeaderRecord = true;
+                        csvReader.Configuration.PrepareHeaderForMatch = (header) => header.ToLower();
+
+                        var membershipTypes = csvReader.GetRecords<MembershipType>().ToArray();
+                        context.MembershipTypes.AddOrUpdate(c => c.Name, membershipTypes);
+                        context.SaveChanges();
+                    }
+                    catch (CsvHelperException e)
+                    {
+                        Console.WriteLine(e.Data.Values);
+                        throw;
+                    }
+
+                }
+            }
         }
 
     }

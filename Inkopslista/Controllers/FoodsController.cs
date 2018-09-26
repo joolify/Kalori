@@ -63,9 +63,19 @@ namespace Inkopslista.Controllers
 
         public ActionResult GetFood(string term)
         {
-            var food = _context.Foods.Where(c => c.Name.Contains(term)).OrderBy(c => c.Name)
-                .Select(a => new {label = a.Name, id = a.Id}).Take(20);
+            var food = Match(term);
+
             return Json(food, JsonRequestBehavior.AllowGet);
+        }
+
+        private IQueryable Match(string term)
+        {
+            var match = _context.Foods.Where(c => c.Name.Contains(term))
+                .OrderBy(c => c.Name.StartsWith(term) ? (c.Name == term ? 0 : 1) : 2)
+                .Select(a => new { label = a.Name, id = a.Id })
+                .Take(25);
+
+            return match;
         }
 
         public ActionResult GetFoodList(string input)

@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201809261017256_InitialModel.Designer.cs">
       <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809261323573_UpdateMembershipTypes.cs" />
+    <Compile Include="Migrations\201809261323573_UpdateMembershipTypes.Designer.cs">
+      <DependentUpon>201809261323573_UpdateMembershipTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryType.cs" />
@@ -378,8 +382,13 @@
     <EmbeddedResource Include="Migrations\201809261017256_InitialModel.resx">
       <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261323573_UpdateMembershipTypes.resx">
+      <DependentUpon>201809261323573_UpdateMembershipTypes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />
+    <EmbeddedResource Include="SeedData\GenreTypes.csv" />
+    <EmbeddedResource Include="SeedData\MembershipTypes.csv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

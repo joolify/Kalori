@@ -12,8 +12,8 @@ namespace Inkopslista.Models
         [Key]
         public byte Id { get; set; }
         public string Name { get; set; }
-        public short SignupFee { get; set; }
-        public byte DurationInMonths { get; set; }
-        public byte DiscountRate { get; set; }
+        public int SignupFee { get; set; }
+        public int DurationInMonths { get; set; }
+        public int DiscountRate { get; set; }
     }
 }
