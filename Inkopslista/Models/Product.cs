@@ -13,11 +13,14 @@ namespace Inkopslista.Models
         [Key]
         public int Id { get; set; }
         [Display(Name = "Pris:")]
-        public float Price { get; set; }
+        public float? PriceTotal { get; set; }
+        public float? PricePerKg { get; set; }
         [Display(Name = "Vara:")]
 
         [ForeignKey("Food")]
-        public int FoodId { get; set; }
+        public int? FoodId { get; set; }
         public Food Food { get; set; }
+        public string FoodName { get; set; }
+        public float? Mass { get; set; }
     }
 }

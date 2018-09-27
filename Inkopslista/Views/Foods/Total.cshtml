@@ -1,0 +1,373 @@
+﻿@model Inkopslista.Models.Product
+
+@{
+    ViewBag.Title = Model.Food.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Näringsinnehåll</h2>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary" })</h4>
+
+
+<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+
+
+<table class="table table-bordered table-hover" width="400">
+    <thead>
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <h4><b>Inköpslista</b></h4>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+    <tbody class="kategori">
+        <tr bgcolor="#f5f5f5">
+            <td><b>Näringsämne (enhet): </b></td>
+            <td><b>Totalt (@Model.Mass g): </b></td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Energi (kcal): </td>
+            <td>@Model.Food.EnergiKcal</td>
+        </tr>
+        <tr>
+            <td>Energi (kJ): </td>
+            <td>@Model.Food.EnergiKJ</td>
+        </tr>
+        <tr>
+            <td>Kolhydrater (g): </td>
+            <td>@Model.Food.Kolhydrater</td>
+        </tr>
+        <tr>
+            <td>Fett (g): </td>
+            <td>@Model.Food.Fett</td>
+        </tr>
+        <tr>
+            <td>Protein (g): </td>
+            <td>@Model.Food.Protein</td>
+        </tr>
+        <tr>
+            <td>Fibrer (g): </td>
+            <td>@Model.Food.Fibrer</td>
+        </tr>
+        <tr>
+            <td>Vatten (g): </td>
+            <td>@Model.Food.Vatten</td>
+        </tr>
+        <tr>
+            <td>Alkohol (g): </td>
+            <td>@Model.Food.Alkohol</td>
+        </tr>
+        <tr>
+            <td>Aska (g): </td>
+            <td>@Model.Food.Aska</td>
+        </tr>
+        <tr>
+            <td>Avfall (skal etc.) (%): </td>
+            <td>@Model.Food.Aska</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="kolhydrater"><b>Kolhydrater</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Monosackarider (g): </td>
+            <td>@Model.Food.Monosackarider</td>
+        </tr>
+        <tr>
+            <td>Disackarider (g): </td>
+            <td>@Model.Food.Disackarider</td>
+        </tr>
+        <tr>
+            <td>Sackaros (g): </td>
+            <td>@Model.Food.Sackaros</td>
+        </tr>
+        <tr>
+            <td>Sockerarter (g): </td>
+            <td>@Model.Food.Sockerarter</td>
+        </tr>
+        <tr>
+            <td>Stärkelse (g): </td>
+            <td>@Model.Food.Starkelse</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Fettsyror"><b>Fettsyror</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Summa mättade fettsyror (g)</td>
+            <td>@Model.Food.SummaMattadeFettsyror</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Fettsyra 4:0-10:0 (g): </td>
+            <td>@Model.Food.Fettsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Laurinsyra C12:0 (g): </td>
+            <td>@Model.Food.Laurinsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Myristinsyra C14:0 (g): </td>
+            <td>@Model.Food.Myristinsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Palmitinsyra C16:0 (g): </td>
+            <td>@Model.Food.Palmitinsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Stearinsyra C18:0 (g): </td>
+            <td>@Model.Food.Stearinsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Arakidinsyra C20:0 (g): </td>
+            <td>@Model.Food.Arakidinsyra</td>
+        </tr>
+        <tr>
+            <td>Summa enkelomättade fettsyror (g): </td>
+            <td>@Model.Food.SummaEnkelOmattadeFettsyror</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Palmitoljesyra C16:1 (g): </td>
+            <td>@Model.Food.Palmitoljesyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Oljesyra C18:1 (g): </td>
+            <td>@Model.Food.Oljesyra</td>
+        </tr>
+        <tr>
+            <td>Summa fleromättade fettsyror (g): </td>
+            <td>@Model.Food.SummaFleromattadeFettsyror</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Linolsyra C18:2 (g): </td>
+            <td>@Model.Food.Linolsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Linolensyra C18:3 (g): </td>
+            <td>@Model.Food.Linolensyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Arakidonsyra C20:4 (g): </td>
+            <td>@Model.Food.Arakidonsyra</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;EPA (C20:5) (g): </td>
+            <td>@Model.Food.EPA</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;DPA (C22:5) (g): </td>
+            <td>@Model.Food.DPA</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;DHA (C22:6) (g): </td>
+            <td>@Model.Food.DHA</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Vattenlosligavitaminer"><b>Vattenlösliga vitaminer</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Tiamin (mg):</td>
+            <td>@Model.Food.Tiamin</td>
+        </tr>
+        <tr>
+            <td>Riboflavin (mg):</td>
+            <td>@Model.Food.Riboflavin</td>
+        </tr>
+        <tr>
+            <td>Niacin (mg):</td>
+            <td>@Model.Food.Niacin</td>
+        </tr>
+        <tr>
+            <td>Niacinekvivalenter (mg):</td>
+            <td>@Model.Food.Niacinekvivalenter</td>
+        </tr>
+        <tr>
+            <td>Vitamin B6 (mg):</td>
+            <td>@Model.Food.VitaminB6</td>
+        </tr>
+        <tr>
+            <td>Vitamin B12 (µg):</td>
+            <td>@Model.Food.VitaminB12</td>
+        </tr>
+        <tr>
+            <td>Folat (µg):</td>
+            <td>@Model.Food.Folat</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Fettlosligavitaminer"><b>Fettlösliga vitaminer</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Retinol (µg):</td>
+            <td>@Model.Food.Retinol</td>
+        </tr>
+        <tr>
+            <td>Vitamin A (µg):</td>
+            <td>@Model.Food.VitaminA</td>
+        </tr>
+        <tr>
+            <td>β-Karoten (µg):</td>
+            <td>@Model.Food.Karoten</td>
+        </tr>
+        <tr>
+            <td>Vitamin D (µg):</td>
+            <td>@Model.Food.VitaminD</td>
+        </tr>
+        <tr>
+            <td>Vitamin E (mg):</td>
+            <td>@Model.Food.VitaminE</td>
+        </tr>
+        <tr>
+            <td>Vitamin K (µg):</td>
+            <td>@Model.Food.VitaminK</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Mineraler"><b>Mineraler</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Fosfor (mg):</td>
+            <td>@Model.Food.Fosfor</td>
+        </tr>
+        <tr>
+            <td>Jod (µg):</td>
+            <td>@Model.Food.Jod</td>
+        </tr>
+        <tr>
+            <td>Järn (mg):</td>
+            <td>@Model.Food.Jarn</td>
+        </tr>
+        <tr>
+            <td>Kalcium (mg)):</td>
+            <td>@Model.Food.Kalcium</td>
+        </tr>
+        <tr>
+            <td>Kalium (mg):</td>
+            <td>@Model.Food.Kalium</td>
+        </tr>
+        <tr>
+            <td>Koppar (mg):</td>
+            <td>@Model.Food.Koppar</td>
+        </tr>
+        <tr>
+            <td>Magnesium (mg):</td>
+            <td>@Model.Food.Magnesium</td>
+        </tr>
+        <tr>
+            <td>Natrium (mg):</td>
+            <td>@Model.Food.Natrium</td>
+        </tr>
+        <tr>
+            <td>Salt (g):</td>
+            <td>@Model.Food.Salt</td>
+        </tr>
+        <tr>
+            <td>Selen (µg):</td>
+            <td>@Model.Food.Selen</td>
+        </tr>
+        <tr>
+            <td>Zink (mg):</td>
+            <td>@Model.Food.Zink</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Kolesterol"><b>Kolesterol</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Kolesterol (mg):</td>
+            <td>@Model.Food.Kolesterol</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="2" bgcolor="#f5f5f5">
+                <label for="Ovrigt"><b>Övrigt</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Fullkorn totalt (g):</td>
+            <td>@Model.Food.FullkornTotalt</td>
+        </tr>
+    </tbody>
+    <tfoot class="kategori">
+    <td colspan="2" align="right" bgcolor="#f5f5f5">Livsmedelsverkets livsmedelsdatabas version 2017-12-15.</td>
+    </tfoot>
+    </tbody>
+</table>
+@section Scripts {
+    <script type="text/javascript">
+
+            $(document).ready(function() {
+                    $('.kategori').click(function() {
+                        $(this).nextUntil('.kategori').slideToggle(200);
+                    });
+            }),
+
+            window.onload = function() {
+                var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        theme: "theme2",
+                        data: [
+                            {
+                                type: "pie",
+                                showInLegend: true,
+                                toolTipContent: "#percent %",
+                                yValueFormatString: "#,##0,,.## Million",
+                                legendText: "{indexLabel}",
+                                dataPoints: [
+                                    {
+                                        y: @Html.Raw(Json.Encode(Model.Food.Protein)) * 4,
+                                        indexLabel: "Protein"
+                                    },
+                                    { y: @Html.Raw(Json.Encode(Model.Food.Fett)) * 9, indexLabel: "Fett" },
+                                    {
+                                        y: @Html.Raw(Json.Encode(Model.Food.Kolhydrater)) * 4,
+                                        indexLabel: "Kolhydrater"
+                                    },
+                                    { y: @Html.Raw(Json.Encode(Model.Food.Alkohol)) * 7, indexLabel: "Alkohol" }
+                                ]
+                            }
+                        ]
+                    });
+                chart.render();
+            };
+
+
+    </script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+} 

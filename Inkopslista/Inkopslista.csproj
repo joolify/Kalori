@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.0\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="CsvHelper, Version=7.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.7.1.1\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
@@ -198,6 +201,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -210,13 +214,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809261017256_InitialModel.cs" />
-    <Compile Include="Migrations\201809261017256_InitialModel.Designer.cs">
-      <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809261323573_UpdateMembershipTypes.cs" />
-    <Compile Include="Migrations\201809261323573_UpdateMembershipTypes.Designer.cs">
-      <DependentUpon>201809261323573_UpdateMembershipTypes.cs</DependentUpon>
+    <Compile Include="Migrations\201809262232142_InitialModel.cs" />
+    <Compile Include="Migrations\201809262232142_InitialModel.Designer.cs">
+      <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -227,11 +227,12 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\GenreType.cs" />
     <Compile Include="Models\MembershipType.cs" />
+    <Compile Include="Models\Min18YearsIfAMember.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CustomerFormViewModel - Copy.cs" />
+    <Compile Include="ViewModels\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
     <Compile Include="ViewModels\IndexFoodViewModel.cs" />
     <Compile Include="ViewModels\NewFoodViewModel.cs" />
@@ -313,13 +314,14 @@
     <EmbeddedResource Include="Icons\27_agg.svg" />
     <EmbeddedResource Include="Icons\28_ovrigt.svg" />
     <EmbeddedResource Include="Icons\2_dryck.svg" />
-    <EmbeddedResource Include="Icons\3_olja.svg" />
+    <EmbeddedResource Include="Icons\3_fett.svg" />
     <EmbeddedResource Include="Icons\4_fisk.svg" />
     <EmbeddedResource Include="Icons\5_flingor.svg" />
     <EmbeddedResource Include="Icons\6_frukt.svg" />
     <EmbeddedResource Include="Icons\7_glass.svg" />
     <EmbeddedResource Include="Icons\8_godis.svg" />
     <EmbeddedResource Include="Icons\9_gronsaker.svg" />
+    <Content Include="Icons\29_eget.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -379,16 +381,14 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
-    <EmbeddedResource Include="Migrations\201809261017256_InitialModel.resx">
-      <DependentUpon>201809261017256_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809261323573_UpdateMembershipTypes.resx">
-      <DependentUpon>201809261323573_UpdateMembershipTypes.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809262232142_InitialModel.resx">
+      <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />
     <EmbeddedResource Include="SeedData\GenreTypes.csv" />
     <EmbeddedResource Include="SeedData\MembershipTypes.csv" />
+    <Content Include="Views\Foods\Total.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

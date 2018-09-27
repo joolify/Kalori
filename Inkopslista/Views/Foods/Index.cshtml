@@ -1,13 +1,14 @@
-﻿@model Inkopslista.ViewModels.IndexFoodViewModel
+﻿@using Microsoft.Ajax.Utilities
+@model Inkopslista.ViewModels.IndexFoodViewModel
 
 @{
-    ViewBag.Title = "Customers";
+    ViewBag.Title = "Inköpslista";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Inköpslista</h2>
 
-<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary"})</h4>
+<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary" }) @Html.ActionLink("Totalt näringsinnehåll", "Total", "Foods", null, new { @class = "btn btn-primary" })</h4>
 
 @if (!Model.Products.Any())
 {
@@ -17,8 +18,10 @@ else
 {
     <table class="table table-bordered table-hover">
         <thead>
-            <tr>
+            <tr bgcolor="#f5f5f5">
                 <th>Vara:</th>
+                <th>Mängd (g):</th>
+                <th>Pris/kg:</th>
                 <th>Pris:</th>
                 <th>Ändra:</th>
             </tr>
@@ -26,18 +29,61 @@ else
         <tbody>
             @foreach (var product in Model.Products)
             {
-                <tr>
-                    <td><img src="..\Icons\@Model.CategoryTypes.FirstOrDefault(c => c.Category == product.Food.Category1).Icon" width="20" height="20"/>
-                    @Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)</td>
-                    <td>@product.Price kr</td>
-                    <td></td>
-                </tr>
+            <tr>
+                @if (product.Food != null)
+                {
+                    <td>
+                        <img src="..\Icons\@Model.CategoryTypes.FirstOrDefault(c => c.Category == product.Food.Category1).Icon" width="20" height="20" />
+                        @Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)
+                    </td>
+                    <td>@product.Mass g</td>
+                    <td>@product.PricePerKg kr</td>
+                    <td>@product.PriceTotal kr</td>
+                    <td>
+                        <img src="..\Icons\edit.svg" width="20" height="20" />
+                        &nbsp;
+                        <img src="..\Icons\delete.svg" width="20" height="20" />
+                    </td>
+                }
+                else
+                {
+                    if (product.FoodName.IsNullOrWhiteSpace())
+                    {
+                        <td><img src="..\Icons\29_eget.svg" width="20" height="20" />
+                         @Html.ActionLink("N/A", "Edit", "Foods", new { id = product.Id }, null)</td>
+                        <td>@product.Mass g</td>
+                        <td>@product.PricePerKg kr</td>
+                        <td>@product.PriceTotal kr</td>
+                        <td>
+                            <img src="..\Icons\edit.svg" width="20" height="20" />
+                            &nbsp;
+                            <img src="..\Icons\delete.svg" width="20" height="20" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td><img src="..\Icons\29_eget.svg" width="20" height="20" />
+                         @Html.ActionLink(product.FoodName, "Edit", "Foods", new { id = product.Id }, null)</td>
+                        <td>@product.Mass g</td>
+                        <td>@product.PricePerKg kr</td>
+                        <td>@product.PriceTotal kr</td>
+                        <td>
+                            <img src="..\Icons\edit.svg" width="20" height="20" />
+                            &nbsp;
+                            <img src="..\Icons\delete.svg" width="20" height="20" />
+                        </td>
+                    }
+
+                }
+            </tr>
             }
         </tbody>
         <tfoot>
-        <tr>
-            <td>Total kostnad: </td>
-            <td>@Model.Products.Sum(i => i.Price) kr</td>
+        <tr bgcolor="#f5f5f5">
+            <td></td>
+            <td></td>
+            <td><b>Totalt pris:</b></td>
+            <td>@Model.Products.Sum(i => i.PriceTotal) kr</td>
             <td></td>
         </tr>
         </tfoot>

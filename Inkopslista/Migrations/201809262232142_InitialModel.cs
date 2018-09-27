@@ -38,9 +38,9 @@ namespace Inkopslista.Migrations
                     {
                         Id = c.Byte(nullable: false),
                         Name = c.String(),
-                        SignupFee = c.Short(nullable: false),
-                        DurationInMonths = c.Byte(nullable: false),
-                        DiscountRate = c.Byte(nullable: false),
+                        SignupFee = c.Int(nullable: false),
+                        DurationInMonths = c.Int(nullable: false),
+                        DiscountRate = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -144,11 +144,14 @@ namespace Inkopslista.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Price = c.Single(nullable: false),
-                        FoodId = c.Int(nullable: false),
+                        PriceTotal = c.Single(),
+                        PricePerKg = c.Single(),
+                        FoodId = c.Int(),
+                        FoodName = c.String(),
+                        Mass = c.Single(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Foods", t => t.FoodId, cascadeDelete: true)
+                .ForeignKey("dbo.Foods", t => t.FoodId)
                 .Index(t => t.FoodId);
             
             CreateTable(
