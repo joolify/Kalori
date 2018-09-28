@@ -32,7 +32,7 @@ else
             @foreach (var product in Model)
             {
                 <tr>
-                    <td>@Html.ActionLink(product.Price.ToString(), "Details", "Products", new { id = product.Id }, null)</td>
+                    <td>@Html.ActionLink(product.PriceTotal.ToString(), "Details", "Products", new { id = product.Id }, null)</td>
                 </tr>
             }
         </tbody>

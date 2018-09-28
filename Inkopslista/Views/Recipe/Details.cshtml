@@ -1,0 +1,38 @@
+﻿@model Inkopslista.Models.Recipe
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary"})</h4>
+
+<table class="table table-bordered table-hover">
+    <tbody>
+        <tr>
+            <td colspan="2">
+
+                <img src="..\..\Icons\clock.svg" width="20" height="20" />
+                @(Model.CookingTimeH + ":0" + Model.CookingTimeM)
+                &nbsp; 
+                <img src="..\..\Icons\comment.svg" width="20" height="20" />
+                3
+                &nbsp;
+                <img src="..\..\Icons\portion.svg" width="20" height="20" />
+                @Model.Portions
+                &nbsp;
+                <img src="..\..\Icons\star.svg" width="20" height="20" /> 
+                4
+            </td>
+        </tr>
+    <tr>
+        <td>
+            Ingredienser
+        </td>
+        <td>
+            Tillagning
+        </td>
+    </tr>
+    </tbody>
+</table>

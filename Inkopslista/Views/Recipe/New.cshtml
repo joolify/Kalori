@@ -1,0 +1,112 @@
+﻿@model Inkopslista.Models.Recipe
+@{
+    ViewBag.Title = "Nytt recept";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Nytt recept</h2>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary"})</h4>
+
+@using (Html.BeginForm("Create", "Recipe"))
+{
+    <fieldset>
+        <div class="form-group" >
+            <label class="col-md-2 control-label">
+                Namn:
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Name, new { placeholder = Model.Name, @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:50px;">
+            <label class="col-md-2 control-label">
+                Tillagningstid: 
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.CookingTimeH, new { placeholder = Model.CookingTimeH, @class = "form-control" }) h
+                @Html.TextBoxFor(m => m.CookingTimeM, new { placeholder = Model.CookingTimeM, @class = "form-control" }) min
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:100px;">
+            <label class="col-md-2 control-label">
+                Portioner:
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Portions, new { placeholder = Model.Portions, @class = "form-control" })
+            </div>
+        </div>
+            <div class="form-group" style="margin-top: 100px;">
+                <label class="col-md-2 control-label">
+                    Lägg till ingrediens:
+                </label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 100px;">
+                <label class="col-md-2 control-label">
+                </label>
+                <div class="col-md-10">
+                    <button type="submit"  name="command" value="AddIngredient" class="btn btn-primary">Lägg till ingrediens</button>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 100px;">
+
+                <label class="col-md-2 control-label">
+                    Ingredienser:
+                </label>
+                <div class="col-md-10">
+                    <table class="table table-bordered table-hover" style="margin-top: 10px">
+                        <thead>
+                        <tr bgcolor="#f5f5f5">
+                            <th>Vara:</th>
+                            <th>Mängd (g):</th>
+                            <th>Pris/kg:</th>
+                            <th>Pris:</th>
+                            <th>Ändra:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @if (Model.Products != null)
+                        {
+                            for (int i = 0; i < Model.Products.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(m => m.Products[i].Food.Name)
+                                        @Html.HiddenFor(m => m.Products[i].Food.Name)
+                                    </td>
+                                     <td>
+                                        @Html.DisplayFor(m => m.Products[i].Mass) g
+                                        @Html.HiddenFor(m => m.Products[i].Mass)
+                                    </td>
+                                     <td>
+                                        @Html.DisplayFor(m => m.Products[i].PricePerKg) kr
+                                        @Html.HiddenFor(m => m.Products[i].PricePerKg)
+                                    </td>
+                                     <td>
+                                        @Html.DisplayFor(m => m.Products[i].PriceTotal) kr
+                                        @Html.HiddenFor(m => m.Products[i].PriceTotal)
+                                    </td>
+                                    <td>
+                                        <img src="..\Icons\edit.svg" width="20" height="20"/>
+                                        &nbsp;
+                                        <img src="..\Icons\delete.svg" width="20" height="20"/>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <div class="form-group" style="margin-top:150px;">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-10">
+                <button type="submit" name="command" value="Create" class="btn btn-primary">Lägg till recept</button>
+            </div>
+        </div>
+    </fieldset>
+}

@@ -8,7 +8,9 @@
 
 <h2>Inköpslista</h2>
 
-<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary" }) @Html.ActionLink("Totalt näringsinnehåll", "Total", "Foods", null, new { @class = "btn btn-primary" })</h4>
+<h4>@Html.ActionLink("Lägg till produkt", "New", "Foods", null, new { @class = "btn btn-primary" }) 
+    @Html.ActionLink("Totalt näringsinnehåll", "Total", "Foods", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Skapa recept", "Recipe", "Foods", null, new { @class = "btn btn-primary" })</h4>
 
 @if (!Model.Products.Any())
 {

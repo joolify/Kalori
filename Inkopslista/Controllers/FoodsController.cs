@@ -35,7 +35,13 @@ namespace Inkopslista.Controllers
 
             return View(viewModel);
         }
-
+        public ActionResult Recipe()
+        {
+            var products = _context.Products.Include(c => c.Food).ToList();
+            TempData["products"] = null;
+            TempData["products"] = products;
+            return RedirectToAction("New", "Recipe");
+        }
 
         public ViewResult New()
         {
@@ -212,6 +218,7 @@ namespace Inkopslista.Controllers
             return RedirectToAction("Index", "Foods");
         }
 
+        [HttpGet]
         public ActionResult GetFood(string term)
         {
             var food = Match(term);
@@ -229,15 +236,6 @@ namespace Inkopslista.Controllers
             return match;
         }
 
-        public ActionResult GetFoodList(string input)
-        {
-            if (input == null)
-                input = "1";
-            var id = int.Parse(input);
-            var food = _context.Foods.FirstOrDefault(c => c.Id == id);
-            System.Diagnostics.Debug.WriteLine("food: " + food.Name);
-            return Json(food, JsonRequestBehavior.AllowGet);
-        }
 
         public ActionResult Details(int id)
         {

@@ -61,12 +61,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -204,13 +213,17 @@
     <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\RecipeController.cs" />
+    <Compile Include="Dtos\CustomerDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,17 +231,27 @@
     <Compile Include="Migrations\201809262232142_InitialModel.Designer.cs">
       <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809271924201_AddRecipeAndInstruction.cs" />
+    <Compile Include="Migrations\201809271924201_AddRecipeAndInstruction.Designer.cs">
+      <DependentUpon>201809271924201_AddRecipeAndInstruction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809271938033_UpdateRecipe.cs" />
+    <Compile Include="Migrations\201809271938033_UpdateRecipe.Designer.cs">
+      <DependentUpon>201809271938033_UpdateRecipe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryType.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\GenreType.cs" />
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Min18YearsIfAMember.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -321,7 +344,14 @@
     <EmbeddedResource Include="Icons\7_glass.svg" />
     <EmbeddedResource Include="Icons\8_godis.svg" />
     <EmbeddedResource Include="Icons\9_gronsaker.svg" />
-    <Content Include="Icons\29_eget.svg" />
+    <EmbeddedResource Include="Icons\29_eget.svg" />
+    <EmbeddedResource Include="Icons\add.svg" />
+    <EmbeddedResource Include="Icons\clock.svg" />
+    <EmbeddedResource Include="Icons\delete.svg" />
+    <EmbeddedResource Include="Icons\edit.svg" />
+    <EmbeddedResource Include="Icons\comment.svg" />
+    <Content Include="Icons\portion.svg" />
+    <EmbeddedResource Include="Icons\star.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -384,11 +414,20 @@
     <EmbeddedResource Include="Migrations\201809262232142_InitialModel.resx">
       <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809271924201_AddRecipeAndInstruction.resx">
+      <DependentUpon>201809271924201_AddRecipeAndInstruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809271938033_UpdateRecipe.resx">
+      <DependentUpon>201809271938033_UpdateRecipe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />
     <EmbeddedResource Include="SeedData\GenreTypes.csv" />
     <EmbeddedResource Include="SeedData\MembershipTypes.csv" />
     <Content Include="Views\Foods\Total.cshtml" />
+    <Content Include="Views\Recipe\Index.cshtml" />
+    <Content Include="Views\Recipe\New.cshtml" />
+    <Content Include="Views\Recipe\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

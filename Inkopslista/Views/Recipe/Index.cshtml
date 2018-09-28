@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Inkopslista.Models.Recipe>
+
+@{
+    ViewBag.Title = "Recept";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Recept</h2>
+
+<h4>@Html.ActionLink("Lägg till recept", "New", "Recipe", null, new { @class = "btn btn-primary" })</h4>
+
+@if (!Model.Any())
+{
+    <p>Inga recept i listan än.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr bgcolor="#f5f5f5">
+                <th>Recept:</th>
+                <th>Tillagningstid:</th>
+                <th>Portioner:</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipe in Model)
+            {
+            <tr>
+                <td>
+                    @Html.ActionLink(recipe.Name, "Details", "Recipe", new { id = recipe.Id }, null)
+                </td>
+                <td>
+                    @("" + recipe.CookingTimeH + ":0"+ @recipe.CookingTimeM + "h")
+                </td>
+                <td>
+                    @recipe.Portions
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
