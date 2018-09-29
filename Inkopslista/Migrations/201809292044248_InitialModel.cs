@@ -150,15 +150,15 @@ namespace Inkopslista.Migrations
                         FoodName = c.String(),
                         Mass = c.Single(),
                         ShoppinglistId = c.Int(),
-                        Recipe_Id = c.Int(),
+                        RecipeId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Foods", t => t.FoodId)
-                .ForeignKey("dbo.Recipes", t => t.Recipe_Id)
+                .ForeignKey("dbo.Recipes", t => t.RecipeId)
                 .ForeignKey("dbo.Shoppinglists", t => t.ShoppinglistId)
                 .Index(t => t.FoodId)
                 .Index(t => t.ShoppinglistId)
-                .Index(t => t.Recipe_Id);
+                .Index(t => t.RecipeId);
             
             CreateTable(
                 "dbo.Recipes",
@@ -271,7 +271,7 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Products", "ShoppinglistId", "dbo.Shoppinglists");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Products", "Recipe_Id", "dbo.Recipes");
+            DropForeignKey("dbo.Products", "RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.Instructions", "Recipe_Id", "dbo.Recipes");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
             DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
@@ -283,7 +283,7 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Instructions", new[] { "Recipe_Id" });
-            DropIndex("dbo.Products", new[] { "Recipe_Id" });
+            DropIndex("dbo.Products", new[] { "RecipeId" });
             DropIndex("dbo.Products", new[] { "ShoppinglistId" });
             DropIndex("dbo.Products", new[] { "FoodId" });
             DropIndex("dbo.Movies", new[] { "GenreTypeId" });

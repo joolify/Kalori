@@ -7,13 +7,13 @@ namespace Inkopslista.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddIdToRecipe : IMigrationMetadata
+    public sealed partial class InitialModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddIdToRecipe));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809291534266_AddIdToRecipe"; }
+            get { return "201809292044248_InitialModel"; }
         }
         
         string IMigrationMetadata.Source

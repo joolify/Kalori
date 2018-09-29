@@ -94,7 +94,7 @@ namespace Inkopslista.Controllers
 
             var prodList = new List<Product>();
 
-            if (viewModel.Recipe.Products.Any())
+            if (viewModel.Recipe.Products != null)
             {
                 for (int i = 0; i < viewModel.Recipe.Products.Count; i++)
                 {

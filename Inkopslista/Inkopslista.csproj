@@ -228,13 +228,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809291235040_InitialModel.cs" />
-    <Compile Include="Migrations\201809291235040_InitialModel.Designer.cs">
-      <DependentUpon>201809291235040_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809291534266_AddIdToRecipe.cs" />
-    <Compile Include="Migrations\201809291534266_AddIdToRecipe.Designer.cs">
-      <DependentUpon>201809291534266_AddIdToRecipe.cs</DependentUpon>
+    <Compile Include="Migrations\201809292044248_InitialModel.cs" />
+    <Compile Include="Migrations\201809292044248_InitialModel.Designer.cs">
+      <DependentUpon>201809292044248_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -413,11 +409,8 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
-    <EmbeddedResource Include="Migrations\201809291235040_InitialModel.resx">
-      <DependentUpon>201809291235040_InitialModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809291534266_AddIdToRecipe.resx">
-      <DependentUpon>201809291534266_AddIdToRecipe.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809292044248_InitialModel.resx">
+      <DependentUpon>201809292044248_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />

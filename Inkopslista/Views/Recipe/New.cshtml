@@ -74,25 +74,24 @@
     
                         @if (Model.Recipe.Products != null)
                         {
-                            foreach (var product in Model.Recipe.Products)
+                            for (int i = 0; i < Model.Recipe.Products.Count; i++)
                             {
                                 <tr>
                                     <td>
-                                        @product.Food.Name
-                                        @Html.HiddenFor(m => product.Food)
+                                        @Model.Recipe.Products[i].Food.Name
+                                        @Html.HiddenFor(m => Model.Recipe.Products[i].Food.Id)
                                     </td>
                                      <td>
-
-                                        @product.Mass
-                                        @Html.HiddenFor(m => product.Mass)
+                                        @Model.Recipe.Products[i].Mass
+                                        @Html.HiddenFor(m => Model.Recipe.Products[i].Mass)
                                     </td>
                                      <td>
-                                        @product.PricePerKg
-                                        @Html.HiddenFor(m => product.PricePerKg)
+                                        @Model.Recipe.Products[i].PricePerKg
+                                        @Html.HiddenFor(m => Model.Recipe.Products[i].PricePerKg)
                                     </td>
                                      <td>
-                                        @product.PriceTotal
-                                        @Html.HiddenFor(m => product.PriceTotal)
+                                        @Model.Recipe.Products[i].PriceTotal
+                                        @Html.HiddenFor(m => Model.Recipe.Products[i].PriceTotal)
                                     </td>
                                     <td>
                                         <img src="..\..\Icons\edit.svg" width="20" height="20"/>
