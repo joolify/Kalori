@@ -108,7 +108,7 @@ namespace Inkopslista.Controllers
             _context.Products.Add(product);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Shoppinglist");
+            return RedirectToAction("Details", "Shoppinglist", new {id = viewModel.Shoppinglist.Id});
         }
 
         public ViewResult Total(int id)

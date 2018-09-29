@@ -255,6 +255,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
+    <Compile Include="ViewModels\NewRecipeViewModel.cs" />
     <Compile Include="ViewModels\TotalShoppinglistViewModel.cs" />
     <Compile Include="ViewModels\NewProductShoppinglistViewModel.cs" />
     <Compile Include="ViewModels\DetailsShoppinglistViewModel.cs" />

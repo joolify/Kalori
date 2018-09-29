@@ -31,6 +31,8 @@ namespace Inkopslista.Controllers
         public ViewResult New(int? id)
         {
             var recipe = new Recipe();
+            var productList = new List<Product>();
+            recipe.Products = productList;
             if (id != null)
             {
                 var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
@@ -45,7 +47,13 @@ namespace Inkopslista.Controllers
                 recipe.Products = products;
             }
 
-            return View(recipe);
+            var viewModel = new NewRecipeViewModel
+            {
+                Recipe = recipe,
+                NewProduct = new Product()
+            };
+
+            return View(viewModel);
         }
 
         public ViewResult AddIngredient(Recipe model)
@@ -57,7 +65,7 @@ namespace Inkopslista.Controllers
             recipe.Portions = model.Portions;
             var product = new Product
             {
-
+                Food = _context.Foods.SingleOrDefault(c => c.Id == model.Id)
             };
             recipe.Products = model.Products;
 
@@ -76,33 +84,45 @@ namespace Inkopslista.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(Recipe model, string command)
+        public ActionResult Create(NewRecipeViewModel viewModel, string command)
         {
             var recipe = new Recipe();
-            recipe.Name = model.Name;
-            recipe.CookingTimeH = model.CookingTimeH;
-            recipe.CookingTimeM = model.CookingTimeM;
-            recipe.Portions = model.Portions;
+            recipe.Name = viewModel.Recipe.Name;
+            recipe.CookingTimeH = viewModel.Recipe.CookingTimeH;
+            recipe.CookingTimeM = viewModel.Recipe.CookingTimeM;
+            recipe.Portions = viewModel.Recipe.Portions;
 
             var prodList = new List<Product>();
-            for (int i = 0; i < model.Products.Count; i++)
-            {
-                var foodId = model.Products[i].Food.Id;
-                var product = new Product
-                {
-                    Id = model.Products[i].Id,
-                    Mass = model.Products[i].Mass,
-                    PricePerKg = model.Products[i].PricePerKg,
-                    PriceTotal = model.Products[i].PriceTotal,
-                    Food = _context.Foods.SingleOrDefault(c => c.Id == foodId)
-                };
-                prodList.Add(product);
-            }
-            recipe.Products = prodList;
 
+            if (viewModel.Recipe.Products.Any())
+            {
+                for (int i = 0; i < viewModel.Recipe.Products.Count; i++)
+                {
+                    var foodId = viewModel.Recipe.Products[i].Food.Id;
+                    var product = new Product
+                    {
+                        Id = viewModel.Recipe.Products[i].Id,
+                        Mass = viewModel.Recipe.Products[i].Mass,
+                        PricePerKg = viewModel.Recipe.Products[i].PricePerKg,
+                        PriceTotal = viewModel.Recipe.Products[i].PriceTotal,
+                        Food = _context.Foods.SingleOrDefault(c => c.Id == foodId)
+                    };
+                    prodList.Add(product);
+                }
+            }
+
+            recipe.Products = prodList;
             if (command.Equals("AddIngredient"))
             {
-                return View("New", recipe);
+                var product = new Product
+                {
+                    Food = _context.Foods.SingleOrDefault(c => c.Id == viewModel.NewProduct.FoodId)
+                };
+
+                recipe.Products.Add(product);
+                viewModel.Recipe = recipe;
+                                
+                return View("New", viewModel);
             }
 
             _context.Database.Log = s => Debug.WriteLine(s);

@@ -22,8 +22,8 @@
                 Tillagningstid: 
             </label>
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.CookingTimeH, @class = "form-control", style="width: 40px; float: left"}) h 
-                @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.CookingTimeM, @class = "form-control", style="width: 40px; display: inline-block" }) min
+                @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.Recipe.CookingTimeH, @class = "form-control", style="width: 40px; float: left"}) h 
+                @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.Recipe.CookingTimeM, @class = "form-control", style="width: 40px; display: inline-block" }) min
             </div>
         </div>
         <div class="form-group" style="margin-top:100px;">
@@ -31,7 +31,7 @@
                 Portioner:
             </label>
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Portions, @class = "form-control", style="width: 40px" })
+                @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Recipe.Portions, @class = "form-control", style="width: 40px" })
             </div>
         </div>
             <div class="form-group" style="margin-top: 150px;">
@@ -39,10 +39,8 @@
                     Lägg till ingrediens:
                 </label>
                 <div class="col-md-10">
-                    @*
-                    @Html.HiddenFor(m => m.Recipe.Product.FoodId, new { @id = "id"})
-                    @Html.HiddenFor(m => m.Recipe.Product.FoodName, new { @id = "foodname"})
-                    *@
+                    @Html.HiddenFor(m => m.NewProduct.FoodId, new { @id = "id"})
+@*                    @Html.HiddenFor(m => m.Recipe.Product.FoodName, new { @id = "foodname"})*@
                     <input type="text" class="form-control" id="searchInput" placeholder="Börja skriv i" />
                 </div>
             </div>
@@ -73,27 +71,28 @@
                         </tr>
                         </thead>
                         <tbody>
-
-                        @if (Model.Products != null)
+    
+                        @if (Model.Recipe.Products != null)
                         {
-                            for (int i = 0; i < Model.Products.Count; i++)
+                            foreach (var product in Model.Recipe.Products)
                             {
                                 <tr>
                                     <td>
-                                        @Html.DisplayFor(m => m.Products[i].Food.Name)
-                                        @Html.HiddenFor(m => m.Products[i].Food.Id)
+                                        @product.Food.Name
+                                        @Html.HiddenFor(m => product.Food)
                                     </td>
                                      <td>
-                                        @Html.DisplayFor(m => m.Products[i].Mass) g
-                                        @Html.HiddenFor(m => m.Products[i].Mass)
+
+                                        @product.Mass
+                                        @Html.HiddenFor(m => product.Mass)
                                     </td>
                                      <td>
-                                        @Html.DisplayFor(m => m.Products[i].PricePerKg) kr
-                                        @Html.HiddenFor(m => m.Products[i].PricePerKg)
+                                        @product.PricePerKg
+                                        @Html.HiddenFor(m => product.PricePerKg)
                                     </td>
                                      <td>
-                                        @Html.DisplayFor(m => m.Products[i].PriceTotal) kr
-                                        @Html.HiddenFor(m => m.Products[i].PriceTotal)
+                                        @product.PriceTotal
+                                        @Html.HiddenFor(m => product.PriceTotal)
                                     </td>
                                     <td>
                                         <img src="..\..\Icons\edit.svg" width="20" height="20"/>
