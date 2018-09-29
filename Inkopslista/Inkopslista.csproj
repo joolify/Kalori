@@ -223,21 +223,18 @@
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
+    <Compile Include="Controllers\ShoppinglistController.cs" />
     <Compile Include="Dtos\CustomerDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809262232142_InitialModel.cs" />
-    <Compile Include="Migrations\201809262232142_InitialModel.Designer.cs">
-      <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201809291235040_InitialModel.cs" />
+    <Compile Include="Migrations\201809291235040_InitialModel.Designer.cs">
+      <DependentUpon>201809291235040_InitialModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809271924201_AddRecipeAndInstruction.cs" />
-    <Compile Include="Migrations\201809271924201_AddRecipeAndInstruction.Designer.cs">
-      <DependentUpon>201809271924201_AddRecipeAndInstruction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809271938033_UpdateRecipe.cs" />
-    <Compile Include="Migrations\201809271938033_UpdateRecipe.Designer.cs">
-      <DependentUpon>201809271938033_UpdateRecipe.cs</DependentUpon>
+    <Compile Include="Migrations\201809291534266_AddIdToRecipe.cs" />
+    <Compile Include="Migrations\201809291534266_AddIdToRecipe.Designer.cs">
+      <DependentUpon>201809291534266_AddIdToRecipe.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -251,12 +248,16 @@
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Min18YearsIfAMember.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Shoppinglist.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
     <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
+    <Compile Include="ViewModels\TotalShoppinglistViewModel.cs" />
+    <Compile Include="ViewModels\NewProductShoppinglistViewModel.cs" />
+    <Compile Include="ViewModels\DetailsShoppinglistViewModel.cs" />
     <Compile Include="ViewModels\IndexFoodViewModel.cs" />
     <Compile Include="ViewModels\NewFoodViewModel.cs" />
     <Compile Include="ViewModels\MovieFormViewModel.cs" />
@@ -411,14 +412,11 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
-    <EmbeddedResource Include="Migrations\201809262232142_InitialModel.resx">
-      <DependentUpon>201809262232142_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809291235040_InitialModel.resx">
+      <DependentUpon>201809291235040_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809271924201_AddRecipeAndInstruction.resx">
-      <DependentUpon>201809271924201_AddRecipeAndInstruction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809271938033_UpdateRecipe.resx">
-      <DependentUpon>201809271938033_UpdateRecipe.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809291534266_AddIdToRecipe.resx">
+      <DependentUpon>201809291534266_AddIdToRecipe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />
@@ -428,6 +426,11 @@
     <Content Include="Views\Recipe\Index.cshtml" />
     <Content Include="Views\Recipe\New.cshtml" />
     <Content Include="Views\Recipe\Details.cshtml" />
+    <Content Include="Views\Shoppinglist\Index.cshtml" />
+    <Content Include="Views\Shoppinglist\New.cshtml" />
+    <Content Include="Views\Shoppinglist\Details.cshtml" />
+    <Content Include="Views\Shoppinglist\NewProduct.cshtml" />
+    <Content Include="Views\Shoppinglist\Total.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

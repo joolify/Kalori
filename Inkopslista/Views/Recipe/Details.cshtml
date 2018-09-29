@@ -34,5 +34,44 @@
             Tillagning
         </td>
     </tr>
+    <tr>
+        <td>
+            <table>
+
+                @if (Model.Products != null)
+                {
+                    for (int i = 0; i < Model.Products.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => m.Products[i].Food.Name)
+                                @Html.HiddenFor(m => m.Products[i].Food.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.Products[i].Mass) g
+                                @Html.HiddenFor(m => m.Products[i].Mass)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.Products[i].PricePerKg) kr
+                                @Html.HiddenFor(m => m.Products[i].PricePerKg)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => m.Products[i].PriceTotal) kr
+                                @Html.HiddenFor(m => m.Products[i].PriceTotal)
+                            </td>
+                            <td>
+                                <img src="..\Icons\edit.svg" width="20" height="20"/>
+                                &nbsp;
+                                <img src="..\Icons\delete.svg" width="20" height="20"/>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </td>
+        <td>
+
+        </td>
+    </tr>
     </tbody>
 </table>

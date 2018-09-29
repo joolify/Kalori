@@ -23,6 +23,7 @@ namespace Inkopslista.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Shoppinglist> Shoppinglists { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }

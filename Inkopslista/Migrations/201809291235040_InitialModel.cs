@@ -149,10 +149,41 @@ namespace Inkopslista.Migrations
                         FoodId = c.Int(),
                         FoodName = c.String(),
                         Mass = c.Single(),
+                        ShoppinglistId = c.Int(),
+                        Recipe_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Foods", t => t.FoodId)
-                .Index(t => t.FoodId);
+                .ForeignKey("dbo.Recipes", t => t.Recipe_Id)
+                .ForeignKey("dbo.Shoppinglists", t => t.ShoppinglistId)
+                .Index(t => t.FoodId)
+                .Index(t => t.ShoppinglistId)
+                .Index(t => t.Recipe_Id);
+            
+            CreateTable(
+                "dbo.Recipes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        CookingTimeH = c.Int(nullable: false),
+                        CookingTimeM = c.Int(nullable: false),
+                        Portions = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Instructions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Number = c.Int(nullable: false),
+                        Recipe_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Recipes", t => t.Recipe_Id)
+                .Index(t => t.Recipe_Id);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -176,6 +207,15 @@ namespace Inkopslista.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Shoppinglists",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -229,7 +269,10 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Products", "ShoppinglistId", "dbo.Shoppinglists");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Products", "Recipe_Id", "dbo.Recipes");
+            DropForeignKey("dbo.Instructions", "Recipe_Id", "dbo.Recipes");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
             DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
             DropForeignKey("dbo.Customers", "MembershipTypeId", "dbo.MembershipTypes");
@@ -239,14 +282,20 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Instructions", new[] { "Recipe_Id" });
+            DropIndex("dbo.Products", new[] { "Recipe_Id" });
+            DropIndex("dbo.Products", new[] { "ShoppinglistId" });
             DropIndex("dbo.Products", new[] { "FoodId" });
             DropIndex("dbo.Movies", new[] { "GenreTypeId" });
             DropIndex("dbo.Customers", new[] { "MembershipTypeId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.Shoppinglists");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Instructions");
+            DropTable("dbo.Recipes");
             DropTable("dbo.Products");
             DropTable("dbo.Movies");
             DropTable("dbo.GenreTypes");

@@ -22,5 +22,8 @@ namespace Inkopslista.Models
         public Food Food { get; set; }
         public string FoodName { get; set; }
         public float? Mass { get; set; }
+
+        public int? ShoppinglistId { get; set; }
+        public int? RecipeId { get; set; }
     }
 }
