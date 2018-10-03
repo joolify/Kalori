@@ -20,5 +20,13 @@ namespace Inkopslista.Models
         public int CookingTimeH { get; set; }
         public int CookingTimeM { get; set; }
         public int Portions { get; set; }
+        public Image Image { get; set; }
+
+        public Recipe()
+        {
+            Products = new List<Product>();
+            Instructions = new List<Instruction>();
+            Image = new Image();
+        }
     }
 }

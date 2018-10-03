@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -31,8 +32,6 @@ namespace Inkopslista.Controllers
         public ViewResult New(int? id)
         {
             var recipe = new Recipe();
-            var productList = new List<Product>();
-            recipe.Products = productList;
             if (id != null)
             {
                 var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
@@ -47,6 +46,19 @@ namespace Inkopslista.Controllers
                 recipe.Products = products;
             }
 
+            var intList = new List<Instruction>();
+            for (int i = 0; i < 4; i++)
+            {
+                var instruction = new Instruction
+                {
+                    Id = i + 1,
+                    Number = i + 1,
+                    Name = "t" + (i+1)
+                };
+                intList.Add(instruction);
+            }
+
+            recipe.Instructions = intList;
             var viewModel = new NewRecipeViewModel
             {
                 Recipe = recipe,
@@ -56,25 +68,9 @@ namespace Inkopslista.Controllers
             return View(viewModel);
         }
 
-        public ViewResult AddIngredient(Recipe model)
-        {
-            var recipe = new Recipe();
-            recipe.Name = model.Name;
-            recipe.CookingTimeH = model.CookingTimeH;
-            recipe.CookingTimeM = model.CookingTimeM;
-            recipe.Portions = model.Portions;
-            var product = new Product
-            {
-                Food = _context.Foods.SingleOrDefault(c => c.Id == model.Id)
-            };
-            recipe.Products = model.Products;
-
-            return View("New", recipe);
-        }
-
         public ActionResult Details(int id)
         {
-            var recipe = _context.Recipes.SingleOrDefault(c => c.Id == id);
+            var recipe = _context.Recipes.Include(c => c.Image).SingleOrDefault(c => c.Id == id);
 
             if (recipe == null)
                 return HttpNotFound();
@@ -111,12 +107,34 @@ namespace Inkopslista.Controllers
                 }
             }
 
+            var instructionList = new List<Instruction>();
+
+            if (viewModel.Recipe.Instructions != null)
+            {
+                for (int i = 0; i < viewModel.Recipe.Instructions.Count; i++)
+                {
+                    var instruction = new Instruction
+                    {
+                        Id = viewModel.Recipe.Instructions[i].Id,
+                        Name = viewModel.Recipe.Instructions[i].Name,
+                        Number = viewModel.Recipe.Instructions[i].Number
+
+                    };
+                    instructionList.Add(instruction);
+                }
+                instructionList.Sort((s1, s2) => s1.Number.CompareTo(s2.Number));
+            }
+
             recipe.Products = prodList;
+            recipe.Instructions = instructionList;
             if (command.Equals("AddIngredient"))
             {
                 var product = new Product
                 {
-                    Food = _context.Foods.SingleOrDefault(c => c.Id == viewModel.NewProduct.FoodId)
+                    Food = _context.Foods.SingleOrDefault(c => c.Id == viewModel.NewProduct.FoodId),
+                    Mass = viewModel.NewProduct.Mass,
+                    PricePerKg = viewModel.NewProduct.PricePerKg,
+                    PriceTotal = viewModel.NewProduct.Mass * (viewModel.NewProduct.PricePerKg / 1000)
                 };
 
                 recipe.Products.Add(product);
@@ -125,12 +143,53 @@ namespace Inkopslista.Controllers
                 return View("New", viewModel);
             }
 
-            _context.Database.Log = s => Debug.WriteLine(s);
+            if (command.Equals("AddInstruction"))
+            {
+                var instruction = new Instruction
+                {
+                    Id = viewModel.Recipe.Instructions.Count + 1,
+                    Name = viewModel.NewInstruction.Name,
+                    Number = viewModel.Recipe.Instructions.Count + 1
+                };
+
+                recipe.Instructions.Add(instruction);
+                viewModel.Recipe = recipe;
+
+                return View("New", viewModel);
+            }
+
+            var image = new Image();
+            var fileName = Path.GetFileNameWithoutExtension(viewModel.Recipe.Image.File.FileName);
+            var extension = Path.GetExtension(viewModel.Recipe.Image.File.FileName);
+            fileName += DateTime.Now.ToString("yymmssfff") + extension;
+            image.Path = "../../Image/" + fileName;
+            fileName = Path.Combine(Server.MapPath("~/Image/"), fileName);
+            recipe.Image = image;
+
+            viewModel.Recipe.Image.File.SaveAs(fileName);
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Recipe");
 
+        }
+
+                [HttpGet]
+        public ActionResult GetFood(string term)
+        {
+            var food = Match(term);
+
+            return Json(food, JsonRequestBehavior.AllowGet);
+        }
+
+        private IQueryable Match(string term)
+        {
+            var match = _context.Foods.Where(c => c.Name.Contains(term))
+                .OrderBy(c => c.Name.StartsWith(term) ? (c.Name == term ? 0 : 1) : 2)
+                .Select(a => new { label = a.Name, id = a.Id })
+                .Take(25);
+
+            return match;
         }
 
     }

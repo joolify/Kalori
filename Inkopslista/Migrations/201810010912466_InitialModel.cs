@@ -169,6 +169,18 @@ namespace Inkopslista.Migrations
                         CookingTimeH = c.Int(nullable: false),
                         CookingTimeM = c.Int(nullable: false),
                         Portions = c.Int(nullable: false),
+                        Image_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Images", t => t.Image_Id)
+                .Index(t => t.Image_Id);
+            
+            CreateTable(
+                "dbo.Images",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Path = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -273,6 +285,7 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Products", "RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.Instructions", "Recipe_Id", "dbo.Recipes");
+            DropForeignKey("dbo.Recipes", "Image_Id", "dbo.Images");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
             DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
             DropForeignKey("dbo.Customers", "MembershipTypeId", "dbo.MembershipTypes");
@@ -283,6 +296,7 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Instructions", new[] { "Recipe_Id" });
+            DropIndex("dbo.Recipes", new[] { "Image_Id" });
             DropIndex("dbo.Products", new[] { "RecipeId" });
             DropIndex("dbo.Products", new[] { "ShoppinglistId" });
             DropIndex("dbo.Products", new[] { "FoodId" });
@@ -295,6 +309,7 @@ namespace Inkopslista.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Instructions");
+            DropTable("dbo.Images");
             DropTable("dbo.Recipes");
             DropTable("dbo.Products");
             DropTable("dbo.Movies");

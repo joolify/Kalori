@@ -9,23 +9,41 @@
 <h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary"})</h4>
 
 <table class="table table-bordered table-hover">
-    <tbody>
-        <tr>
-            <td colspan="2">
+    <thead>
+    <tr>
+        <td  colspan="2">
+            @{
+                var foodImg = Model.Image.Path;
+                var absolutePath = HttpContext.Current.Server.MapPath(foodImg);
+                if (System.IO.File.Exists(absolutePath))
 
-                <img src="..\..\Icons\clock.svg" width="20" height="20" />
-                @(Model.CookingTimeH + ":0" + Model.CookingTimeM)
-                &nbsp; 
-                <img src="..\..\Icons\comment.svg" width="20" height="20" />
-                3
-                &nbsp;
-                <img src="..\..\Icons\portion.svg" width="20" height="20" />
-                @Model.Portions
-                &nbsp;
-                <img src="..\..\Icons\star.svg" width="20" height="20" /> 
-                4
-            </td>
-        </tr>
+                {
+                    <img src="@foodImg"/>
+                }
+            }
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="2">
+
+            <img src="..\..\Icons\clock.svg" width="20" height="20" title="Tillagningstid"/>
+            @(Model.CookingTimeH + ":0" + Model.CookingTimeM)
+            &nbsp;
+            <img src="..\..\Icons\comment.svg" width="20" height="20" title="Kommentarer"/>
+            0
+            &nbsp;
+            <img src="..\..\Icons\portion.svg" width="20" height="20" title="Portioner"/>
+            @Model.Portions
+            &nbsp;
+            <img src="..\..\Icons\star.svg" width="20" height="20" title="Favoriserad"/>
+            0
+            &nbsp;
+            <img src="..\..\Icons\report.svg" width="20" height="20" title="Rapportera"/>
+            
+        </td>
+    </tr>
     <tr>
         <td>
             Ingredienser

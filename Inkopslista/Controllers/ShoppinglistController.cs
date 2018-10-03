@@ -26,9 +26,7 @@ namespace Inkopslista.Controllers
         // GET: Shoppinglist
         public ViewResult Index()
         {
-            var shoppingList = _context.Shoppinglists.ToList();
-
-            return View(shoppingList);
+            return View();
         }
 
         public ViewResult New()

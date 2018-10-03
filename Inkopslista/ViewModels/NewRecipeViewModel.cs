@@ -10,5 +10,6 @@ namespace Inkopslista.ViewModels
     {
         public Recipe Recipe { get; set; }
         public Product NewProduct { get; set; }
+        public Instruction NewInstruction { get; set; }
     }
 }

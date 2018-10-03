@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Ny vara</h2>
-<h4>@Html.ActionLink("Tillbaka", "Index", "Foods", null, new { @class = "btn btn-primary" })</h4>
+<h4>@Html.ActionLink("Tillbaka", "Details", "Shoppinglist", new {@id = Model.Shoppinglist.Id}, new { @class = "btn btn-primary" })</h4>
 
 @using (Html.BeginForm("CreateProduct", "Shoppinglist"))
 {

@@ -4,115 +4,197 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Nytt recept</h2>
-<h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary"})</h4>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary" })</h4>
 
-@using (Html.BeginForm("Create", "Recipe"))
+@using (Html.BeginForm("Create", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <fieldset>
-        <div class="form-group" >
+<fieldset>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Namn:
+        </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Recipe.Name, new { placeholder = Model.Recipe.Name, @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group" style="margin-top:50px;">
+        <label class="col-md-2 control-label">
+            Tillagningstid:
+        </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.Recipe.CookingTimeH, @class = "form-control", style = "width: 40px; float: left" }) h
+            @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.Recipe.CookingTimeM, @class = "form-control", style = "width: 40px; display: inline-block" }) min
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" style="margin-top: 10px">
+            Portioner:
+        </label>
+        <div class="col-md-10" style="margin-bottom: 10px; margin-top: 10px">
+            @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Recipe.Portions, @class = "form-control", style = "width: 40px" })
+        </div>
+    </div>
+    <div class='form-group'>
+        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
+    </div>
+    <div class="form-group" style="margin-top: 20px;">
+        <label class="col-md-2 control-label">
+            Lägg till ingrediens:
+        </label>
+        <div class="col-md-10">
+            @Html.HiddenFor(m => m.NewProduct.FoodId, new { @id = "id" })
+            <input type="text" class="form-control" id="searchInput" placeholder="Börja skriv i" /><br />
+        </div>
+    </div>
+    <div class="form-group" style="margin-top: 40px;">
+        <label class="col-md-2 control-label">
+            Mängd (g):
+        </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.NewProduct.Mass, new { placeholder = Model.NewProduct.Mass, @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Pris/kg:
+        </label>
+        <div class="col-md-10" style="margin-top: 10px;">
+            @Html.TextBoxFor(m => m.NewProduct.PricePerKg, new { placeholder = Model.NewProduct.PricePerKg, @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+        </label>
+        <div class="col-md-10" style="margin-top: 10px;">
+            @Html.HiddenFor(m => m.Recipe.Id)
+
+            <button type="submit" name="command" value="AddIngredient" class="btn btn-primary">Lägg till ingrediens</button>
+        </div>
+    </div>
+
+    <div class="form-group" style="margin-top: 20px;">
+
+        <label class="col-md-2 control-label">
+            Ingredienser:
+        </label>
+        <div class="col-md-10">
+            <table class="table table-bordered table-hover" style="margin-top: 10px">
+                <thead>
+                    <tr bgcolor="#f5f5f5">
+                        <th>Vara:</th>
+                        <th>Mängd (g):</th>
+                        <th>Pris/kg:</th>
+                        <th>Pris:</th>
+                        <th>Ändra:</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model.Recipe.Products != null)
+                    {
+                        for (int i = 0; i < Model.Recipe.Products.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.Recipe.Products[i].Food.Name
+                                    @Html.HiddenFor(m => Model.Recipe.Products[i].Food.Id)
+                                </td>
+                                <td>
+                                    @Model.Recipe.Products[i].Mass
+                                    @Html.HiddenFor(m => Model.Recipe.Products[i].Mass)
+                                </td>
+                                <td>
+                                    @Model.Recipe.Products[i].PricePerKg
+                                    @Html.HiddenFor(m => Model.Recipe.Products[i].PricePerKg)
+                                </td>
+                                <td>
+                                    @Model.Recipe.Products[i].PriceTotal
+                                    @Html.HiddenFor(m => Model.Recipe.Products[i].PriceTotal)
+                                </td>
+                                <td>
+                                    <img src="..\..\Icons\edit.svg" width="20" height="20" />
+                                    &nbsp;
+                                    <img src="..\..\Icons\delete.svg" width="20" height="20" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class='form-group'>
+        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
+    </div>
+    <div class="form-group" style="margin-top: 20px;">
+        <label class="col-md-2 control-label">
+            Lägg till instruktion:
+        </label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.NewInstruction.Name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group" style="margin-top: 70px;">
+        <label class="col-md-2 control-label">
+        </label>
+        <div class="col-md-10">
+            <button type="submit" name="command" value="AddInstruction" class="btn btn-primary">Lägg till instruktion</button>
+        </div>
+    </div>
+    <div class="form-group" style="margin-top: 100px;">
+
+        <label class="col-md-2 control-label">
+            Instruktioner:
+        </label>
+        <div class="col-md-10">
+            <table class="table table-bordered table-hover pagin-table" style="margin-top: 10px">
+                <thead>
+                    <tr bgcolor="#f5f5f5">
+                        <th>Ordning:</th>
+                        <th>Instruktion:</th>
+                    </tr>
+                </thead>
+                <tbody id="sortable">
+                    @if (Model.Recipe.Instructions != null)
+                    {
+                        for (int i = 0; i < Model.Recipe.Instructions.Count; i++)
+                        {
+                            <tr>
+                                @Html.HiddenFor(m => m.Recipe.Instructions[i].Id)
+                                <td class="order">
+                                    <span>@Model.Recipe.Instructions[i].Number</span>
+                                    @Html.HiddenFor(m => m.Recipe.Instructions[i].Number, new { @class = "Number" })
+                                </td>
+                                <td>
+                                    @Model.Recipe.Instructions[i].Name
+                                    @Html.HiddenFor(m => m.Recipe.Instructions[i].Name)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class='form-group'>
+        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
+    </div>
+        <div class="form-group" style="margin-top:20px;">
             <label class="col-md-2 control-label">
-                Namn:
+                Lägg till bild:
             </label>
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Recipe.Name, new { placeholder = Model.Recipe.Name, @class = "form-control" })
+                @Html.TextBoxFor(m => m.Recipe.Image.File, new { @class = "form-control-file", type = "file" })
             </div>
         </div>
         <div class="form-group" style="margin-top:50px;">
-            <label class="col-md-2 control-label">
-                Tillagningstid: 
-            </label>
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.Recipe.CookingTimeH, @class = "form-control", style="width: 40px; float: left"}) h 
-                @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.Recipe.CookingTimeM, @class = "form-control", style="width: 40px; display: inline-block" }) min
-            </div>
-        </div>
-        <div class="form-group" style="margin-top:100px;">
-            <label class="col-md-2 control-label">
-                Portioner:
-            </label>
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Recipe.Portions, @class = "form-control", style="width: 40px" })
-            </div>
-        </div>
-            <div class="form-group" style="margin-top: 150px;">
-                <label class="col-md-2 control-label">
-                    Lägg till ingrediens:
-                </label>
-                <div class="col-md-10">
-                    @Html.HiddenFor(m => m.NewProduct.FoodId, new { @id = "id"})
-@*                    @Html.HiddenFor(m => m.Recipe.Product.FoodName, new { @id = "foodname"})*@
-                    <input type="text" class="form-control" id="searchInput" placeholder="Börja skriv i" />
-                </div>
-            </div>
-            <div class="form-group" style="margin-top: 100px;">
-                <label class="col-md-2 control-label">
-                </label>
-                <div class="col-md-10">
-                    @Html.HiddenFor(m => m.Recipe.Id)
-
-                    <button type="submit"  name="command" value="AddIngredient" class="btn btn-primary">Lägg till ingrediens</button>
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-top: 100px;">
-
-                <label class="col-md-2 control-label">
-                    Ingredienser:
-                </label>
-                <div class="col-md-10">
-                    <table class="table table-bordered table-hover" style="margin-top: 10px">
-                        <thead>
-                        <tr bgcolor="#f5f5f5">
-                            <th>Vara:</th>
-                            <th>Mängd (g):</th>
-                            <th>Pris/kg:</th>
-                            <th>Pris:</th>
-                            <th>Ändra:</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-    
-                        @if (Model.Recipe.Products != null)
-                        {
-                            for (int i = 0; i < Model.Recipe.Products.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        @Model.Recipe.Products[i].Food.Name
-                                        @Html.HiddenFor(m => Model.Recipe.Products[i].Food.Id)
-                                    </td>
-                                     <td>
-                                        @Model.Recipe.Products[i].Mass
-                                        @Html.HiddenFor(m => Model.Recipe.Products[i].Mass)
-                                    </td>
-                                     <td>
-                                        @Model.Recipe.Products[i].PricePerKg
-                                        @Html.HiddenFor(m => Model.Recipe.Products[i].PricePerKg)
-                                    </td>
-                                     <td>
-                                        @Model.Recipe.Products[i].PriceTotal
-                                        @Html.HiddenFor(m => Model.Recipe.Products[i].PriceTotal)
-                                    </td>
-                                    <td>
-                                        <img src="..\..\Icons\edit.svg" width="20" height="20"/>
-                                        &nbsp;
-                                        <img src="..\..\Icons\delete.svg" width="20" height="20"/>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        <div class="form-group" style="margin-top:150px;">
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-10">
                 <button type="submit" name="command" value="Create" class="btn btn-primary">Lägg till recept</button>
             </div>
         </div>
-    </fieldset>
+</fieldset>
 }@section Scripts {
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -122,31 +204,49 @@
          $(document).ready(function() {
 
              $("#searchInput").autocomplete({
-                     source: function (request, response) {
-                         $.ajax({
-                             url: '@Url.Action("GetFood","Shoppinglist")',
-                             dataType: "json",
-                             data: { term: $("#searchInput").val() },
-                             success: function (data) {
-                                 response($.map(data, function (item) {
+                 source: function (request, response) {
+                     $.ajax({
+                         url: '@Url.Action("GetFood", "Shoppinglist")',
+                         dataType: "json",
+                         data: { term: $("#searchInput").val() },
+                         success: function (data) {
+                             response($.map(data,
+                                 function (item) {
                                      return { label: item.label, value: item.label, id: item.id };
                                  }));
-                             },
-                             error: function (xhr, status, error) {
-                                 alert("Error");
-                             }
-                         });
-                     },
-                     select: function(event, ui) {
-                         $("#id").val(ui.item.id);
-                         $("#searchInput").val(ui.item.label);
-                         return false;
-                     }
-                 }),
-                 $('#searchInput').change(function() {
+                         },
+                         error: function (xhr, status, error) {
+                             alert("Error");
+                         }
+                     });
+                 },
+                 select: function (event, ui) {
+                     $("#id").val(ui.item.id);
+                     $("#searchInput").val(ui.item.label);
+                     return false;
+                 }
+             }),
+                 $('#searchInput').change(function () {
                      $('#foodname').val($('#searchInput').val());
+                 }),
+                 $('#sortable').sortable({
+                     start : function(event, ui) {
+                         var start_pos = ui.item.index();
+                         ui.item.data('start_pos', start_pos);
+
+                     },
+                    update: function (event, ui) { 
+                         var new_pos = ui.item.index();
+                         var start_pos = ui.item.data('start_pos');
+
+                        $('td.order').each(function (index) {
+                            var order = index + 1;
+                            $(this).find('span').text(order);
+                            $(this).find('.Number').val(order);
+                         });
+                     }
                  });
-             ;
          });
+         //http://jsfiddle.net/4mcpq/3/
      </script>
  }

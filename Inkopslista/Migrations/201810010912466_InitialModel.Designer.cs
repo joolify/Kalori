@@ -13,7 +13,7 @@ namespace Inkopslista.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201809292044248_InitialModel"; }
+            get { return "201810010912466_InitialModel"; }
         }
         
         string IMigrationMetadata.Source
