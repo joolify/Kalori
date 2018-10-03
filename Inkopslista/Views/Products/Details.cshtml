@@ -1,8 +1,446 @@
-﻿@model Inkopslista.Models.Product
+﻿@model Inkopslista.ViewModels.DetailsFoodViewModel
 
 @{
-    ViewBag.Title = Model.Price;
+    ViewBag.Title = Model.Product.Food.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2>Näringsinnehåll</h2>
+<h4><a href="javascript:history.back()" class="btn btn-primary">Tillbaka</a></h4>
 
-<h2>@Model.Price</h2>
+
+<div id="chartContainer" style="height: 200px; width: 100%;"></div>
+
+
+<table class="table table-bordered table-hover" width="400">
+    <thead>
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <h4><b>@Model.Product.Food.Name</b></h4>
+            </td>
+        </tr>
+        <tr>
+            @{ var category = Model.CategoryTypes.FirstOrDefault(c => c.Category == Model.Product.Food.Category1);}
+            <td colspan="3">
+                <h4><img src="..\..\Icons\@category.Icon" width="40" height="40" /> @category.Name</h4>
+            </td>
+        </tr>
+    </thead>
+    @{
+        var totalMass = Model.Product.Mass / 100;
+    }
+    <tbody>
+    <tbody class="kategori">
+        <tr bgcolor="#f5f5f5">
+            <td><b>Näringsämne (enhet): </b></td>
+            <td><b>Per 100 g: </b></td>
+            <td><b>Per @Model.Product.Mass g: </b></td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Energi (kcal): </td>
+            <td>@Model.Product.Food.EnergiKcal</td>
+            <td>@(Model.Product.Food.EnergiKcal * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Energi (kJ): </td>
+            <td>@Model.Product.Food.EnergiKJ</td>
+            <td>@(Model.Product.Food.EnergiKJ * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Kolhydrater (g): </td>
+            <td>@Model.Product.Food.Kolhydrater</td>
+            <td>@(Model.Product.Food.Kolhydrater * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Fett (g): </td>
+            <td>@Model.Product.Food.Fett</td>
+            <td>@(Model.Product.Food.Fett * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Protein (g): </td>
+            <td>@Model.Product.Food.Protein</td>
+            <td>@(Model.Product.Food.Protein * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Fibrer (g): </td>
+            <td>@Model.Product.Food.Fibrer</td>
+            <td>@(Model.Product.Food.Fibrer * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vatten (g): </td>
+            <td>@Model.Product.Food.Vatten</td>
+            <td>@(Model.Product.Food.Vatten * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Alkohol (g): </td>
+            <td>@Model.Product.Food.Alkohol</td>
+            <td>@(Model.Product.Food.Alkohol * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Aska (g): </td>
+            <td>@Model.Product.Food.Aska</td>
+            <td>@(Model.Product.Food.Aska * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Avfall (skal etc.) (%): </td>
+            <td>@Model.Product.Food.Aska</td>
+            <td>@(Model.Product.Food.Aska * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="kolhydrater"><b>Kolhydrater</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Monosackarider (g): </td>
+            <td>@Model.Product.Food.Monosackarider</td>
+            <td>@(Model.Product.Food.Monosackarider * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Disackarider (g): </td>
+            <td>@Model.Product.Food.Disackarider</td>
+            <td>@(Model.Product.Food.Disackarider * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Sackaros (g): </td>
+            <td>@Model.Product.Food.Sackaros</td>
+            <td>@(Model.Product.Food.Sackaros * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Sockerarter (g): </td>
+            <td>@Model.Product.Food.Sockerarter</td>
+            <td>@(Model.Product.Food.Sockerarter * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Stärkelse (g): </td>
+            <td>@Model.Product.Food.Starkelse</td>
+            <td>@(Model.Product.Food.Starkelse * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Fettsyror"><b>Fettsyror</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Summa mättade fettsyror (g)</td>
+            <td>@Model.Product.Food.SummaMattadeFettsyror</td>
+            <td>@(Model.Product.Food.SummaMattadeFettsyror * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Fettsyra 4:0-10:0 (g): </td>
+            <td>@Model.Product.Food.Fettsyra</td>
+            <td>@(Model.Product.Food.Fettsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Laurinsyra C12:0 (g): </td>
+            <td>@Model.Product.Food.Laurinsyra</td>
+            <td>@(Model.Product.Food.Laurinsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Myristinsyra C14:0 (g): </td>
+            <td>@Model.Product.Food.Myristinsyra</td>
+            <td>@(Model.Product.Food.Myristinsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Palmitinsyra C16:0 (g): </td>
+            <td>@Model.Product.Food.Palmitinsyra</td>
+            <td>@(Model.Product.Food.Palmitinsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Stearinsyra C18:0 (g): </td>
+            <td>@Model.Product.Food.Stearinsyra</td>
+            <td>@(Model.Product.Food.Stearinsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Arakidinsyra C20:0 (g): </td>
+            <td>@Model.Product.Food.Arakidinsyra</td>
+            <td>@(Model.Product.Food.Arakidinsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Summa enkelomättade fettsyror (g): </td>
+            <td>@Model.Product.Food.SummaEnkelOmattadeFettsyror</td>
+            <td>@(Model.Product.Food.SummaEnkelOmattadeFettsyror * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Palmitoljesyra C16:1 (g): </td>
+            <td>@Model.Product.Food.Palmitoljesyra</td>
+            <td>@(Model.Product.Food.Palmitoljesyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Oljesyra C18:1 (g): </td>
+            <td>@Model.Product.Food.Oljesyra</td>
+            <td>@(Model.Product.Food.Oljesyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Summa fleromättade fettsyror (g): </td>
+            <td>@Model.Product.Food.SummaFleromattadeFettsyror</td>
+            <td>@(Model.Product.Food.SummaFleromattadeFettsyror * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Linolsyra C18:2 (g): </td>
+            <td>@Model.Product.Food.Linolsyra</td>
+            <td>@(Model.Product.Food.Linolsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Linolensyra C18:3 (g): </td>
+            <td>@Model.Product.Food.Linolensyra</td>
+            <td>@(Model.Product.Food.Linolensyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;Arakidonsyra C20:4 (g): </td>
+            <td>@Model.Product.Food.Arakidonsyra</td>
+            <td>@(Model.Product.Food.Arakidonsyra * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;EPA (C20:5) (g): </td>
+            <td>@Model.Product.Food.EPA</td>
+            <td>@(Model.Product.Food.EPA * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;DPA (C22:5) (g): </td>
+            <td>@Model.Product.Food.DPA</td>
+            <td>@(Model.Product.Food.DPA * totalMass)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;DHA (C22:6) (g): </td>
+            <td>@Model.Product.Food.DHA</td>
+            <td>@(Model.Product.Food.DHA * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Vattenlosligavitaminer"><b>Vattenlösliga vitaminer</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Tiamin (mg):</td>
+            <td>@Model.Product.Food.Tiamin</td>
+            <td>@(Model.Product.Food.Tiamin * totalMass)</td>
+        </tr>
+         <tr>
+            <td>Riboflavin (mg):</td>
+            <td>@Model.Product.Food.Riboflavin</td>
+            <td>@(Model.Product.Food.Riboflavin * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin C (mg):</td>
+            <td>@Model.Product.Food.VitaminC</td>
+            <td>@(Model.Product.Food.VitaminC * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Niacin (mg):</td>
+            <td>@Model.Product.Food.Niacin</td>
+            <td>@(Model.Product.Food.Niacin * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Niacinekvivalenter (mg):</td>
+            <td>@Model.Product.Food.Niacinekvivalenter</td>
+            <td>@(Model.Product.Food.Niacinekvivalenter * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin B6 (mg):</td>
+            <td>@Model.Product.Food.VitaminB6</td>
+            <td>@(Model.Product.Food.VitaminB6 * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin B12 (µg):</td>
+            <td>@Model.Product.Food.VitaminB12</td>
+            <td>@(Model.Product.Food.VitaminB12 * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Folat (µg):</td>
+            <td>@Model.Product.Food.Folat</td>
+            <td>@(Model.Product.Food.Folat * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Fettlosligavitaminer"><b>Fettlösliga vitaminer</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Retinol (µg):</td>
+            <td>@Model.Product.Food.Retinol</td>
+            <td>@(Model.Product.Food.Retinol * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin A (µg):</td>
+            <td>@Model.Product.Food.VitaminA</td>
+            <td>@(Model.Product.Food.VitaminA * totalMass)</td>
+        </tr>
+        <tr>
+            <td>β-Karoten (µg):</td>
+            <td>@Model.Product.Food.Karoten</td>
+            <td>@(Model.Product.Food.Karoten * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin D (µg):</td>
+            <td>@Model.Product.Food.VitaminD</td>
+            <td>@(Model.Product.Food.VitaminD * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin E (mg):</td>
+            <td>@Model.Product.Food.VitaminE</td>
+            <td>@(Model.Product.Food.VitaminE * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Vitamin K (µg):</td>
+            <td>@Model.Product.Food.VitaminK</td>
+            <td>@(Model.Product.Food.VitaminK * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Mineraler"><b>Mineraler</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Fosfor (mg):</td>
+            <td>@Model.Product.Food.Fosfor</td>
+            <td>@(Model.Product.Food.Fosfor * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Jod (µg):</td>
+            <td>@Model.Product.Food.Jod</td>
+            <td>@(Model.Product.Food.Jod * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Järn (mg):</td>
+            <td>@Model.Product.Food.Jarn</td>
+            <td>@(Model.Product.Food.Jarn * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Kalcium (mg)):</td>
+            <td>@Model.Product.Food.Kalcium</td>
+            <td>@(Model.Product.Food.Kalcium * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Kalium (mg):</td>
+            <td>@Model.Product.Food.Kalium</td>
+            <td>@(Model.Product.Food.Kalium * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Koppar (mg):</td>
+            <td>@Model.Product.Food.Koppar</td>
+            <td>@(Model.Product.Food.Koppar * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Magnesium (mg):</td>
+            <td>@Model.Product.Food.Magnesium</td>
+            <td>@(Model.Product.Food.Magnesium * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Natrium (mg):</td>
+            <td>@Model.Product.Food.Natrium</td>
+            <td>@(Model.Product.Food.Natrium * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Salt (g):</td>
+            <td>@Model.Product.Food.Salt</td>
+            <td>@(Model.Product.Food.Salt * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Selen (µg):</td>
+            <td>@Model.Product.Food.Selen</td>
+            <td>@(Model.Product.Food.Selen * totalMass)</td>
+        </tr>
+        <tr>
+            <td>Zink (mg):</td>
+            <td>@Model.Product.Food.Zink</td>
+            <td>@(Model.Product.Food.Zink * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Kolesterol"><b>Kolesterol</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Kolesterol (mg):</td>
+            <td>@Model.Product.Food.Kolesterol</td>
+            <td>@(Model.Product.Food.Kolesterol * totalMass)</td>
+        </tr>
+    </tbody>
+    <tbody class="kategori">
+        <tr>
+            <td colspan="3" bgcolor="#f5f5f5">
+                <label for="Ovrigt"><b>Övrigt</b></label>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>Fullkorn totalt (g):</td>
+            <td>@Model.Product.Food.FullkornTotalt</td>
+            <td>@(Model.Product.Food.FullkornTotalt * totalMass)</td>
+        </tr>
+    </tbody>
+    <tfoot class="kategori">
+    <td colspan="3" align="right" bgcolor="#f5f5f5">Livsmedelsverkets livsmedelsdatabas version 2017-12-15.</td>
+    </tfoot>
+    </tbody>
+</table>
+@section Scripts {
+    <script type="text/javascript">
+
+            $(document).ready(function() {
+                    $('.kategori').click(function() {
+                        $(this).nextUntil('.kategori').slideToggle(200);
+                    });
+            }),
+
+            window.onload = function() {
+                var chart = new CanvasJS.Chart("chartContainer",
+                    {
+                        theme: "theme2",
+                        data: [
+                            {
+                                type: "pie",
+                                showInLegend: true,
+                                toolTipContent: "#percent %",
+                                yValueFormatString: "#,##0,,.## Million",
+                                legendText: "{indexLabel}",
+                                dataPoints: [
+                                    {
+                                        y: @Html.Raw(Json.Encode(Model.Product.Food.Protein)) * 4,
+                                        indexLabel: "Protein"
+                                    },
+                                    { y: @Html.Raw(Json.Encode(Model.Product.Food.Fett)) * 9, indexLabel: "Fett" },
+                                    {
+                                        y: @Html.Raw(Json.Encode(Model.Product.Food.Kolhydrater)) * 4,
+                                        indexLabel: "Kolhydrater"
+                                    },
+                                    { y: @Html.Raw(Json.Encode(Model.Product.Food.Alkohol)) * 7, indexLabel: "Alkohol" }
+                                ]
+                            }
+                        ]
+                    });
+                chart.render();
+            };
+
+
+    </script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+} 

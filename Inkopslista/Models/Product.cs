@@ -20,6 +20,8 @@ namespace Inkopslista.Models
         [ForeignKey("Food")]
         public int? FoodId { get; set; }
         public Food Food { get; set; }
+        public int CategoryTypeId { get; set; }
+        public CategoryType CategoryType { get; set; }
         public string FoodName { get; set; }
         public float? Mass { get; set; }
 

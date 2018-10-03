@@ -18,14 +18,6 @@
         @Html.ActionLink("Skapa recept", "Recipe", "Shoppinglist", new { id = Model.Shoppinglist.Id }, new { @class = "btn btn-primary" })
     }
 </h4>
-@*
-@if (!Model.Products.Any())
-{
-    <p>Inga produkter i listan än.</p>
-}
-else
-{
-*@
     <table id="products" class="table table-bordered table-hover">
         <thead>
             <tr bgcolor="#f5f5f5">
@@ -37,137 +29,136 @@ else
             </tr>
         </thead>
         <tbody></tbody>
-    @*
-        <tbody>
-            @foreach (var product in Model.Products)
-            {
-                <tr>
-                    @if (product.Food != null)
-                    {
-                        <td>
-                            <img src="..\..\Icons\@Model.CategoryTypes.FirstOrDefault(c => c.Category == product.Food.Category1).Icon" width="20" height="20" />
-                            @Html.ActionLink(product.Food.Name, "Details", "Foods", new { id = product.Id }, null)
-                        </td>
-                        <td>@product.Mass g</td>
-                        <td>@product.PricePerKg kr</td>
-                        <td>@product.PriceTotal kr</td>
-                        <td>
-                            <img src="..\..\Icons\edit.svg" width="20" height="20" />
-                            &nbsp;
-                            <img src="..\..\Icons\delete.svg" width="20" height="20" />
-                        </td>
-                    }
-                    else
-                    {
-                        if (product.FoodName.IsNullOrWhiteSpace())
-                        {
-                            <td>
-                                <img src="..\Icons\29_eget.svg" width="20" height="20" />
-                                @Html.ActionLink("N/A", "Edit", "Foods", new { id = product.Id }, null)
-                            </td>
-                            <td>@product.Mass g</td>
-                            <td>@product.PricePerKg kr</td>
-                            <td>@product.PriceTotal kr</td>
-                            <td>
-                                <img src="..\Icons\edit.svg" width="20" height="20" />
-                                &nbsp;
-                                <img src="..\Icons\delete.svg" width="20" height="20" />
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <img src="..\Icons\29_eget.svg" width="20" height="20" />
-                                @Html.ActionLink(product.FoodName, "Edit", "Foods", new { id = product.Id }, null)
-                            </td>
-                            <td>@product.Mass g</td>
-                            <td>@product.PricePerKg kr</td>
-                            <td>@product.PriceTotal kr</td>
-                            <td>
-                                <img src="..\..\Icons\edit.svg" width="20" height="20" />
-                                &nbsp;
-                                <img src="..\..\Icons\delete.svg" width="20" height="20" />
-                            </td>
-                        }
-
-                    }
-                </tr>
-            }
-        </tbody>
         <tfoot>
             <tr bgcolor="#f5f5f5">
                 <td></td>
                 <td></td>
-                <td><b>Totalt pris:</b></td>
-                <td>@Model.Products.Sum(i => i.PriceTotal) kr</td>
+                <td><b>Totalt pris: </b></td>
+                <td></td>
                 <td></td>
             </tr>
         </tfoot>
-*@
     </table>
-
 @section scripts
 {
     <script>
         $(document).ready(function() {
-            $("#products").DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
-                },
+            table = $("#products").DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                    },
 
-                ajax: {
-                    type: "GET",
-                    url: "/api/products/" + @Model.Shoppinglist.Id,
-                    datatype: "json",
-                    dataSrc: ""
-                },
-                columns: [
-                    {
-                        data: "food",
-                        render: function(data, type, product) {
-                            return "<a href='/Products/Details/" + product.id + "'>" + product.food.name + "</a>";
-                        }
+                    ajax: {
+                        type: "GET",
+                        url: "/api/products/get/" + @Html.Raw(Json.Encode(Model.Shoppinglist.Id)),
+                        datatype: "json",
+                        dataSrc: ""
                     },
-                    {
-                        data: "mass",
-                        render: function(data, type, product) {
-                            return product.mass;
-                        }
-                    },
-                    {
-                        data: "pricePerKg"
-                    },
-                    {
-                        data: "priceTotal"
-                    },
-                    {
-                        data: "id",
-                        render: function(data) {
-                            return "<button class='btn-link js-delete' data-product-id=" + data + ">Ta bort</button>";
-                        },
-                        sortable: false
-                    }
-                ]
-            });
-
-            $("#products").on("click",
-                ".js-delete",
-                function() {
-                    var button = $(this);
-
-                    bootbox.confirm("Är du säker på att du vill ta bort denna produkt?",
-                        function(result) {
-                            if (result) {
-                                $.ajax({
-                                    url: "/api/products/" + button.attr("data-product-id"),
-                                    method: "DELETE",
-                                    success: function() {
-                                        button.parents("tr").remove();
-                                    }
-                                });
+                    columns: [
+                        {
+                            data: "food",
+                            render: function(data, type, product) {
+                                return "<img src='../../Icons/" +
+                                    product.categoryType.icon +
+                                    "' width='15' height='15' title='" +
+                                    product.categoryType.name +
+                                    "'/> " +
+                                    "<a href='/Products/Details/" +
+                                    product.id +
+                                    "'>" +
+                                    product.food.name +
+                                    "</a>";
                             }
-                        });
-                });
+                        },
+                        {
+                            data: "mass",
+                            render: function (data, type, product) {
+                                return product.mass + " g";
+                            }
+                        },
+                        {
+                            data: "pricePerKg",
+                            render: function (data, type, product) {
+                                return product.pricePerKg + " kr";
+                            }
+                        },
+                        {
+                            data: "priceTotal",
+                            render: function (data, type, product) {
+                                return product.priceTotal + " kr";
+                            }
+                        },
+                        {
+                            data: "id",
+                            render:
+                                function(data) {
+                                    return "<button class='btn-link js-delete' " +
+                                        "data-product-id=" +
+                                        data +
+                                        ">" +
+                                        "<img src='../../Icons/delete.svg'/ " +
+                                        "width='15' height='15' " +
+                                        "style='vertical-align:top'></button>";
+                                },
+                            sortable: false
+                        }
+                    ],
+                    footerCallback: function(row, data, start, end, display) {
+                        var api = this.api(), data;
+                        var COLNUMBER = 3;
+                        var pageTotal = 0;
+                        var total = 0;
+
+
+                        // Total over all pages
+                        if (api.column(COLNUMBER).data().length) {
+                            total = api
+                                .column(COLNUMBER)
+                                .data()
+                                .reduce(function(a, b) {
+                                    return a + b;
+                                })
+                        } else {
+                            total = 0
+                        };
+
+                        // Total over this page
+                        if (api.column(COLNUMBER).data().length) {
+                            pageTotal = api
+                                .column(COLNUMBER, { page: 'current' })
+                                .data()
+                                .reduce(function(a, b) {
+                                    return a + b;
+                                })
+                        } else {
+                            pageTotal = 0
+                        };
+
+                        $(api.column(COLNUMBER).footer()).html(
+                            pageTotal + 'kr (' + total + 'kr)'
+                        );
+                    }
+                }),
+                $("#products").on("click",
+                    ".js-delete",
+                    function() {
+                        var button = $(this);
+
+                        bootbox.confirm("Är du säker på att du vill ta bort denna produkt?",
+                            function(result) {
+                                if (result) {
+                                    $.ajax({
+                                        url: "/api/products/delete/" + button.attr("data-product-id"),
+                                        method: "DELETE",
+                                        success: function() {
+
+                                            table.row( button.parents("tr") ).remove().draw();
+                                        }
+                                    });
+                                }
+                            });
+                    });
         });
+
     </script>
 }

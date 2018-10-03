@@ -17,8 +17,11 @@ namespace Inkopslista.App_Start
             Mapper.CreateMap<Movie, MovieDto>();
             Mapper.CreateMap<MembershipType, MembershipTypeDto>();
 
+            Mapper.CreateMap<CategoryType, CategoryTypeDto>();
             Mapper.CreateMap<Food, FoodDto>();
+            Mapper.CreateMap<Instruction, InstructionDto>();
             Mapper.CreateMap<Product, ProductDto>();
+            Mapper.CreateMap<Recipe, RecipeDto>();
             Mapper.CreateMap<Shoppinglist, ShoppinglistDto>();
 
             Mapper.CreateMap<CustomerDto, Customer>()
@@ -29,6 +32,8 @@ namespace Inkopslista.App_Start
             Mapper.CreateMap<FoodDto, Food>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
             Mapper.CreateMap<ProductDto, Product>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
+            Mapper.CreateMap<RecipeDto, Recipe>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
             Mapper.CreateMap<ShoppinglistDto, Shoppinglist>()
                 .ForMember(c => c.Id, opt => opt.Ignore());

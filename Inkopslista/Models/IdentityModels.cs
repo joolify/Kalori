@@ -29,6 +29,7 @@ namespace Inkopslista.Models
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<GenreType> GenreTypes { get; set; }
         public DbSet<CategoryType> CategoryTypes { get; set; }
+        public DbSet<Instruction> Instructions { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

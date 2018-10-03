@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Inkopslista.Models
+namespace Inkopslista.Dtos
 {
-    public class CategoryType
+    public class InstructionDto
     {
         [Key]
         public int Id { get; set; }
-        public byte Category { get; set; }
         public string Name { get; set; }
-        public string Icon { get; set; }
-
-        public const int OwnCategory = 29;
+        public int Number { get; set; }
     }
+
 }

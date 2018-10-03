@@ -125,6 +125,19 @@ namespace Inkopslista.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.Instructions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Number = c.Int(nullable: false),
+                        RecipeId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Recipes", t => t.RecipeId, cascadeDelete: true)
+                .Index(t => t.RecipeId);
+            
+            CreateTable(
                 "dbo.Movies",
                 c => new
                     {
@@ -147,16 +160,19 @@ namespace Inkopslista.Migrations
                         PriceTotal = c.Single(),
                         PricePerKg = c.Single(),
                         FoodId = c.Int(),
+                        CategoryTypeId = c.Int(nullable: false),
                         FoodName = c.String(),
                         Mass = c.Single(),
                         ShoppinglistId = c.Int(),
                         RecipeId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CategoryTypes", t => t.CategoryTypeId, cascadeDelete: true)
                 .ForeignKey("dbo.Foods", t => t.FoodId)
                 .ForeignKey("dbo.Recipes", t => t.RecipeId)
                 .ForeignKey("dbo.Shoppinglists", t => t.ShoppinglistId)
                 .Index(t => t.FoodId)
+                .Index(t => t.CategoryTypeId)
                 .Index(t => t.ShoppinglistId)
                 .Index(t => t.RecipeId);
             
@@ -183,19 +199,6 @@ namespace Inkopslista.Migrations
                         Path = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Instructions",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Number = c.Int(nullable: false),
-                        Recipe_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Recipes", t => t.Recipe_Id)
-                .Index(t => t.Recipe_Id);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -284,9 +287,10 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.Products", "ShoppinglistId", "dbo.Shoppinglists");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Products", "RecipeId", "dbo.Recipes");
-            DropForeignKey("dbo.Instructions", "Recipe_Id", "dbo.Recipes");
+            DropForeignKey("dbo.Instructions", "RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.Recipes", "Image_Id", "dbo.Images");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
+            DropForeignKey("dbo.Products", "CategoryTypeId", "dbo.CategoryTypes");
             DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
             DropForeignKey("dbo.Customers", "MembershipTypeId", "dbo.MembershipTypes");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -295,12 +299,13 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Instructions", new[] { "Recipe_Id" });
             DropIndex("dbo.Recipes", new[] { "Image_Id" });
             DropIndex("dbo.Products", new[] { "RecipeId" });
             DropIndex("dbo.Products", new[] { "ShoppinglistId" });
+            DropIndex("dbo.Products", new[] { "CategoryTypeId" });
             DropIndex("dbo.Products", new[] { "FoodId" });
             DropIndex("dbo.Movies", new[] { "GenreTypeId" });
+            DropIndex("dbo.Instructions", new[] { "RecipeId" });
             DropIndex("dbo.Customers", new[] { "MembershipTypeId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
@@ -308,11 +313,11 @@ namespace Inkopslista.Migrations
             DropTable("dbo.Shoppinglists");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Instructions");
             DropTable("dbo.Images");
             DropTable("dbo.Recipes");
             DropTable("dbo.Products");
             DropTable("dbo.Movies");
+            DropTable("dbo.Instructions");
             DropTable("dbo.GenreTypes");
             DropTable("dbo.Foods");
             DropTable("dbo.MembershipTypes");

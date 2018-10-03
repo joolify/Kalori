@@ -21,17 +21,17 @@ namespace Inkopslista.Controllers.Api
         }
 
         // GET /api/products
-        public IHttpActionResult GetProducts(int id)
+        public IHttpActionResult Get(int id)
         {
             var productDtos = _context.Products
                 .Include(m => m.Food)
+                .Include(m => m.CategoryType)
                 .ToList()
                 .Where(m => m.ShoppinglistId == id)
                 .Select(Mapper.Map<Product, ProductDto>);
 
             return Ok(productDtos);
         }
-
         // GET /api/products/1
         /*
         public IHttpActionResult GetProduct(int id)
@@ -47,7 +47,7 @@ namespace Inkopslista.Controllers.Api
 
         // POST /api/products
         [HttpPost]
-        public IHttpActionResult CreateProduct(ProductDto productDto)
+        public IHttpActionResult Create(ProductDto productDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -63,7 +63,7 @@ namespace Inkopslista.Controllers.Api
 
         // PUT /api/products/1
         [HttpPut]
-        public IHttpActionResult UpdateProduct(int id, ProductDto productDto)
+        public IHttpActionResult Update(int id, ProductDto productDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -82,7 +82,7 @@ namespace Inkopslista.Controllers.Api
 
         //DELETE /api/products/1
         [HttpDelete]
-        public IHttpActionResult DeleteProduct(int id)
+        public IHttpActionResult Delete(int id)
         {
             var productInDb = _context.Products.SingleOrDefault(c => c.Id == id);
 

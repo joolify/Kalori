@@ -21,7 +21,7 @@ namespace Inkopslista.Controllers.Api
         }
 
         // GET /api/shoppinglists
-        public IHttpActionResult GetShoppinglists()
+        public IHttpActionResult Get()
         {
             var shoppinglistDtos = _context.Shoppinglists
                 .Include(m => m.Products)
@@ -32,7 +32,7 @@ namespace Inkopslista.Controllers.Api
         }
 
         // GET /api/shoppinglists/1
-        public IHttpActionResult GetShoppinglist(int id)
+        public IHttpActionResult Get(int id)
         {
             var shoppinglist = _context.Shoppinglists.SingleOrDefault(c => c.Id == id);
 

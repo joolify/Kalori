@@ -64,6 +64,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -216,6 +217,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\ProductsController.cs" />
+    <Compile Include="Controllers\Api\RecipesController.cs" />
     <Compile Include="Controllers\Api\ShoppinglistsController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
@@ -227,8 +229,11 @@
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\ShoppinglistController.cs" />
+    <Compile Include="Dtos\InstructionDto.cs" />
     <Compile Include="Dtos\FoodDto.cs" />
+    <Compile Include="Dtos\CategoryTypeDto.cs" />
     <Compile Include="Dtos\MembershipTypeDto.cs" />
+    <Compile Include="Dtos\RecipeDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ShoppinglistDto.cs" />
     <Compile Include="Dtos\MovieDto.cs" />
@@ -236,9 +241,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201810010912466_InitialModel.cs" />
-    <Compile Include="Migrations\201810010912466_InitialModel.Designer.cs">
-      <DependentUpon>201810010912466_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201810031332028_InitialModel.cs" />
+    <Compile Include="Migrations\201810031332028_InitialModel.Designer.cs">
+      <DependentUpon>201810031332028_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -595,8 +600,8 @@
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
-    <EmbeddedResource Include="Migrations\201810010912466_InitialModel.resx">
-      <DependentUpon>201810010912466_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810031332028_InitialModel.resx">
+      <DependentUpon>201810031332028_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />

@@ -68,7 +68,7 @@
         <div class="col-md-10" style="margin-top: 10px;">
             @Html.HiddenFor(m => m.Recipe.Id)
 
-            <button type="submit" name="command" value="AddIngredient" class="btn btn-primary">Lägg till ingrediens</button>
+            <button type="submit" name="command" value="AddIngredient" class="btn btn-primary" style="margin-bottom: 10px;">Lägg till ingrediens</button>
         </div>
     </div>
 
@@ -78,7 +78,7 @@
             Ingredienser:
         </label>
         <div class="col-md-10">
-            <table class="table table-bordered table-hover" style="margin-top: 10px">
+            <table id="ingredients" class="table table-bordered table-hover" style="margin-top: 10px">
                 <thead>
                     <tr bgcolor="#f5f5f5">
                         <th>Vara:</th>
@@ -89,36 +89,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    @if (Model.Recipe.Products != null)
-                    {
-                        for (int i = 0; i < Model.Recipe.Products.Count; i++)
-                        {
-                            <tr>
-                                <td>
-                                    @Model.Recipe.Products[i].Food.Name
-                                    @Html.HiddenFor(m => Model.Recipe.Products[i].Food.Id)
-                                </td>
-                                <td>
-                                    @Model.Recipe.Products[i].Mass
-                                    @Html.HiddenFor(m => Model.Recipe.Products[i].Mass)
-                                </td>
-                                <td>
-                                    @Model.Recipe.Products[i].PricePerKg
-                                    @Html.HiddenFor(m => Model.Recipe.Products[i].PricePerKg)
-                                </td>
-                                <td>
-                                    @Model.Recipe.Products[i].PriceTotal
-                                    @Html.HiddenFor(m => Model.Recipe.Products[i].PriceTotal)
-                                </td>
-                                <td>
-                                    <img src="..\..\Icons\edit.svg" width="20" height="20" />
-                                    &nbsp;
-                                    <img src="..\..\Icons\delete.svg" width="20" height="20" />
-                                </td>
-                            </tr>
-                        }
-                    }
                 </tbody>
             </table>
         </div>
@@ -138,7 +108,7 @@
         <label class="col-md-2 control-label">
         </label>
         <div class="col-md-10">
-            <button type="submit" name="command" value="AddInstruction" class="btn btn-primary">Lägg till instruktion</button>
+            <button type="submit" name="command" value="AddInstruction" class="btn btn-primary" style="margin-bottom: 10px">Lägg till instruktion</button>
         </div>
     </div>
     <div class="form-group" style="margin-top: 100px;">
@@ -147,31 +117,16 @@
             Instruktioner:
         </label>
         <div class="col-md-10">
-            <table class="table table-bordered table-hover pagin-table" style="margin-top: 10px">
+            <table id="instructions" class="table table-bordered table-hover pagin-table" style="margin-top: 10px">
                 <thead>
-                    <tr bgcolor="#f5f5f5">
-                        <th>Ordning:</th>
-                        <th>Instruktion:</th>
-                    </tr>
+                <tr bgcolor="#f5f5f5">
+                    <th></th>
+                    <th width="10%">Ordning:</th>
+                    <th>Instruktion:</th>
+                    <th>Ändra:</th>
+                </tr>
                 </thead>
-                <tbody id="sortable">
-                    @if (Model.Recipe.Instructions != null)
-                    {
-                        for (int i = 0; i < Model.Recipe.Instructions.Count; i++)
-                        {
-                            <tr>
-                                @Html.HiddenFor(m => m.Recipe.Instructions[i].Id)
-                                <td class="order">
-                                    <span>@Model.Recipe.Instructions[i].Number</span>
-                                    @Html.HiddenFor(m => m.Recipe.Instructions[i].Number, new { @class = "Number" })
-                                </td>
-                                <td>
-                                    @Model.Recipe.Instructions[i].Name
-                                    @Html.HiddenFor(m => m.Recipe.Instructions[i].Name)
-                                </td>
-                            </tr>
-                        }
-                    }
+                <tbody>
                 </tbody>
             </table>
         </div>
@@ -199,9 +154,141 @@
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-
      <script type="text/javascript">
          $(document).ready(function() {
+             $("#ingredients").DataTable({
+                 "language": {
+                     "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                 },
+
+                 ajax: {
+                     type: "GET",
+                     url: "/api/recipes/GetProducts/",
+                     datatype: "json",
+                     dataSrc: ""
+                 },
+                 columns: [
+                     {
+                         data: "name",
+                         render: function (data, type, product) {
+                             return "<a href='/Shoppinglist/Details/" + product.id + "'>" + product.food.name + "</a>";
+                         }
+                     },
+                     {
+                         data: "mass",
+                         render: function (data, type, product) {
+                             return product.mass + " g";
+                         }
+                     },
+                     {
+                         data: "pricePerKg",
+                         render: function (data, type, product) {
+                             return product.pricePerKg + " kr";
+                         }
+                     },
+                     {
+                         data: "priceTotal",
+                         render: function (data, type, product) {
+                             return product.priceTotal + " kr";
+                         }
+                     },
+                     {
+                         data: "id",
+                         render: function (data) {
+                             return "<button class='btn-link js-delete' " +
+                                 "name='command' value='DelIngredient=" + data + "' " +
+                                 "data-ingredient-id=" + data + ">" +
+                                 "<img src = '../../Icons/delete.svg' / " +
+                                 "width='15' height='15' style='vertical-align:top'></button>";
+                         },
+                         sortable: false
+                     }
+                 ]
+             }),
+
+                 $("#ingredients .js-delete").click(function () {
+                 var foo=bar;
+                 if ( foo == "bar" ) {
+                     var isGood=confirm('Dialogue');
+                     if (isGood) {
+                         alert('true');
+                     } else {
+                         alert('false');
+                     }
+                 }
+              }),
+
+              table = $("#instructions").DataTable({
+                  rowReorder: {
+                      selector: 'tr'
+                  },
+                 language: {
+                     "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                 },
+                 order: [],
+                 ajax: {
+                     type: "GET",
+                     url: "/api/recipes/GetInstructions/" + @Html.Raw(Json.Encode(Model.Recipe.Id)),
+                     datatype: "json",
+                     dataSrc: ""
+                 },
+                 columns: [
+                     {
+                         data: "id",
+                         render: function(data) {
+                             return data;
+                         },
+                         visible: false
+
+                     },
+                     {
+                         data: "number",
+                         sortable: false,
+                         render: function(data) {
+                             return "<span class='order'>" + data + "</span>";
+                         }
+                     },
+                     {
+                         data: "name",
+                         sortable: false
+                     },
+                     {
+                         data: "id",
+                         render: function (data) {
+                             return "<button class='btn-link js-delete' " +
+                                 "data-instruction-id=" + data + ">" +
+                                 "<img src = '../../Icons/delete.svg' / " +
+                                 "width='15' height='15' style='vertical-align:top'></button>";
+                         },
+                         sortable: false
+                     }
+                 ],
+              }),
+             $("#instructions").on("click",
+                 ".js-delete",
+                 function () {
+                     var button = $(this);
+
+                     if ( confirm ( 'Remove this form ?' ) ) {
+                         $('#form').remove()
+                     };
+
+                     /*
+                     
+                     bootbox.confirm("Are you sure you want to delete this instruction?",
+                         function (result) {
+                             if (result) {
+                                 $.ajax({
+                                     url: "/api/recipes/deleteingredient" + button.attr("data-instruction-id"),
+                                     method: "DELETE",
+                                     success: function () {
+                                         button.parents("tr").remove();
+                                     }
+                                 });
+                             }
+                         });
+                         */
+              }),
 
              $("#searchInput").autocomplete({
                  source: function (request, response) {
@@ -226,26 +313,27 @@
                      return false;
                  }
              }),
-                 $('#searchInput').change(function () {
-                     $('#foodname').val($('#searchInput').val());
-                 }),
-                 $('#sortable').sortable({
-                     start : function(event, ui) {
-                         var start_pos = ui.item.index();
-                         ui.item.data('start_pos', start_pos);
+             $('#searchInput').change(function () {
+                 $('#foodname').val($('#searchInput').val());
+             }),
+             $('#instructions').sortable({
+                 items: "tr",
+                 start : function(event, ui) {
+                     var start_pos = ui.item.index();
+                     ui.item.data('start_pos', start_pos);
 
-                     },
-                    update: function (event, ui) { 
-                         var new_pos = ui.item.index();
-                         var start_pos = ui.item.data('start_pos');
+                 },
+                update: function (event, ui) {
+                     var new_pos = ui.item.index();
+                     var start_pos = ui.item.data('start_pos');
 
-                        $('td.order').each(function (index) {
-                            var order = index + 1;
-                            $(this).find('span').text(order);
-                            $(this).find('.Number').val(order);
-                         });
-                     }
-                 });
+                    $('span.order').each(function (index) {
+                        var order = index + 1;
+                        $(this).text(order);
+                        //$(this).find('.Number').val(order);
+                     });
+                 }
+             });
          });
          //http://jsfiddle.net/4mcpq/3/
      </script>

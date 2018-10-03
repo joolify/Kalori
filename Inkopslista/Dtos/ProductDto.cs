@@ -16,9 +16,8 @@ namespace Inkopslista.Models
         public float? PricePerKg { get; set; }
 
         [ForeignKey("Food")]
-        public int? FoodId { get; set; }
         public FoodDto Food { get; set; }
-        public string FoodName { get; set; }
+        public CategoryType CategoryType { get; set; }
         public float? Mass { get; set; }
 
         public int? ShoppinglistId { get; set; }

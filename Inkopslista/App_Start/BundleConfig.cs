@@ -12,8 +12,8 @@ namespace Inkopslista
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootbox.js",
                         "~/Scripts/bootstrap.js",
-                "~/Scripts/datatables/jquery.datatables.js",
-                "~/Scripts/datatables/datatables.bootstrap.js"));
+                         "~/Scripts/datatables/jquery.datatables.js",
+                         "~/Scripts/datatables/datatables.bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

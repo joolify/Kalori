@@ -91,16 +91,19 @@ namespace Inkopslista.Controllers
                 product.Mass = viewModel.Product.Mass;
                 product.PricePerKg = viewModel.Product.PricePerKg;
                 product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
+                product.CategoryType = _context.CategoryTypes.FirstOrDefault(c => c.Category == CategoryType.OwnCategory);
             }
             else
             {
+                var food = _context.Foods.FirstOrDefault(c => c.Id == viewModel.Product.FoodId);
                 product.ShoppinglistId = viewModel.Shoppinglist.Id;
-                product.Food = _context.Foods.FirstOrDefault(c => c.Id == viewModel.Product.FoodId);
+                product.Food = food;
                 product.FoodId = viewModel.Product.FoodId;
                 product.FoodName = null;
                 product.Mass = viewModel.Product.Mass;
                 product.PricePerKg = viewModel.Product.PricePerKg;
                 product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
+                product.CategoryType = _context.CategoryTypes.FirstOrDefault(c => c.Category == food.Category1);
             }
 
             _context.Products.Add(product);
@@ -260,7 +263,22 @@ namespace Inkopslista.Controllers
 
         public ActionResult Recipe(int id)
         {
-            return RedirectToAction("New", "Recipe", new {id = id});
+            var recipe = new Recipe();
+            if (id != null)
+            {
+                var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
+                for (int i = 0; i < products.Count; i++)
+                {
+                    var food = new Food();
+                    var fid = products[i].FoodId;
+                    food = _context.Foods.SingleOrDefault(c => c.Id == fid);
+                    products[i].Food = food;
+                }
+
+                recipe.Products = products;
+            }
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            return RedirectToAction("New", "Recipe");
         }
 
         [HttpGet]

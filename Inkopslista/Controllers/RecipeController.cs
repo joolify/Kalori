@@ -29,36 +29,15 @@ namespace Inkopslista.Controllers
 
         }
 
-        public ViewResult New(int? id)
+        public ViewResult New()
         {
-            var recipe = new Recipe();
-            if (id != null)
-            {
-                var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
-                for (int i = 0; i < products.Count; i++)
-                {
-                    var food = new Food();
-                    var fid = products[i].FoodId;
-                    food = _context.Foods.SingleOrDefault(c => c.Id == fid);
-                    products[i].Food = food;
-                }
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
 
-                recipe.Products = products;
-            }
+            if(recipe == null)
+                recipe = new Recipe();
 
-            var intList = new List<Instruction>();
-            for (int i = 0; i < 4; i++)
-            {
-                var instruction = new Instruction
-                {
-                    Id = i + 1,
-                    Number = i + 1,
-                    Name = "t" + (i+1)
-                };
-                intList.Add(instruction);
-            }
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
 
-            recipe.Instructions = intList;
             var viewModel = new NewRecipeViewModel
             {
                 Recipe = recipe,
@@ -82,51 +61,12 @@ namespace Inkopslista.Controllers
         [HttpPost]
         public ActionResult Create(NewRecipeViewModel viewModel, string command)
         {
-            var recipe = new Recipe();
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe; ;
             recipe.Name = viewModel.Recipe.Name;
             recipe.CookingTimeH = viewModel.Recipe.CookingTimeH;
             recipe.CookingTimeM = viewModel.Recipe.CookingTimeM;
             recipe.Portions = viewModel.Recipe.Portions;
 
-            var prodList = new List<Product>();
-
-            if (viewModel.Recipe.Products != null)
-            {
-                for (int i = 0; i < viewModel.Recipe.Products.Count; i++)
-                {
-                    var foodId = viewModel.Recipe.Products[i].Food.Id;
-                    var product = new Product
-                    {
-                        Id = viewModel.Recipe.Products[i].Id,
-                        Mass = viewModel.Recipe.Products[i].Mass,
-                        PricePerKg = viewModel.Recipe.Products[i].PricePerKg,
-                        PriceTotal = viewModel.Recipe.Products[i].PriceTotal,
-                        Food = _context.Foods.SingleOrDefault(c => c.Id == foodId)
-                    };
-                    prodList.Add(product);
-                }
-            }
-
-            var instructionList = new List<Instruction>();
-
-            if (viewModel.Recipe.Instructions != null)
-            {
-                for (int i = 0; i < viewModel.Recipe.Instructions.Count; i++)
-                {
-                    var instruction = new Instruction
-                    {
-                        Id = viewModel.Recipe.Instructions[i].Id,
-                        Name = viewModel.Recipe.Instructions[i].Name,
-                        Number = viewModel.Recipe.Instructions[i].Number
-
-                    };
-                    instructionList.Add(instruction);
-                }
-                instructionList.Sort((s1, s2) => s1.Number.CompareTo(s2.Number));
-            }
-
-            recipe.Products = prodList;
-            recipe.Instructions = instructionList;
             if (command.Equals("AddIngredient"))
             {
                 var product = new Product
@@ -139,7 +79,27 @@ namespace Inkopslista.Controllers
 
                 recipe.Products.Add(product);
                 viewModel.Recipe = recipe;
+                viewModel.NewProduct = new Product();
+
+                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
                                 
+                return View("New", viewModel);
+            }
+
+            if (command.Contains("DelIngredient"))
+            {
+                int id = int.Parse(command.Replace("DelIngredient=", ""));
+                var product = recipe.Products.SingleOrDefault(c => c.Id == id);
+
+
+                if (product == null)
+                    return View("New", viewModel);
+
+                recipe.Products.Remove(product);
+                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+                viewModel.Recipe = recipe;
+
                 return View("New", viewModel);
             }
 
@@ -147,13 +107,15 @@ namespace Inkopslista.Controllers
             {
                 var instruction = new Instruction
                 {
-                    Id = viewModel.Recipe.Instructions.Count + 1,
+                    Id = recipe.Instructions.Count + 1,
                     Name = viewModel.NewInstruction.Name,
-                    Number = viewModel.Recipe.Instructions.Count + 1
+                    Number = recipe.Instructions.Count + 1
                 };
 
                 recipe.Instructions.Add(instruction);
                 viewModel.Recipe = recipe;
+
+                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
 
                 return View("New", viewModel);
             }
