@@ -9,13 +9,7 @@
 
 <h4>@Html.ActionLink("Lägg till recept", "New", "Recipe", null, new { @class = "btn btn-primary" })</h4>
 
-@if (!Model.Any())
-{
-    <p>Inga recept i listan än.</p>
-}
-else
-{
-    <table class="table table-bordered table-hover">
+    <table id="recipes" class="table table-bordered table-hover">
         <thead>
             <tr bgcolor="#f5f5f5">
                 <th>Recept:</th>
@@ -23,21 +17,73 @@ else
                 <th>Portioner:</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var recipe in Model)
-            {
-            <tr>
-                <td>
-                    @Html.ActionLink(recipe.Name, "Details", "Recipe", new { id = recipe.Id }, null)
-                </td>
-                <td>
-                    @("" + recipe.CookingTimeH + ":0"+ @recipe.CookingTimeM + "h")
-                </td>
-                <td>
-                    @recipe.Portions
-                </td>
-            </tr>
-            }
-        </tbody>
     </table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+                function changeMin (min)
+                {
+                    if (min < 10)
+                        min = "0" + min;
+                    return min;
+                };
+                table = $("#recipes").DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                },
+
+                    ajax: {
+                        type: "GET",
+                        url: "/api/recipes/get",
+                        datatype: "json",
+                        dataSrc: ""
+                    },
+                    columns: [
+                        {
+                            data: "name",
+                            render: function(data, type, recipe) {
+                                return "<img src='../../Icons/recipe.svg' width='15' height='15'>" +
+                                "<a href='/recipe/Details/" + recipe.id + "'>" + recipe.name + "</a>";
+                            }
+                        },
+                        {
+                            data: "name",
+                            render: function(data, type, recipe) {
+                                return recipe.cookingTimeH + ":" + changeMin(recipe.cookingTimeM);
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function(data) {
+                                return "<button class='btn-link js-delete' " +
+                                    "data-recipe-id=" + data + ">" +
+                                    "<img src = '../../Icons/delete.svg' / " +
+                                "width='15' height='15' style='vertical-align:top'></button>";
+                            },
+                            sortable: false
+                        }
+                    ]
+                }),
+
+                $("#recipes").on("click",
+                    ".js-delete",
+                    function() {
+                    var button = $(this);
+
+                    bootbox.confirm("Are you sure you want to delete this recipe?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/recipes/Delete/" + button.attr("data-recipe-id"),
+                                    method: "DELETE",
+                                    success: function() {
+                                        table.row(button.parents("tr")).remove().draw();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+    </script>
 }

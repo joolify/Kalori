@@ -49,7 +49,11 @@ namespace Inkopslista.Controllers
 
         public ActionResult Details(int id)
         {
-            var recipe = _context.Recipes.Include(c => c.Image).SingleOrDefault(c => c.Id == id);
+            var recipe = _context.Recipes
+                .Include(c => c.Image)
+                .Include(c => c.Products.Select(o => o.Food))
+                .Include(c => c.Instructions)
+                .SingleOrDefault(c => c.Id == id);
 
             if (recipe == null)
                 return HttpNotFound();
@@ -67,59 +71,6 @@ namespace Inkopslista.Controllers
             recipe.CookingTimeM = viewModel.Recipe.CookingTimeM;
             recipe.Portions = viewModel.Recipe.Portions;
 
-            if (command.Equals("AddIngredient"))
-            {
-                var product = new Product
-                {
-                    Food = _context.Foods.SingleOrDefault(c => c.Id == viewModel.NewProduct.FoodId),
-                    Mass = viewModel.NewProduct.Mass,
-                    PricePerKg = viewModel.NewProduct.PricePerKg,
-                    PriceTotal = viewModel.NewProduct.Mass * (viewModel.NewProduct.PricePerKg / 1000)
-                };
-
-                recipe.Products.Add(product);
-                viewModel.Recipe = recipe;
-                viewModel.NewProduct = new Product();
-
-                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
-                                
-                return View("New", viewModel);
-            }
-
-            if (command.Contains("DelIngredient"))
-            {
-                int id = int.Parse(command.Replace("DelIngredient=", ""));
-                var product = recipe.Products.SingleOrDefault(c => c.Id == id);
-
-
-                if (product == null)
-                    return View("New", viewModel);
-
-                recipe.Products.Remove(product);
-                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
-
-                viewModel.Recipe = recipe;
-
-                return View("New", viewModel);
-            }
-
-            if (command.Equals("AddInstruction"))
-            {
-                var instruction = new Instruction
-                {
-                    Id = recipe.Instructions.Count + 1,
-                    Name = viewModel.NewInstruction.Name,
-                    Number = recipe.Instructions.Count + 1
-                };
-
-                recipe.Instructions.Add(instruction);
-                viewModel.Recipe = recipe;
-
-                System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
-
-                return View("New", viewModel);
-            }
-
             var image = new Image();
             var fileName = Path.GetFileNameWithoutExtension(viewModel.Recipe.Image.File.FileName);
             var extension = Path.GetExtension(viewModel.Recipe.Image.File.FileName);
@@ -136,7 +87,7 @@ namespace Inkopslista.Controllers
 
         }
 
-                [HttpGet]
+        [HttpGet]
         public ActionResult GetFood(string term)
         {
             var food = Match(term);

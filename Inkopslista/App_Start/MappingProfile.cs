@@ -31,6 +31,8 @@ namespace Inkopslista.App_Start
 
             Mapper.CreateMap<FoodDto, Food>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
+            Mapper.CreateMap<InstructionDto, Instruction>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
             Mapper.CreateMap<ProductDto, Product>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
             Mapper.CreateMap<RecipeDto, Recipe>()

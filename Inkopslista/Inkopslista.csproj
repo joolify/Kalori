@@ -472,6 +472,8 @@
     <Content Include="Icons\portion.svg" />
     <EmbeddedResource Include="Icons\star.svg" />
     <EmbeddedResource Include="Icons\report.svg" />
+    <EmbeddedResource Include="Icons\shoppinglist.svg" />
+    <Content Include="Icons\recipe.svg" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />

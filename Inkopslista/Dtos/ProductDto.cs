@@ -19,6 +19,7 @@ namespace Inkopslista.Models
         public FoodDto Food { get; set; }
         public CategoryType CategoryType { get; set; }
         public float? Mass { get; set; }
+        public int? FoodId { get; set; }
 
         public int? ShoppinglistId { get; set; }
         public int? RecipeId { get; set; }

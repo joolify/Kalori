@@ -43,6 +43,7 @@ namespace Inkopslista.Controllers.Api
 
             return Ok(Mapper.Map<Recipe, RecipeDto>(recipe));
         }
+
         public IHttpActionResult GetProducts()
         {
             var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
@@ -54,7 +55,8 @@ namespace Inkopslista.Controllers.Api
 
             return Ok(productDtos);
         }
-        public IHttpActionResult GetInstructions(int id)
+
+        public IHttpActionResult GetInstructions()
         {
 
             var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
@@ -92,7 +94,7 @@ namespace Inkopslista.Controllers.Api
 
             var recipeInDb = _context.Recipes.SingleOrDefault(c => c.Id == id);
 
-            if(recipeInDb == null)
+            if (recipeInDb == null)
                 return NotFound();
 
             Mapper.Map(recipeDto, recipeInDb);
@@ -104,9 +106,13 @@ namespace Inkopslista.Controllers.Api
 
         //DELETE /api/recipes/1
         [HttpDelete]
-        public IHttpActionResult DeleteRecipe(int id)
+        public IHttpActionResult Delete(int id)
         {
-            var recipeInDb = _context.Recipes.SingleOrDefault(c => c.Id == id);
+            var recipeInDb = _context.Recipes
+                .Include(c => c.Image)
+                .Include(c => c.Products.Select(o => o.Food))
+                .Include(c => c.Instructions)
+                .SingleOrDefault(c => c.Id == id);
 
             if (recipeInDb == null)
                 return NotFound();
@@ -131,6 +137,80 @@ namespace Inkopslista.Controllers.Api
             System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
 
             return Ok();
+        }
+
+        public IHttpActionResult AddIngredient(ProductDto productDto)
+        {
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var product = new Product();
+            var food = _context.Foods.SingleOrDefault(c => c.Id == productDto.FoodId);
+            product.Food = food;
+            product.Mass = productDto.Mass;
+            product.PricePerKg = productDto.PricePerKg;
+            product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
+            product.CategoryType = _context.CategoryTypes.SingleOrDefault(c => c.Category == food.Category1);
+
+            recipe.Products.Add(product);
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+        }
+
+        public IHttpActionResult AddInstruction(InstructionDto instructionDto)
+        {
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var instruction = new Instruction();
+            instruction.Number = recipe.Instructions.Count + 1;
+            instruction.Name = instructionDto.Name;
+            instruction.Id = recipe.Instructions.Count + 1;
+
+            recipe.Instructions.Add(instruction);
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+        }
+        public IHttpActionResult DeleteInstruction(int id)
+        {
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var instruction = recipe.Instructions.SingleOrDefault(c => c.Id == id);
+            if (instruction == null)
+                return NotFound();
+
+            recipe.Instructions.Remove(instruction);
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+        }
+
+        // PUT /api/recipes/1
+        [HttpPost]
+        public IHttpActionResult UpdateInstructions(List<InstructionDto> instructionDtos)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var instructions = new List<Instruction>();
+
+            for (int i = 0; i < instructionDtos.Count; i++)
+            {
+               var instruction = Mapper.Map<InstructionDto, Instruction>(instructionDtos[i]);
+                instructions.Add(instruction);
+            }
+
+            recipe.Instructions = instructions;
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+
         }
     }
 }

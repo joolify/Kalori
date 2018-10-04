@@ -273,6 +273,9 @@ namespace Inkopslista.Controllers
                     var fid = products[i].FoodId;
                     food = _context.Foods.SingleOrDefault(c => c.Id == fid);
                     products[i].Food = food;
+                    products[i].CategoryType =
+                        _context.CategoryTypes
+                            .SingleOrDefault(c => c.Category == food.Category1);
                 }
 
                 recipe.Products = products;
