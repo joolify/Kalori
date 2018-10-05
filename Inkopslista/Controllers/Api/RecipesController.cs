@@ -149,7 +149,8 @@ namespace Inkopslista.Controllers.Api
             product.Mass = productDto.Mass;
             product.PricePerKg = productDto.PricePerKg;
             product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
-            product.CategoryType = _context.CategoryTypes.SingleOrDefault(c => c.Category == food.Category1);
+            product.CategoryType = _context.CategoryTypes.FirstOrDefault(c => c.Category == food.Category1);
+            product.Id = recipe.Products.Count + 1;
 
             recipe.Products.Add(product);
 
@@ -188,6 +189,54 @@ namespace Inkopslista.Controllers.Api
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult UpdateProduct(ProductDto productDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var product = recipe.Products.FirstOrDefault(c => c.Id == productDto.Id);
+            if (product != null)
+            {
+                product.Mass = productDto.Mass;
+                product.PricePerKg = productDto.PricePerKg;
+                product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+
+        }
+        [HttpPost]
+        public IHttpActionResult UpdateInstruction(InstructionDto instructionDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+
+            var product = recipe.Instructions.FirstOrDefault(c => c.Id == instructionDto.Id);
+            if (product != null)
+            {
+                product.Name = instructionDto.Name;
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+
+            return Ok();
+
+        }
         // PUT /api/recipes/1
         [HttpPost]
         public IHttpActionResult UpdateInstructions(List<InstructionDto> instructionDtos)

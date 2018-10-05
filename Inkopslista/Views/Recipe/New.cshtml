@@ -1,137 +1,137 @@
 ﻿@model Inkopslista.ViewModels.NewRecipeViewModel
 @{
-    ViewBag.Title = "Nytt recept";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                /**/
+
+                ViewBag.Title = "Nytt recept";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Nytt recept</h2>
 <h4>@Html.ActionLink("Tillbaka", "Index", "Recipe", null, new { @class = "btn btn-primary" })</h4>
 
 @using (Html.BeginForm("Create", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-<fieldset>
-    <div class="form-group">
-        <label class="col-md-2 control-label">
-            Namn:
-        </label>
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Recipe.Name, new { placeholder = Model.Recipe.Name, @class = "form-control" })
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Namn:
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Recipe.Name, new { placeholder = Model.Recipe.Name, @class = "form-control" })
+            </div>
         </div>
-    </div>
-    <div class="form-group" style="margin-top:50px;">
-        <label class="col-md-2 control-label">
-            Tillagningstid:
-        </label>
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.Recipe.CookingTimeH, @class = "form-control", style = "width: 40px; float: left" }) h
-            @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.Recipe.CookingTimeM, @class = "form-control", style = "width: 40px; display: inline-block" }) min
+        <div class="form-group" style="margin-top:50px;">
+            <label class="col-md-2 control-label">
+                Tillagningstid:
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Recipe.CookingTimeH, new { placeholder = Model.Recipe.CookingTimeH, @class = "form-control", style = "width: 40px; float: left" }) h
+                @Html.TextBoxFor(m => m.Recipe.CookingTimeM, new { placeholder = Model.Recipe.CookingTimeM, @class = "form-control", style = "width: 40px; display: inline-block" }) min
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label" style="margin-top: 10px">
-            Portioner:
-        </label>
-        <div class="col-md-10" style="margin-bottom: 10px; margin-top: 10px">
-            @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Recipe.Portions, @class = "form-control", style = "width: 40px" })
+        <div class="form-group">
+            <label class="col-md-2 control-label" style="margin-top: 10px">
+                Portioner:
+            </label>
+            <div class="col-md-10" style="margin-bottom: 10px; margin-top: 10px">
+                @Html.TextBoxFor(m => m.Recipe.Portions, new { placeholder = Model.Recipe.Portions, @class = "form-control", style = "width: 40px" })
+            </div>
         </div>
-    </div>
-    <div class='form-group'>
-        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
-    </div>
-    <div class="form-group" style="margin-top: 20px;">
-        <label class="col-md-2 control-label">
-            Lägg till ingrediens:
-        </label>
-        <div class="col-md-10">
-            @Html.HiddenFor(m => m.NewProduct.FoodId, new { @id = "newFoodId" })
-            <input type="text" class="form-control" id="newFood" placeholder="Börja skriv i" /><br />
+        <div class='form-group'>
+            <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
         </div>
-    </div>
-    <div class="form-group" style="margin-top: 40px;">
-        <label class="col-md-2 control-label">
-            Mängd (g):
-        </label>
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.NewProduct.Mass, new { placeholder = Model.NewProduct.Mass, @class = "form-control", id = "newMass" })
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="col-md-2 control-label">
+                Lägg till ingrediens:
+            </label>
+            <div class="col-md-10">
+                @Html.HiddenFor(m => m.NewProduct.FoodId, new { @id = "newFoodId" })
+                <input type="text" class="form-control" id="newFood" placeholder="Börja skriv i" /><br />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label">
-            Pris/kg:
-        </label>
-        <div class="col-md-10" style="margin-top: 10px;">
-            @Html.TextBoxFor(m => m.NewProduct.PricePerKg, new { placeholder = Model.NewProduct.PricePerKg, @class = "form-control", id = "newPricePerKg" })
+        <div class="form-group" style="margin-top: 40px;">
+            <label class="col-md-2 control-label">
+                Mängd (g):
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.NewProduct.Mass, new { placeholder = Model.NewProduct.Mass, @class = "form-control", id = "newMass" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label">
-        </label>
-        <div class="col-md-10" style="margin-top: 10px;">
-            @Html.HiddenFor(m => m.Recipe.Id)
-            <a href="#" id="addIngredient" class="btn btn-primary js-add" style="margin-bottom: 10px;">Lägg till ingrediens</a>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Pris/kg:
+            </label>
+            <div class="col-md-10" style="margin-top: 10px;">
+                @Html.TextBoxFor(m => m.NewProduct.PricePerKg, new { placeholder = Model.NewProduct.PricePerKg, @class = "form-control", id = "newPricePerKg" })
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-10" style="margin-top: 10px;">
+                @Html.HiddenFor(m => m.Recipe.Id)
+                <a href="#" id="addIngredient" class="btn btn-primary js-add" style="margin-bottom: 10px;">Lägg till ingrediens</a>
+            </div>
+        </div>
 
-    <div class="form-group" style="margin-top: 20px;">
+        <div class="form-group" style="margin-top: 20px;">
 
-        <label class="col-md-2 control-label">
-            Ingredienser:
-        </label>
-        <div class="col-md-10">
-            <table id="ingredients" class="table table-bordered table-hover" style="margin-top: 10px">
-                <thead>
-                    <tr bgcolor="#f5f5f5">
-                        <th>Vara:</th>
-                        <th>Mängd (g):</th>
-                        <th>Pris/kg:</th>
-                        <th>Pris:</th>
-                        <th>Ändra:</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <label class="col-md-2 control-label">
+                Ingredienser:
+            </label>
+            <div class="col-md-10">
+                <table id="ingredients" class="table table-bordered table-hover" style="margin-top: 10px">
+                    <thead>
+                        <tr bgcolor="#f5f5f5">
+                            <th>Vara:</th>
+                            <th>Mängd (g):</th>
+                            <th>Pris/kg:</th>
+                            <th>Pris:</th>
+                            <th>Ändra:</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class='form-group'>
-        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
-    </div>
-    <div class="form-group" style="margin-top: 20px;">
-        <label class="col-md-2 control-label">
-            Lägg till instruktion:
-        </label>
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.NewInstruction.Name, new { @class = "form-control", id = "newInstruction"})
+        <div class='form-group'>
+            <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
         </div>
-    </div>
-    <div class="form-group" style="margin-top: 70px;">
-        <label class="col-md-2 control-label">
-        </label>
-        <div class="col-md-10">
-            <a href="#" id="addInstruction" class="btn btn-primary js-add" style="margin-bottom: 10px">Lägg till instruktion</a>
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="col-md-2 control-label">
+                Lägg till instruktion:
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.NewInstruction.Name, new { @class = "form-control", id = "newInstruction" })
+            </div>
         </div>
-    </div>
-    <div class="form-group" style="margin-top: 100px;">
+        <div class="form-group" style="margin-top: 70px;">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-10">
+                <a href="#" id="addInstruction" class="btn btn-primary js-add" style="margin-bottom: 10px">Lägg till instruktion</a>
+            </div>
+        </div>
+        <div class="form-group" style="margin-top: 100px;">
 
-        <label class="col-md-2 control-label">
-            Instruktioner:
-        </label>
-        <div class="col-md-10">
-            <table id="instructions" class="table table-bordered table-hover pagin-table" style="margin-top: 10px">
-                <thead>
-                <tr bgcolor="#f5f5f5">
-                    <th width="10%">Ordning:</th>
-                    <th>Instruktion:</th>
-                    <th>Ändra:</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <label class="col-md-2 control-label">
+                Instruktioner:
+            </label>
+            <div class="col-md-10">
+                <table id="instructions" class="table table-bordered table-hover pagin-table" style="margin-top: 10px">
+                    <thead>
+                        <tr bgcolor="#f5f5f5">
+                            <th width="10%">Ordning:</th>
+                            <th>Instruktion:</th>
+                            <th>Ändra:</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class='form-group'>
-        <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
-    </div>
+        <div class='form-group'>
+            <hr style="width: 100%; color: black; height: 1px; background-color:#f5f5f5;" />
+        </div>
         <div class="form-group" style="margin-top:20px;">
             <label class="col-md-2 control-label">
                 Lägg till bild:
@@ -147,236 +147,356 @@
                 <button type="submit" name="command" value="Create" class="btn btn-primary">Lägg till recept</button>
             </div>
         </div>
-</fieldset>
+    </fieldset>
 }@section Scripts {
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
      <script type="text/javascript">
          $(document).ready(function() {
-                 table1 = $("#ingredients").DataTable({
-                         "language": {
-                             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
-                         },
+             table1 = $("#ingredients").DataTable({
+                     "language": {
+                         "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                     },
 
-                         ajax: {
-                             type: "GET",
-                             url: "/api/recipes/GetProducts/",
-                             datatype: "json",
-                             dataSrc: ""
-                         },
-                         columns: [
-                             {
-                                 data: "name",
-                                 render: function(data, type, product) {
-                                     return "<img src='../../Icons/" + product.categoryType.icon + "' width='15' height='15'> " +
-                                         "<a href='/Shoppinglist/Details/" +
-                                         product.id +
-                                         "'>" +
-                                         product.food.name +
-                                         "</a>";
-                                 }
-                             },
-                             {
-                                 data: "mass",
-                                 render: function(data, type, product) {
-                                     return product.mass + " g";
-                                 }
-                             },
-                             {
-                                 data: "pricePerKg",
-                                 render: function(data, type, product) {
-                                     return product.pricePerKg + " kr";
-                                 }
-                             },
-                             {
-                                 data: "priceTotal",
-                                 render: function(data, type, product) {
-                                     return product.priceTotal + " kr";
-                                 }
-                             },
-                             {
-                                 data: "id",
-                                 render: function(data) {
-                                     return "<a href='#' class='btn-link js-delete' " +
-                                         "data-ingredient-id=" +
-                                         data +
-                                         ">" +
-                                         "<img src = '../../Icons/delete.svg' / " +
-                                         "width='15' height='15' style='vertical-align:top'></button>";
-                                 },
-                                 sortable: false
+                     ajax: {
+                         type: "GET",
+                         url: "/api/recipes/GetProducts/",
+                         datatype: "json",
+                         dataSrc: ""
+                     },
+                     columns: [
+                         {
+                             data: "name",
+                             render: function(data, type, product) {
+                                 return "<img src='../../Icons/" +
+                                     product.categoryType.icon +
+                                     "' width='15' height='15'> " +
+                                     "<a href='/Shoppinglist/Details/" +
+                                     product.id +
+                                     "'>" +
+                                     product.food.name +
+                                     "</a>";
                              }
-                         ]
+                         },
+                         {
+                             data: "mass",
+                             render: function(data, type, product) {
+                                 return product.mass + " g";
+                             }
+                         },
+                         {
+                             data: "pricePerKg",
+                             render: function(data, type, product) {
+                                 return product.pricePerKg + " kr";
+                             }
+                         },
+                         {
+                             data: "priceTotal",
+                             render: function(data, type, product) {
+                                 return product.priceTotal + " kr";
+                             }
+                         },
+                         {
+                             data: "id",
+                             render: function(data) {
+                                 return "<input id='hiddenid' type='hidden' value='" +
+                                     data +
+                                     "'>" +
+                                     "<a href='#' class='js-edit' " +
+                                     "data-ingredient-id=" +
+                                     data +
+                                     ">" +
+                                     "<img src = '../../Icons/edit.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top'>" +
+                                     "<img src = '../../Icons/save.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top;display: none'></a> " +
+                                     "<a href='#' class='js-delete' " +
+                                     "data-ingredient-id=" +
+                                     data +
+                                     ">" +
+                                     "<img src = '../../Icons/delete.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top'></a>";
+                             },
+                             sortable: false
+                         }
+                     ]
+                 }),
+                 $("#ingredients ").on("click",
+                     ".js-delete",
+                     function() {
+                         var link = $(this);
+                         bootbox.confirm("Vill du verkligen ta bort denna ingrediens?",
+                             function(result) {
+                                 if (result) {
+                                     $.ajax({
+                                         url: "/api/recipes/DeleteIngredient/" + link.attr("data-ingredient-id"),
+                                         method: "DELETE",
+                                         success: function() {
+                                             table1.row(link.parents("tr")).remove().draw();
+                                         }
+                                     });
+                                 }
+                             });
                      }),
-                     $("#ingredients ").on("click",
-                         ".js-delete",
-                         function() {
-                             var link = $(this);
-                             bootbox.confirm("Vill du verkligen ta bort denna ingrediens?",
-                                 function(result) {
-                                     if (result) {
-                                         $.ajax({
-                                             url: "/api/recipes/DeleteIngredient/" + link.attr("data-ingredient-id"),
-                                             method: "DELETE",
-                                             success: function() {
-                                                 table1.row(link.parents("tr")).remove().draw();
-                                             }
-                                         });
-                                     }
-                                 });
-                         }),
-                     $("#addIngredient").click(function (e) {
+                 $("#ingredients ").on("click",
+                     ".js-edit",
+                     //http://plnkr.co/edit/B9fJQwgdLXEqBhrIJI76?p=preview
+                     function() {
+                         $(this).removeClass().addClass("js-save");
+                         $('img:visible', this).hide().siblings().show();
+                         var $row = $(this).closest("tr").off("mousedown");
+                         var $tds = $row.find("td").not(':first').not(':nth-child(4)').not(':last');
+
+                         $.each($tds,
+                             function(i, el) {
+                                 var txt = $(this).text();
+                                 $(this).html("").append("<input type='text' value=\"" +
+                                     (txt.replace(' g', '')).replace(' kr', '') +
+                                     "\">");
+                             });
+
+                     }),
+                 $("#ingredients ").on("click",
+                     ".js-save",
+                     function() {
+                         $('img:visible', this).hide().siblings().show();
+
+                         $(this).removeClass().addClass("js-edit");
+                         var $row = $(this).closest("tr");
+                         var $tds = $row.find("td").not(':first').not(':nth-child(4)');
+
+                         var obj = {};;
+                         $.each($tds,
+                             function(i, el) {
+                                 var txt = $(this).find("input").val();
+                                 if (i == 0) {
+                                     obj.Mass = txt;
+                                     $(this).html(txt + " g");
+                                 } else if (i == 1) {
+                                     obj.PricePerKg = txt;
+                                     $(this).html(txt + " kr");
+                                 } else if (i == 2) {
+                                     obj.Id = $(this).find("input").val();
+                                 }
+                             });
+
+                         console.log(JSON.stringify(obj));
+
+                         $.ajax({
+                             url: "/api/recipes/UpdateProduct/",
+                             type: "POST",
+                             data: JSON.stringify(obj),
+                             dataType: "json",
+                             contentType: "application/json"
+                         }).done(function(data){
+                             table1.ajax.reload();
+                         });
+                     }),
+                     $("#addIngredient").click(function(e) {
                          e.preventDefault();
                          var link = $(this);
                          var obj = {};
                          obj.Mass = $("#newMass").val();
                          obj.PricePerKg = $("#newPricePerKg").val();
                          obj.FoodId = $("#newFoodId").val();
-                         console.log(obj);
                          $.ajax({
                              url: "/api/recipes/AddIngredient/",
                              data: obj,
                              method: "POST",
-                             success: function () {
+                             success: function() {
                                  table1.ajax.reload();
                              }
                          });
                      }),
-                     table2 = $("#instructions").DataTable({
-                         rowReorder: {
-                             selector: 'tr'
-                         },
-                         language: {
-                             "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
-                         },
-                         order: [],
-                         ajax: {
-                             type: "GET",
-                             url: "/api/recipes/GetInstructions/" + @Html.Raw(Json.Encode(Model.Recipe.Id)),
-                             datatype: "json",
-                             dataSrc: ""
-                         },
-                         columns: [
-                             {
-                                 data: "number",
-                                 sortable: false,
-                                 render: function(data) {
-                                     return "<span class='order'>" + data + "</span>";
-                                 }
-                             },
-                             {
-                                 data: "name",
-                                 sortable: false
-                             },
-                             {
-                                 data: "id",
-                                 render: function(data) {
-                                     return "<input id='hiddenid' type='hidden' value='" +
-                                         data +
-                                         "'>" +
-                                         "<a href='#' class='btn-link js-delete' " +
-                                         "data-instruction-id=" +
-                                         data +
-                                         ">" +
-                                         "<img src = '../../Icons/delete.svg' / " +
-                                         "width='15' height='15' style='vertical-align:top'></button>";
-                                 },
-                                 sortable: false
+                 table2 = $("#instructions").DataTable({
+                     rowReorder: {
+                         selector: 'tr'
+                     },
+                     language: {
+                         "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                     },
+                     order: [],
+                     ajax: {
+                         type: "GET",
+                         url: "/api/recipes/GetInstructions/" + @Html.Raw(Json.Encode(Model.Recipe.Id)),
+                         datatype: "json",
+                         dataSrc: ""
+                     },
+                     columns: [
+                         {
+                             data: "number",
+                             sortable: false,
+                             render: function(data) {
+                                 return "<span class='order'>" + data + "</span>";
                              }
-                         ],
-                     }),
-                     $("#instructions ").on("click",
-                         ".js-delete",
-                         function() {
-                             var link = $(this);
-                             bootbox.confirm("Vill du verkligen ta bort denna instruktion?",
-                                 function(result) {
-                                     if (result) {
-                                         $.ajax({
-                                             url: "/api/recipes/DeleteInstruction/" + link.attr("data-instruction-id"),
-                                             method: "DELETE",
-                                             success: function() {
-                                                 table2.row(link.parents("tr")).remove().draw();
-                                             }
-                                         });
-                                     }
-                                 });
-                         }),
-                     $("#addInstruction").click(function(e){
-                         e.preventDefault();
+                         },
+                         {
+                             data: "name",
+                             sortable: false
+                         },
+                         {
+                             data: "id",
+                             render: function(data) {
+                                 return "<input id='hiddenid' type='hidden' value='" +
+                                     data +
+                                     "'>" +
+                                     "<a href='#' class='js-edit' " +
+                                     "data-instruction-id=" +
+                                     data +
+                                     ">" +
+                                     "<img src = '../../Icons/edit.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top'>" +
+                                     "<img src = '../../Icons/save.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top;display: none'></a> " +
+                                     "<a href='#' class='js-delete' " +
+                                     "data-instruction-id=" +
+                                     data +
+                                     ">" +
+                                     "<img src = '../../Icons/delete.svg' / " +
+                                     "width='15' height='15' style='vertical-align:top'></button>";
+                             },
+                             sortable: false
+                         }
+                     ],
+                 }),
+                 $("#instructions ").on("click",
+                     ".js-delete",
+                     function() {
                          var link = $(this);
-                         var obj = {};
-                         obj.Name = $("#newInstruction").val();
+                         bootbox.confirm("Vill du verkligen ta bort denna instruktion?",
+                             function(result) {
+                                 if (result) {
+                                     $.ajax({
+                                         url: "/api/recipes/DeleteInstruction/" + link.attr("data-instruction-id"),
+                                         method: "DELETE",
+                                         success: function() {
+                                             table2.row(link.parents("tr")).remove().draw();
+                                         }
+                                     });
+                                 }
+                             });
+                     }),
+                 $("#instructions").on("click",
+                     ".js-edit",
+                     function () {
+                         $(this).removeClass().addClass("js-save");
+                         $('img:visible', this).hide().siblings().show();
+                         var $row = $(this).closest("tr").off("mousedown");
+                         var $tds = $row.find("td").not(':first').not(':last');
+
+                         $.each($tds,
+                             function (i, el) {
+                                 var txt = $(this).text();
+                                 $(this).html("").append("<input type='text' value=\"" + txt + "\">");
+                             });
+
+                     }),
+                 $("#instructions").on("click",
+                     ".js-save",
+                     function () {
+                         $('img:visible', this).hide().siblings().show();
+
+                         $(this).removeClass().addClass("js-edit");
+                         var $row = $(this).closest("tr");
+                         var $tds = $row.find("td").not('first');
+
+                         var obj = {};;
+                         $.each($tds,
+                             function (i, el) {
+                                 var txt = $(this).find("input").val();
+                                 if (i == 1) {
+                                     obj.Name = txt;
+                                     $(this).html(txt);
+                                 } else if (i == 2) {
+                                     obj.Id = $(this).find("input").val();
+                                 }
+                             });
+                         console.log(JSON.stringify(obj));
                          $.ajax({
-                             url: "/api/recipes/AddInstruction/",
-                             data: obj,
-                             method: "POST",
-                             success: function () {
-                                 table2.ajax.reload();
-                             }
+                             url: "/api/recipes/UpdateInstruction/",
+                             type: "POST",
+                             data: JSON.stringify(obj),
+                             dataType: "json",
+                             contentType: "application/json"
+                         }).done(function (data) {
+                             table1.ajax.reload();
                          });
                      }),
-             $("#newFood").autocomplete({
-                 source: function(request, response) {
+                 $("#addInstruction").click(function(e) {
+                     e.preventDefault();
+                     var link = $(this);
+                     var obj = {};
+                     obj.Name = $("#newInstruction").val();
                      $.ajax({
-                         url: '@Url.Action("GetFood", "Shoppinglist")',
-                         dataType: "json",
-                         data: { term: $("#newFood").val() },
-                         success: function(data) {
-                             response($.map(data,
-                                 function(item) {
-                                     return { label: item.label, value: item.label, id: item.id };
-                                 }));
-                         },
-                         error: function(xhr, status, error) {
-                             alert("Error");
+                         url: "/api/recipes/AddInstruction/",
+                         data: obj,
+                         method: "POST",
+                         success: function() {
+                             table2.ajax.reload();
                          }
                      });
-                 },
-                 select: function(event, ui) {
-                     $("#newFoodId").val(ui.item.id);
-                     $("#newFood").val(ui.item.label);
-                     return false;
-                 }
-             }),
-             $('#instructions').sortable({
-                 items: "tr",
-                 update: function(event, ui) {
-                     $('span.order').each(function(index) {
-                         var order = index + 1;
-                         $(this).text(order);
-                     });
-
-                     var prop = ["Number", "Name", "Id"]
-                     var xml = "";
-                     var objArr = new Array();
-                     $("#instructions tr").each(function(index) {
-                         var cells = $("td", this);
-                         var obj = {};
-                         if (cells.length > 0) {
-                             for (var i = 0; i < cells.length; ++i) {
-                                 if (i == 0)
-                                     obj.Number = cells.eq(i).text();
-                                 if (i == 1)
-                                     obj.Name = cells.eq(i).text();
-                                 if (i == 2)
-                                     obj.Id = $(this).find("#hiddenid").val();
+                 }),
+                 $("#newFood").autocomplete({
+                     source: function(request, response) {
+                         $.ajax({
+                             url: "/api/products/GetFood",
+                             dataType: "json",
+                             data: { term: $("#newFood").val() },
+                             success: function(data) {
+                                 response($.map(data,
+                                     function(item) {
+                                         return { label: item.name, value: item.name, id: item.id };
+                                     }));
+                             },
+                             error: function(xhr, status, error) {
+                                 alert("Error");
                              }
-                             objArr.push(obj);
-                         }
-                     });
+                         });
+                     },
+                     select: function(event, ui) {
+                         $("#newFoodId").val(ui.item.id);
+                         $("#newFood").val(ui.item.label);
+                         return false;
+                     }
+                 }),
+                 $('#instructions').sortable({
+                     items: "tr",
+                     update: function(event, ui) {
+                         $('span.order').each(function(index) {
+                             var order = index + 1;
+                             $(this).text(order);
+                         });
 
-                     $.ajax({
-                         url: "/api/recipes/UpdateInstructions/",
-                         type: "POST",
-                         data: JSON.stringify(objArr),
-                         dataType: "json",
-                         contentType: "application/json"
-                     });
-                 }
-             });
-     });
+                         var objArr = new Array();
+                         $("#instructions tr").each(function(index) {
+                             var cells = $("td", this);
+                             var obj = {};
+                             if (cells.length > 0) {
+                                 for (var i = 0; i < cells.length; ++i) {
+                                     if (i == 0)
+                                         obj.Number = cells.eq(i).text();
+                                     if (i == 1)
+                                         obj.Name = cells.eq(i).text();
+                                     if (i == 2)
+                                         obj.Id = $(this).find("#hiddenid").val();
+                                 }
+                                 objArr.push(obj);
+                             }
+                         });
+
+                         console.log(JSON.stringify(objArr));
+
+                         $.ajax({
+                             url: "/api/recipes/UpdateInstructions/",
+                             type: "POST",
+                             data: JSON.stringify(objArr),
+                             dataType: "json",
+                             contentType: "application/json"
+                         });
+                     }
+                 });
+         });
          //http://jsfiddle.net/4mcpq/3/
      </script>
  }

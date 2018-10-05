@@ -32,6 +32,32 @@ namespace Inkopslista.Controllers.Api
 
             return Ok(productDtos);
         }
+
+        [HttpGet]
+        public IHttpActionResult GetFood(string term)
+        {
+            var foodDtos = Match(term);
+
+            return Ok(foodDtos);
+        }
+
+        private IEnumerable<FoodDto> Match(string term)
+        {
+
+            var foods = System.Web.Helpers.WebCache.Get("foods") as DbSet<Food>;
+            if (foods == null)
+            {
+                foods = _context.Foods;
+                System.Web.Helpers.WebCache.Set("foods", foods);
+            }
+
+            var match = foods.Where(c => c.Name.Contains(term))
+                .OrderBy(c => c.Name.StartsWith(term) ? (c.Name == term ? 0 : 1) : 2)
+                .Select(Mapper.Map<Food, FoodDto>)
+                .Take(25);
+
+            return match;
+        }
         // GET /api/products/1
         /*
         public IHttpActionResult GetProduct(int id)

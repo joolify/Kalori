@@ -15,9 +15,9 @@
             </label>
             <div class="col-md-10">
                 @Html.HiddenFor(m => m.Shoppinglist.Id)
-                @Html.HiddenFor(m => m.Product.FoodId, new { @id = "id" })
+                @Html.HiddenFor(m => m.Product.FoodId, new { @id = "newFoodId" })
                 @Html.HiddenFor(m => m.Product.FoodName, new { @id = "foodname" })
-                <input type="text" class="form-control" id="searchInput" placeholder="Börja skriv i" />
+                <input type="text" class="form-control" id="newFood" placeholder="Börja skriv i" />
             </div>
         </div>
         <div class="form-group" style="margin-top:50px;">
@@ -53,30 +53,32 @@
     <script type="text/javascript">
 $(document).ready(function() {
 
-        $("#searchInput").autocomplete({
-            source: function (request, response) {
+    $("#newFood").autocomplete({
+            source: function(request, response) {
                 $.ajax({
-                    url: '@Url.Action("GetFood","Shoppinglist")',
+                    url: "/api/products/GetFood",
                     dataType: "json",
-                    data: { term: $("#searchInput").val() },
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return { label: item.label, value: item.label, id: item.id };
-                        }));
+                    data: { term: $("#newFood").val() },
+                    success: function(data) {
+                        response($.map(data,
+                            function(item) {
+                                console.log(item);
+                                return { label: item.name, value: item.name, id: item.id };
+                            }));
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         alert("Error");
                     }
                 });
             },
             select: function(event, ui) {
-                $("#id").val(ui.item.id);
-                $("#searchInput").val(ui.item.label);
+                $("#newFoodId").val(ui.item.id);
+                $("#newFood").val(ui.item.label);
                 return false;
             }
         }),
-        $('#searchInput').change(function() {
-            $('#foodname').val($('#searchInput').val());
+        $('#newFood').change(function() {
+            $('#foodname').val($('#newFood').val());
         });
             ;
 });
