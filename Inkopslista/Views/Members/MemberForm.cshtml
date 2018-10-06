@@ -1,0 +1,44 @@
+﻿@model Inkopslista.ViewModels.MemberFormViewModel
+@{
+    ViewBag.Title = "New Member";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Member</h2>
+<h4>@Html.ActionLink("Back", "Index", "Members", null, new { @class = "btn btn-primary"})</h4>
+@using (Html.BeginForm("Save", "Members"))
+{
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+    <div class="form-group">
+        @Html.LabelFor(m => m.Member.Name)
+        @Html.TextBoxFor(m => m.Member.Name, new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Member.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Member.BirthDate)
+        @Html.TextBoxFor(m => m.Member.BirthDate, "{0:d MMM yyyy}", new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Member.BirthDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Member.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Member.MembershipTypeId, 
+            new SelectList(Model.MembershipTypes, "Id", "Name"),
+            "Select Membership Type",
+            new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Member.MembershipTypeId)
+
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Member.IsSubscribedToNewsLetter) Subscribed to Newsletter?
+        </label>
+    </div>
+    @Html.HiddenFor(m => m.Member.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

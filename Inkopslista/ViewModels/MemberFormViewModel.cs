@@ -6,9 +6,9 @@ using Inkopslista.Models;
 
 namespace Inkopslista.ViewModels
 {
-    public class RandomFoodViewModel
+    public class MemberFormViewModel
     {
-        public Food Food { get; set; }
-        public List<Product> Products { get; set; }
+        public IEnumerable<MembershipType> MembershipTypes { get; set; }
+        public Member Member { get; set; }
     }
 }

@@ -69,7 +69,7 @@
             </label>
             <div class="col-md-10" style="margin-top: 10px;">
                 @Html.HiddenFor(m => m.Recipe.Id)
-                <a href="#" id="addIngredient" class="btn btn-primary js-add" style="margin-bottom: 10px;">Lägg till ingrediens</a>
+                <a href="#!" id="addIngredient" class="btn btn-primary js-add" style="margin-bottom: 10px;">Lägg till ingrediens</a>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
             <label class="col-md-2 control-label">
             </label>
             <div class="col-md-10">
-                <a href="#" id="addInstruction" class="btn btn-primary js-add" style="margin-bottom: 10px">Lägg till instruktion</a>
+                <a href="#!" id="addInstruction" class="btn btn-primary js-add" style="margin-bottom: 10px">Lägg till instruktion</a>
             </div>
         </div>
         <div class="form-group" style="margin-top: 100px;">
@@ -203,7 +203,7 @@
                                  return "<input id='hiddenid' type='hidden' value='" +
                                      data +
                                      "'>" +
-                                     "<a href='#' class='js-edit' " +
+                                     "<a href='#!' class='js-edit' " +
                                      "data-ingredient-id=" +
                                      data +
                                      ">" +
@@ -211,7 +211,7 @@
                                      "width='15' height='15' style='vertical-align:top'>" +
                                      "<img src = '../../Icons/save.svg' / " +
                                      "width='15' height='15' style='vertical-align:top;display: none'></a> " +
-                                     "<a href='#' class='js-delete' " +
+                                     "<a href='#!' class='js-delete' " +
                                      "data-ingredient-id=" +
                                      data +
                                      ">" +
@@ -289,8 +289,8 @@
                              data: JSON.stringify(obj),
                              dataType: "json",
                              contentType: "application/json"
-                         }).done(function(data){
-                             table1.ajax.reload();
+                         }).done(function(newProduct) {
+                             table1.row($row).data(newProduct).draw();
                          });
                      }),
                      $("#addIngredient").click(function(e) {
@@ -341,7 +341,7 @@
                                  return "<input id='hiddenid' type='hidden' value='" +
                                      data +
                                      "'>" +
-                                     "<a href='#' class='js-edit' " +
+                                     "<a href='#!' class='js-edit' " +
                                      "data-instruction-id=" +
                                      data +
                                      ">" +
@@ -349,7 +349,7 @@
                                      "width='15' height='15' style='vertical-align:top'>" +
                                      "<img src = '../../Icons/save.svg' / " +
                                      "width='15' height='15' style='vertical-align:top;display: none'></a> " +
-                                     "<a href='#' class='js-delete' " +
+                                     "<a href='#!' class='js-delete' " +
                                      "data-instruction-id=" +
                                      data +
                                      ">" +
@@ -362,7 +362,8 @@
                  }),
                  $("#instructions ").on("click",
                      ".js-delete",
-                     function() {
+                     function(e) {
+                         e.preventDefault();
                          var link = $(this);
                          bootbox.confirm("Vill du verkligen ta bort denna instruktion?",
                              function(result) {
@@ -379,7 +380,8 @@
                      }),
                  $("#instructions").on("click",
                      ".js-edit",
-                     function () {
+                     function (e) {
+                         e.preventDefault();
                          $(this).removeClass().addClass("js-save");
                          $('img:visible', this).hide().siblings().show();
                          var $row = $(this).closest("tr").off("mousedown");
@@ -393,8 +395,9 @@
 
                      }),
                  $("#instructions").on("click",
-                     ".js-save",
-                     function () {
+                 ".js-save",
+                     function (e) {
+                         e.preventDefault();
                          $('img:visible', this).hide().siblings().show();
 
                          $(this).removeClass().addClass("js-edit");
@@ -419,8 +422,8 @@
                              data: JSON.stringify(obj),
                              dataType: "json",
                              contentType: "application/json"
-                         }).done(function (data) {
-                             table1.ajax.reload();
+                         }).done(function (newInstruction) {
+                             table1.row($row).data(newInstruction).draw();
                          });
                      }),
                  $("#addInstruction").click(function(e) {

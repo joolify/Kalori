@@ -20,14 +20,12 @@ namespace Inkopslista.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Member> Members { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Shoppinglist> Shoppinglists { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
-        public DbSet<GenreType> GenreTypes { get; set; }
         public DbSet<CategoryType> CategoryTypes { get; set; }
         public DbSet<Instruction> Instructions { get; set; }
 

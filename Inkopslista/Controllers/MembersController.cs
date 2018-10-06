@@ -9,11 +9,11 @@ using Inkopslista.ViewModels;
 
 namespace Inkopslista.Controllers
 {
-    public class CustomersController : Controller
+    public class MembersController : Controller
     {
         private ApplicationDbContext _context;
 
-        public CustomersController()
+        public MembersController()
         {
             _context = new ApplicationDbContext();
         }
@@ -25,45 +25,45 @@ namespace Inkopslista.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Customer customer)
+        public ActionResult Save(Member member)
         {
             if (!ModelState.IsValid)
             {
-                var viewModel = new CustomerFormViewModel
+                var viewModel = new MemberFormViewModel
                 {
-                    Customer = customer,
+                    Member = member,
                     MembershipTypes = _context.MembershipTypes.ToList()
                 };
-                return View("CustomerForm", viewModel);
+                return View("MemberForm", viewModel);
             }
 
-            if(customer.Id == 0)
+            if(member.Id == 0)
             {
-                _context.Customers.Add(customer);
+                _context.Members.Add(member);
             }
             else
             {
-                var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+                var memberInDb = _context.Members.Single(c => c.Id == member.Id);
 
-                customerInDb.Name = customer.Name;
-                customerInDb.BirthDate = customer.BirthDate;
-                customerInDb.MembershipTypeId = customer.MembershipTypeId;
-                customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
+                memberInDb.Name = member.Name;
+                memberInDb.BirthDate = member.BirthDate;
+                memberInDb.MembershipTypeId = member.MembershipTypeId;
+                memberInDb.IsSubscribedToNewsLetter = member.IsSubscribedToNewsLetter;
             }
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Customers");
+            return RedirectToAction("Index", "Members");
         }
 
         public ActionResult New()
         {
             var membershipTypes = _context.MembershipTypes.ToList();
-            var viewModel = new CustomerFormViewModel
+            var viewModel = new MemberFormViewModel
             {
-                Customer = new Customer(),
+                Member = new Member(),
                 MembershipTypes = membershipTypes
             };
-            return View("CustomerForm", viewModel);
+            return View("MemberForm", viewModel);
         }
 
         public ViewResult Index()
@@ -73,27 +73,27 @@ namespace Inkopslista.Controllers
 
         public ActionResult Details(int id)
         {
-            var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
+            var member = _context.Members.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
+            if (member == null)
                 return HttpNotFound();
 
-            return View(customer);
+            return View(member);
         }
 
         public ActionResult Edit(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var member = _context.Members.SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
+            if (member == null)
                 return HttpNotFound();
 
-            var viewModel = new CustomerFormViewModel()
+            var viewModel = new MemberFormViewModel()
             {
-                Customer = customer,
+                Member = member,
                 MembershipTypes = _context.MembershipTypes.ToList()
             };
-            return View("CustomerForm", viewModel);
+            return View("MemberForm", viewModel);
         }
     }
 }

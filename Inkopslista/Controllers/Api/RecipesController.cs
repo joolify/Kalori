@@ -209,9 +209,11 @@ namespace Inkopslista.Controllers.Api
                 return BadRequest();
             }
 
+            productDto = Mapper.Map<Product, ProductDto>(product);
+
             System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
 
-            return Ok();
+            return Ok(productDto);
 
         }
         [HttpPost]
@@ -222,19 +224,21 @@ namespace Inkopslista.Controllers.Api
 
             var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
 
-            var product = recipe.Instructions.FirstOrDefault(c => c.Id == instructionDto.Id);
-            if (product != null)
+            var instruction = recipe.Instructions.FirstOrDefault(c => c.Id == instructionDto.Id);
+            if (instruction != null)
             {
-                product.Name = instructionDto.Name;
+                instruction.Name = instructionDto.Name;
             }
             else
             {
                 return BadRequest();
             }
 
+            instructionDto = Mapper.Map<Instruction, InstructionDto>(instruction);
+
             System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
 
-            return Ok();
+            return Ok(instruction);
 
         }
         // PUT /api/recipes/1

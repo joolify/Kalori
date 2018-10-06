@@ -219,13 +219,11 @@
     <Compile Include="Controllers\Api\ProductsController.cs" />
     <Compile Include="Controllers\Api\RecipesController.cs" />
     <Compile Include="Controllers\Api\ShoppinglistsController.cs" />
-    <Compile Include="Controllers\Api\MoviesController.cs" />
-    <Compile Include="Controllers\Api\CustomersController.cs" />
-    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\Api\MembersController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\FoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\ShoppinglistController.cs" />
@@ -236,34 +234,31 @@
     <Compile Include="Dtos\RecipeDto.cs" />
     <Compile Include="Dtos\ProductDto.cs" />
     <Compile Include="Dtos\ShoppinglistDto.cs" />
-    <Compile Include="Dtos\MovieDto.cs" />
-    <Compile Include="Dtos\CustomerDto.cs" />
+    <Compile Include="Dtos\MemberDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201810031332028_InitialModel.cs" />
-    <Compile Include="Migrations\201810031332028_InitialModel.Designer.cs">
-      <DependentUpon>201810031332028_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201810061200440_InitialModel.cs" />
+    <Compile Include="Migrations\201810061200440_InitialModel.Designer.cs">
+      <DependentUpon>201810061200440_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryType.cs" />
-    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\GenreType.cs" />
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Min18YearsIfAMember.cs" />
-    <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Shoppinglist.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\MemberFormViewModel.cs" />
     <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
     <Compile Include="ViewModels\NewRecipeViewModel.cs" />
     <Compile Include="ViewModels\TotalShoppinglistViewModel.cs" />
@@ -271,9 +266,6 @@
     <Compile Include="ViewModels\DetailsShoppinglistViewModel.cs" />
     <Compile Include="ViewModels\IndexFoodViewModel.cs" />
     <Compile Include="ViewModels\NewFoodViewModel.cs" />
-    <Compile Include="ViewModels\MovieFormViewModel.cs" />
-    <Compile Include="ViewModels\RandomFoodViewModel.cs" />
-    <Compile Include="ViewModels\RandomMovieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-lumen.css" />
@@ -589,22 +581,17 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Customers\Details.cshtml" />
-    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Members\Details.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Foods\Index.cshtml" />
-    <Content Include="Views\Foods\Random.cshtml" />
-    <Content Include="Views\Movies\Random.cshtml" />
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Shared\_Navbar.cshtml" />
-    <Content Include="Views\Movies\Details.cshtml" />
-    <Content Include="Views\Movies\Index.cshtml" />
-    <Content Include="Views\Customers\CustomerForm.cshtml" />
+    <Content Include="Views\Members\MemberForm.cshtml" />
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
-    <Content Include="Views\Movies\MovieForm.cshtml" />
-    <EmbeddedResource Include="Migrations\201810031332028_InitialModel.resx">
-      <DependentUpon>201810031332028_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810061200440_InitialModel.resx">
+      <DependentUpon>201810061200440_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />

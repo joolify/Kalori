@@ -12,8 +12,8 @@ namespace Inkopslista
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootbox.js",
                         "~/Scripts/bootstrap.js",
-                         "~/Scripts/datatables/jquery.datatables.js",
-                         "~/Scripts/datatables/datatables.bootstrap.js"));
+                         "~/Scripts/DataTables/jquery.dataTables.js",
+                         "~/Scripts/DataTables/dataTables.bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -25,7 +25,7 @@ namespace Inkopslista
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-lumen.css",
-                      "~/content/datatables/css/datatables.bootstrap.css",
+                      "~/Content/DataTables/css/dataTables.bootstrap.css",
                       "~/Content/Site.css"));
         }
     }

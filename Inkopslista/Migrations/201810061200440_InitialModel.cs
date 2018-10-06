@@ -19,32 +19,6 @@ namespace Inkopslista.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Customers",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 255),
-                        IsSubscribedToNewsLetter = c.Boolean(nullable: false),
-                        MembershipTypeId = c.Byte(nullable: false),
-                        BirthDate = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.MembershipTypes", t => t.MembershipTypeId, cascadeDelete: true)
-                .Index(t => t.MembershipTypeId);
-            
-            CreateTable(
-                "dbo.MembershipTypes",
-                c => new
-                    {
-                        Id = c.Byte(nullable: false),
-                        Name = c.String(),
-                        SignupFee = c.Int(nullable: false),
-                        DurationInMonths = c.Int(nullable: false),
-                        DiscountRate = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.Foods",
                 c => new
                     {
@@ -116,15 +90,6 @@ namespace Inkopslista.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.GenreTypes",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
                 "dbo.Instructions",
                 c => new
                     {
@@ -138,19 +103,30 @@ namespace Inkopslista.Migrations
                 .Index(t => t.RecipeId);
             
             CreateTable(
-                "dbo.Movies",
+                "dbo.Members",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        GenreTypeId = c.Int(nullable: false),
-                        ReleaseDate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
-                        DateAdded = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
-                        NumberInStock = c.Int(nullable: false),
+                        Name = c.String(nullable: false, maxLength: 255),
+                        IsSubscribedToNewsLetter = c.Boolean(nullable: false),
+                        MembershipTypeId = c.Byte(nullable: false),
+                        BirthDate = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.GenreTypes", t => t.GenreTypeId, cascadeDelete: true)
-                .Index(t => t.GenreTypeId);
+                .ForeignKey("dbo.MembershipTypes", t => t.MembershipTypeId, cascadeDelete: true)
+                .Index(t => t.MembershipTypeId);
+            
+            CreateTable(
+                "dbo.MembershipTypes",
+                c => new
+                    {
+                        Id = c.Byte(nullable: false),
+                        Name = c.String(),
+                        SignupFee = c.Int(nullable: false),
+                        DurationInMonths = c.Int(nullable: false),
+                        DiscountRate = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Products",
@@ -291,8 +267,7 @@ namespace Inkopslista.Migrations
             DropForeignKey("dbo.Recipes", "Image_Id", "dbo.Images");
             DropForeignKey("dbo.Products", "FoodId", "dbo.Foods");
             DropForeignKey("dbo.Products", "CategoryTypeId", "dbo.CategoryTypes");
-            DropForeignKey("dbo.Movies", "GenreTypeId", "dbo.GenreTypes");
-            DropForeignKey("dbo.Customers", "MembershipTypeId", "dbo.MembershipTypes");
+            DropForeignKey("dbo.Members", "MembershipTypeId", "dbo.MembershipTypes");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -304,9 +279,8 @@ namespace Inkopslista.Migrations
             DropIndex("dbo.Products", new[] { "ShoppinglistId" });
             DropIndex("dbo.Products", new[] { "CategoryTypeId" });
             DropIndex("dbo.Products", new[] { "FoodId" });
-            DropIndex("dbo.Movies", new[] { "GenreTypeId" });
+            DropIndex("dbo.Members", new[] { "MembershipTypeId" });
             DropIndex("dbo.Instructions", new[] { "RecipeId" });
-            DropIndex("dbo.Customers", new[] { "MembershipTypeId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
@@ -316,12 +290,10 @@ namespace Inkopslista.Migrations
             DropTable("dbo.Images");
             DropTable("dbo.Recipes");
             DropTable("dbo.Products");
-            DropTable("dbo.Movies");
-            DropTable("dbo.Instructions");
-            DropTable("dbo.GenreTypes");
-            DropTable("dbo.Foods");
             DropTable("dbo.MembershipTypes");
-            DropTable("dbo.Customers");
+            DropTable("dbo.Members");
+            DropTable("dbo.Instructions");
+            DropTable("dbo.Foods");
             DropTable("dbo.CategoryTypes");
         }
     }

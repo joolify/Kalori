@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Inkopslista.Models
 {
-    public class Customer
+    public class Member
     {
         [Key]
         public int Id { get; set; }

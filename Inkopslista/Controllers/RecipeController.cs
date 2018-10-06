@@ -83,7 +83,8 @@ namespace Inkopslista.Controllers
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", null);
+            var newRecipe = new Recipe();
+            System.Web.Helpers.WebCache.Set("tempRecipe", newRecipe);
             return RedirectToAction("Index", "Recipe");
 
         }

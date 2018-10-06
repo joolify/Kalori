@@ -13,8 +13,7 @@ namespace Inkopslista.App_Start
         public MappingProfile()
         {
             // Domain to Dto
-            Mapper.CreateMap<Customer, CustomerDto>();
-            Mapper.CreateMap<Movie, MovieDto>();
+            Mapper.CreateMap<Member, MemberDto>();
             Mapper.CreateMap<MembershipType, MembershipTypeDto>();
 
             Mapper.CreateMap<CategoryType, CategoryTypeDto>();
@@ -24,9 +23,7 @@ namespace Inkopslista.App_Start
             Mapper.CreateMap<Recipe, RecipeDto>();
             Mapper.CreateMap<Shoppinglist, ShoppinglistDto>();
 
-            Mapper.CreateMap<CustomerDto, Customer>()
-                .ForMember(c => c.Id, opt => opt.Ignore());
-            Mapper.CreateMap<MovieDto, Movie>()
+            Mapper.CreateMap<MemberDto, Member>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
 
             Mapper.CreateMap<FoodDto, Food>()

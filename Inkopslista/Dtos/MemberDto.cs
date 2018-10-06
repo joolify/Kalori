@@ -8,7 +8,7 @@ using Inkopslista.Models;
 
 namespace Inkopslista.Dtos
 {
-    public class CustomerDto
+    public class MemberDto
     {
         [Key]
         public int Id { get; set; }
