@@ -1,11 +1,11 @@
 ﻿@model Inkopslista.ViewModels.MemberFormViewModel
 @{
-    ViewBag.Title = "New Member";
+    ViewBag.Title = "Ny medlem";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>New Member</h2>
-<h4>@Html.ActionLink("Back", "Index", "Members", null, new { @class = "btn btn-primary"})</h4>
+<h4>@Html.ActionLink("Tillbaka", "Index", "Members", null, new { @class = "btn btn-primary"})</h4>
 @using (Html.BeginForm("Save", "Members"))
 {
     @Html.ValidationSummary(true, "Please fix the following errors.")
@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Member.BirthDate)
-        @Html.TextBoxFor(m => m.Member.BirthDate, "{0:d MMM yyyy}", new { @class = "form-control"})
+        @Html.TextBoxFor(m => m.Member.BirthDate, "{yyyy-mm-dd}", new { @class = "form-control", @id = "datepicker"})
         @Html.ValidationMessageFor(m => m.Member.BirthDate)
     </div>
     <div class="form-group">
@@ -35,10 +35,24 @@
     </div>
     @Html.HiddenFor(m => m.Member.Id)
     @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Spara</button>
 }
 
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $("#datepicker").datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeYear: true,
+                maxDate: '-1D',
+                yearRange: '-99:+10'
+            });
+        } );
+    </script>
+
 }

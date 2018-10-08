@@ -264,22 +264,19 @@ namespace Inkopslista.Controllers
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();
-            if (id != null)
+            var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
+            for (int i = 0; i < products.Count; i++)
             {
-                var products = _context.Products.Where(c => c.ShoppinglistId == id).ToList();
-                for (int i = 0; i < products.Count; i++)
-                {
-                    var food = new Food();
-                    var fid = products[i].FoodId;
-                    food = _context.Foods.SingleOrDefault(c => c.Id == fid);
-                    products[i].Food = food;
-                    products[i].CategoryType =
-                        _context.CategoryTypes
-                            .FirstOrDefault(c => c.Category == food.Category1);
-                }
-
-                recipe.Products = products;
+                var food = new Food();
+                var fid = products[i].FoodId;
+                food = _context.Foods.SingleOrDefault(c => c.Id == fid);
+                products[i].Food = food;
+                products[i].CategoryType =
+                    _context.CategoryTypes
+                        .FirstOrDefault(c => c.Category == food.Category1);
             }
+
+            recipe.Products = products;
             System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
             return RedirectToAction("New", "Recipe");
         }

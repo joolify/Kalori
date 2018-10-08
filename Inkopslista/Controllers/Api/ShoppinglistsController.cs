@@ -31,6 +31,19 @@ namespace Inkopslista.Controllers.Api
             return Ok(shoppinglistDtos);
         }
 
+        public IHttpActionResult GetProducts(int id)
+        {
+            var productDtos = _context.Products
+                .Include(m => m.Food)
+                .Include(m => m.CategoryType)
+                .ToList()
+                .Where(m => m.ShoppinglistId == id)
+                .Select(Mapper.Map<Product, ProductDto>);
+
+            return Ok(productDtos);
+        }
+
+
         // GET /api/shoppinglists/1
         public IHttpActionResult Get(int id)
         {
@@ -59,12 +72,13 @@ namespace Inkopslista.Controllers.Api
         }
 
         // PUT /api/shoppinglists/1
-        [HttpPut]
-        public IHttpActionResult UpdateShoppinglist(int id, ShoppinglistDto shoppinglistDto)
+        [HttpPost]
+        public IHttpActionResult Update(ShoppinglistDto shoppinglistDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            var id = shoppinglistDto.Id;
             var shoppinglistInDb = _context.Shoppinglists.SingleOrDefault(c => c.Id == id);
 
             if(shoppinglistInDb == null)
@@ -91,5 +105,48 @@ namespace Inkopslista.Controllers.Api
 
             return Ok();
         }
+
+        [HttpPost]
+        public IHttpActionResult UpdateProduct(ProductDto productDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var product = _context.Products.FirstOrDefault(c => c.Id == productDto.Id);
+
+            if (product == null)
+                return BadRequest();
+
+            product.Mass = productDto.Mass;
+            product.PricePerKg = productDto.PricePerKg;
+            product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
+            var foodId = product.FoodId;
+            var food = _context.Foods.FirstOrDefault(c => c.Id == foodId);
+            var catId = food.Category1;
+            var category = _context.CategoryTypes.FirstOrDefault(c => c.Id == catId);
+            product.Food = food;
+            product.CategoryType = category;
+        
+            productDto = Mapper.Map<Product, ProductDto>(product);
+
+            _context.SaveChanges();
+
+            return Ok(productDto);
+
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteIngredient(int id)
+        {
+            var productInDb = _context.Products.SingleOrDefault(c => c.Id == id);
+            if (productInDb == null)
+                return NotFound();
+
+            _context.Products.Remove(productInDb);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }

@@ -46,16 +46,79 @@
                         {
                             data: "id",
                             render: function(data) {
-                                return "<button class='btn-link js-delete' " +
-                                    "data-shoppinglist-id=" + data + ">" +
+                                return "<input class='js-hidden' type='hidden' value='" +
+                                    data +
+                                    "'>" +
+                                    "<a href='#!' class='js-edit' " +
+                                    "data-shoppinglist-id=" +
+                                    data +
+                                    ">" +
+                                    "<img src = '../../Icons/edit.svg' / " +
+                                    "width='15' height='15' style='vertical-align:top'>" +
+                                    "<img src = '../../Icons/save.svg' / " +
+                                    "width='15' height='15' style='vertical-align:top;display: none'></a> " +
+                                    "<a href='#!' class='js-delete' " +
+                                    "data-shoppinglist-id=" +
+                                    data +
+                                    ">" +
                                     "<img src = '../../Icons/delete.svg' / " +
-                                "width='15' height='15' style='vertical-align:top'></button>";
+                                    "width='15' height='15' style='vertical-align:top'></a>";
                             },
                             sortable: false
                         }
                     ]
                 }),
+                    $("#shoppinglists ").on("click",
+                        ".js-edit",
+                        function () {
+                            $(this).removeClass().addClass("js-save");
+                            $('img:visible', this).hide().siblings().show();
+                            var $row = $(this).closest("tr").off("mousedown");
+                            var $tds = $row.find("td").not(':last');
 
+                            $.each($tds,
+                                function (i, el) {
+                                    var txt = $(this).text();
+                                    $(this).html("").append("<input type='text' value=\"" +
+                                        txt + "\">");
+                                });
+
+                        }),
+                    $("#shoppinglists").on("click",
+                        ".js-save",
+                        function () {
+                            $('img:visible', this).hide().siblings().show();
+
+                            $(this).removeClass().addClass("js-edit");
+                            var $row = $(this).closest("tr");
+                            var $tds = $row.find("td");
+
+                            var obj = {};;
+                            $.each($tds,
+                                function (i, el) {
+                                    var txt = $(this).find("input").val();
+                                    var id = $(this).parents('tr').find('.js-hidden').val();
+                                    if (i === 0) {
+                                        obj.Name = txt;
+                                        $(this).html("<img src='../../Icons/shoppinglist.svg' width='15' height='15'>" +
+                                            "<a href='/Shoppinglist/Details/" + id + "'>" + txt + "</a>");
+                                    } else if (i === 1) {
+                                        obj.Id = id;
+                                    }
+                                });
+
+                            console.log(JSON.stringify(obj));
+
+                            $.ajax({
+                                url: "/api/shoppinglists/Update/",
+                                type: "POST",
+                                data: JSON.stringify(obj),
+                                dataType: "json",
+                                contentType: "application/json"
+                            }).done(function (newProduct) {
+                                table1.row($row).data(newProduct).draw();
+                            });
+                        }),
                 $("#shoppinglists").on("click",
                     ".js-delete",
                     function() {

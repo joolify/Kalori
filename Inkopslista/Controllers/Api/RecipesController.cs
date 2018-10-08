@@ -197,17 +197,17 @@ namespace Inkopslista.Controllers.Api
 
             var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
 
-            var product = recipe.Products.FirstOrDefault(c => c.Id == productDto.Id);
-            if (product != null)
-            {
-                product.Mass = productDto.Mass;
-                product.PricePerKg = productDto.PricePerKg;
-                product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
-            }
-            else
-            {
+            if (recipe == null)
                 return BadRequest();
-            }
+
+            var product = recipe.Products.FirstOrDefault(c => c.Id == productDto.Id);
+
+            if (product == null)
+                return BadRequest();
+
+            product.Mass = productDto.Mass;
+            product.PricePerKg = productDto.PricePerKg;
+            product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
 
             productDto = Mapper.Map<Product, ProductDto>(product);
 

@@ -18,7 +18,7 @@
         @Html.ActionLink("Skapa recept", "Recipe", "Shoppinglist", new { id = Model.Shoppinglist.Id }, new { @class = "btn btn-primary" })
     }
 </h4>
-    <table id="products" class="table table-bordered table-hover">
+    <table id="ingredients" class="table table-bordered table-hover">
         <thead>
             <tr bgcolor="#f5f5f5">
                 <th>Vara:</th>
@@ -43,14 +43,14 @@
 {
     <script>
         $(document).ready(function() {
-            table = $("#products").DataTable({
+            table1 = $("#ingredients").DataTable({
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
                     },
 
                     ajax: {
                         type: "GET",
-                        url: "/api/products/get/" + @Html.Raw(Json.Encode(Model.Shoppinglist.Id)),
+                        url: "/api/shoppinglists/GetProducts/" + @Html.Raw(Json.Encode(Model.Shoppinglist.Id)),
                         datatype: "json",
                         dataSrc: ""
                     },
@@ -92,13 +92,23 @@
                             data: "id",
                             render:
                                 function(data) {
-                                    return "<button class='btn-link js-delete' " +
-                                        "data-product-id=" +
+                                    return "<input id='hiddenid' type='hidden' value='" +
+                                        data +
+                                        "'>" +
+                                        "<a href='#!' class='js-edit' " +
+                                        "data-ingredient-id=" +
                                         data +
                                         ">" +
-                                        "<img src='../../Icons/delete.svg'/ " +
-                                        "width='15' height='15' " +
-                                        "style='vertical-align:top'></button>";
+                                        "<img src = '../../Icons/edit.svg' / " +
+                                        "width='15' height='15' style='vertical-align:top'>" +
+                                        "<img src = '../../Icons/save.svg' / " +
+                                        "width='15' height='15' style='vertical-align:top;display: none'></a> " +
+                                        "<a href='#!' class='js-delete' " +
+                                        "data-ingredient-id=" +
+                                        data +
+                                        ">" +
+                                        "<img src = '../../Icons/delete.svg' / " +
+                                        "width='15' height='15' style='vertical-align:top'></a>";
                                 },
                             sortable: false
                         }
@@ -138,8 +148,61 @@
                             pageTotal + 'kr (' + total + 'kr)'
                         );
                     }
-                }),
-                $("#products").on("click",
+            }),
+                $("#ingredients ").on("click",
+                    ".js-edit",
+                    function() {
+                        $(this).removeClass().addClass("js-save");
+                        $('img:visible', this).hide().siblings().show();
+                        var $row = $(this).closest("tr").off("mousedown");
+                        var $tds = $row.find("td").not(':first').not(':nth-child(4)').not(':last');
+
+                        $.each($tds,
+                            function(i, el) {
+                                var txt = $(this).text();
+                                $(this).html("").append("<input type='text' value=\"" +
+                                    (txt.replace(' g', '')).replace(' kr', '') +
+                                    "\">");
+                            });
+
+                    }),
+                $("#ingredients ").on("click",
+                    ".js-save",
+                    function() {
+                        $('img:visible', this).hide().siblings().show();
+
+                        $(this).removeClass().addClass("js-edit");
+                        var $row = $(this).closest("tr");
+                        var $tds = $row.find("td").not(':first').not(':nth-child(4)');
+
+                        var obj = {};;
+                        $.each($tds,
+                            function(i, el) {
+                                var txt = $(this).find("input").val();
+                                if (i == 0) {
+                                    obj.Mass = txt;
+                                    $(this).html(txt + " g");
+                                } else if (i == 1) {
+                                    obj.PricePerKg = txt;
+                                    $(this).html(txt + " kr");
+                                } else if (i == 2) {
+                                    obj.Id = $(this).find("input").val();
+                                }
+                            });
+
+                        console.log(JSON.stringify(obj));
+
+                        $.ajax({
+                            url: "/api/shoppinglists/UpdateProduct/",
+                            type: "POST",
+                            data: JSON.stringify(obj),
+                            dataType: "json",
+                            contentType: "application/json"
+                        }).done(function(newProduct) {
+                            table1.row($row).data(newProduct).draw();
+                        });
+                    }),
+                $("#ingredients").on("click",
                     ".js-delete",
                     function() {
                         var button = $(this);
@@ -148,11 +211,11 @@
                             function(result) {
                                 if (result) {
                                     $.ajax({
-                                        url: "/api/products/delete/" + button.attr("data-product-id"),
+                                        url: "/api/shoppinglists/DeleteIngredient/" + button.attr("data-ingredient-id"),
                                         method: "DELETE",
                                         success: function() {
 
-                                            table.row( button.parents("tr") ).remove().draw();
+                                            table1.row( button.parents("tr") ).remove().draw();
                                         }
                                     });
                                 }
