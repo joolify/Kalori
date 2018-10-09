@@ -19,7 +19,7 @@ namespace Kalori.Repositories
         }
         public List<Recipe> Get()
         {
-            return _context.Recipes.ToList();
+            return _context.Recipes.Include(c => c.Products).ToList();
         }
 
         public Recipe Get(int id)
@@ -31,10 +31,29 @@ namespace Kalori.Repositories
                 .SingleOrDefault(c => c.Id == id);
         }
 
+        public Food GetFood(int? id)
+        {
+            return _context.Foods.SingleOrDefault(c => c.Id == id);
+        }
+        public CategoryType GetCategoryType(int? id)
+        {
+            return _context.CategoryTypes.SingleOrDefault(c => c.Id == id);
+        }
+
         public void Add(Recipe recipe)
         {
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+        public void Remove(Recipe recipe)
+        {
+            _context.Recipes.Remove(recipe);
         }
         public void Dispose(bool disposing)
         {

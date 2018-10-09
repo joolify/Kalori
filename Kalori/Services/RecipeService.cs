@@ -35,6 +35,15 @@ namespace Kalori.Services
             return _recipeRepo.Get();
         }
 
+        public Food GetFood(int? id)
+        {
+            return _recipeRepo.GetFood(id);
+        }
+        public CategoryType GetCategoryType(int? id)
+        {
+            return _recipeRepo.GetCategoryType(id);
+        }
+
         public Recipe Get(int id)
         {
             return _recipeRepo.Get(id);
@@ -43,6 +52,16 @@ namespace Kalori.Services
         public void Add(Recipe recipe)
         {
             _recipeRepo.Add(recipe);
+        }
+
+        public void Remove(Recipe recipe)
+        {
+            _recipeRepo.Remove(recipe);
+        }
+
+        public void Save()
+        {
+            _recipeRepo.Save();
         }
     }
 }

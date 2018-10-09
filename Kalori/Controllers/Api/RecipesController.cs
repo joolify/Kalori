@@ -10,24 +10,25 @@ using System.Web.ModelBinding;
 using AutoMapper;
 using Kalori.Dtos;
 using Kalori.Models;
+using Kalori.Services;
 
 namespace Kalori.Controllers.Api
 {
     public class RecipesController : ApiController
     {
         private ApplicationDbContext _context;
+        private RecipeService _service;
 
         public RecipesController()
         {
             _context = new ApplicationDbContext();
+            _service = new RecipeService();
         }
 
         // GET /api/shoppinglists
         public IHttpActionResult Get()
         {
-            var recipeDtos = _context.Recipes
-                .Include(m => m.Products)
-                .ToList()
+            var recipeDtos = _service.Get()
                 .Select(Mapper.Map<Recipe, RecipeDto>);
 
             return Ok(recipeDtos);
@@ -36,7 +37,7 @@ namespace Kalori.Controllers.Api
         // GET /api/recipes/1
         public IHttpActionResult Get(int id)
         {
-            var recipe = _context.Recipes.SingleOrDefault(c => c.Id == id);
+            var recipe = _service.Get(id);
 
             if (recipe == null)
                 return NotFound();
@@ -77,8 +78,7 @@ namespace Kalori.Controllers.Api
                 return BadRequest();
 
             var recipe = Mapper.Map<RecipeDto, Recipe>(recipeDto);
-            _context.Recipes.Add(recipe);
-            _context.SaveChanges();
+            _service.Add(recipe);
 
             recipeDto.Id = recipe.Id;
 
@@ -92,14 +92,14 @@ namespace Kalori.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var recipeInDb = _context.Recipes.SingleOrDefault(c => c.Id == id);
+            var recipeInDb = _service.Get(id);
 
             if (recipeInDb == null)
                 return NotFound();
 
             Mapper.Map(recipeDto, recipeInDb);
 
-            _context.SaveChanges();
+            _service.Save();
 
             return Ok();
         }
@@ -108,17 +108,13 @@ namespace Kalori.Controllers.Api
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var recipeInDb = _context.Recipes
-                .Include(c => c.Image)
-                .Include(c => c.Products.Select(o => o.Food))
-                .Include(c => c.Instructions)
-                .SingleOrDefault(c => c.Id == id);
+            var recipeInDb = _service.Get(id);
 
             if (recipeInDb == null)
                 return NotFound();
 
-            _context.Recipes.Remove(recipeInDb);
-            _context.SaveChanges();
+            _service.Remove(recipeInDb);
+            _service.Save();
 
             return Ok();
         }
@@ -144,12 +140,12 @@ namespace Kalori.Controllers.Api
             var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
 
             var product = new Product();
-            var food = _context.Foods.SingleOrDefault(c => c.Id == productDto.FoodId);
+            var food = _service.GetFood(productDto.FoodId);
             product.Food = food;
             product.Mass = productDto.Mass;
             product.PricePerKg = productDto.PricePerKg;
             product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
-            product.CategoryType = _context.CategoryTypes.FirstOrDefault(c => c.Category == food.Category1);
+            product.CategoryType = _service.GetCategoryType(food.Category1);
             product.Id = recipe.Products.Count + 1;
 
             recipe.Products.Add(product);
