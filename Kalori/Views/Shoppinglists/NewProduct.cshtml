@@ -1,0 +1,85 @@
+﻿@model Kalori.ViewModels.NewProductShoppinglistViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Ny vara</h2>
+<h4>@Html.ActionLink("Tillbaka", "Details", "Shoppinglists", new {@id = Model.Shoppinglist.Id}, new { @class = "btn btn-primary" })</h4>
+
+@using (Html.BeginForm("CreateProduct", "Shoppinglists"))
+{
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Vara:
+            </label>
+            <div class="col-md-10">
+                @Html.HiddenFor(m => m.Shoppinglist.Id)
+                @Html.HiddenFor(m => m.Product.FoodId, new { @id = "newFoodId" })
+                @Html.HiddenFor(m => m.Product.FoodName, new { @id = "foodname" })
+                <input type="text" class="form-control" id="newFood" placeholder="Börja skriv i" />
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:50px;">
+            <label class="col-md-2 control-label">
+                Mängd (g):
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Product.Mass, new { placeholder = "0", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:100px;">
+            <label class="col-md-2 control-label">
+                Pris (per kg):
+            </label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Product.PricePerKg, new { placeholder = "0", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" style="margin-top:150px;">
+            <label class="col-md-2 control-label">
+            </label>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-primary">Lägg till produkt</button>
+            </div>
+        </div>
+    </fieldset>
+}
+@section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script type="text/javascript">
+$(document).ready(function() {
+
+    $("#newFood").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "/api/products/GetFood",
+                    dataType: "json",
+                    data: { term: $("#newFood").val() },
+                    success: function(data) {
+                        response($.map(data,
+                            function(item) {
+                                return { label: item.name, value: item.name, id: item.id };
+                            }));
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+            },
+            select: function(event, ui) {
+                $("#newFoodId").val(ui.item.id);
+                $("#newFood").val(ui.item.label);
+                return false;
+            }
+        }),
+        $('#newFood').change(function() {
+            $('#foodname').val($('#newFood').val());
+        });
+            ;
+});
+    </script>
+}

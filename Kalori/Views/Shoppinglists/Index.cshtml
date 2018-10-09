@@ -1,0 +1,142 @@
+﻿@using Microsoft.Ajax.Utilities
+@model IEnumerable<Kalori.Models.Shoppinglist>
+
+@{
+    ViewBag.Title = "Inköpslista";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Inköpslista</h2>
+
+<h4>@Html.ActionLink("Ny inköpslista", "New", "Shoppinglists", null, new { @class = "btn btn-primary" }) </h4>
+
+<table id="shoppinglists" class="table table-bordered table-hover">
+    <thead>
+    <tr bgcolor="#f5f5f5">
+        <th>Inköpslista:</th>
+        <th>Ändra</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+         table1 = $("#shoppinglists").DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
+                },    
+
+                    ajax: {
+                        type: "GET",
+                        url: "/api/shoppinglists/get",
+                        datatype: "json",
+                        dataSrc: ""
+                    },
+                    columns: [
+                        {
+                            data: "name",
+                            render: function(data, type, shoppinglist) {
+                                return "<img src='../../Icons/shoppinglist.svg' width='15' height='15'>" +
+                                "<a href='/Shoppinglists/Details/" + shoppinglist.id + "'>" + shoppinglist.name + "</a>";
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function(data) {
+                                return "<input class='js-hidden' type='hidden' value='" +
+                                    data +
+                                    "'>" +
+                                    "<a href='#!' class='js-edit' " +
+                                    "data-shoppinglist-id=" +
+                                    data +
+                                    ">" +
+                                    "<img src = '../../Icons/edit.svg' / " +
+                                    "width='15' height='15' style='vertical-align:top'>" +
+                                    "<img src = '../../Icons/save.svg' / " +
+                                    "width='15' height='15' style='vertical-align:top;display: none'></a> " +
+                                    "<a href='#!' class='js-delete' " +
+                                    "data-shoppinglist-id=" +
+                                    data +
+                                    ">" +
+                                    "<img src = '../../Icons/delete.svg' / " +
+                                    "width='15' height='15' style='vertical-align:top'></a>";
+                            },
+                            sortable: false
+                        }
+                    ]
+                }),
+                    $("#shoppinglists ").on("click",
+                        ".js-edit",
+                        function () {
+                            $(this).removeClass().addClass("js-save");
+                            $('img:visible', this).hide().siblings().show();
+                            var $row = $(this).closest("tr").off("mousedown");
+                            var $tds = $row.find("td").not(':last');
+
+                            $.each($tds,
+                                function (i, el) {
+                                    var txt = $(this).text();
+                                    $(this).html("").append("<input type='text' value=\"" +
+                                        txt + "\">");
+                                });
+
+                        }),
+                    $("#shoppinglists").on("click",
+                        ".js-save",
+                        function () {
+                            $('img:visible', this).hide().siblings().show();
+
+                            $(this).removeClass().addClass("js-edit");
+                            var $row = $(this).closest("tr");
+                            var $tds = $row.find("td");
+
+                            var obj = {};;
+                            $.each($tds,
+                                function (i, el) {
+                                    var txt = $(this).find("input").val();
+                                    var id = $(this).parents('tr').find('.js-hidden').val();
+                                    if (i === 0) {
+                                        obj.Name = txt;
+                                        $(this).html("<img src='../../Icons/shoppinglist.svg' width='15' height='15'>" +
+                                            "<a href='/Shoppinglists/Details/" + id + "'>" + txt + "</a>");
+                                    } else if (i === 1) {
+                                        obj.Id = id;
+                                    }
+                                });
+
+                            console.log(JSON.stringify(obj));
+
+                            $.ajax({
+                                url: "/api/shoppinglists/Update/",
+                                type: "POST",
+                                data: JSON.stringify(obj),
+                                dataType: "json",
+                                contentType: "application/json"
+                            }).done(function (newProduct) {
+                                table1.row($row).data(newProduct).draw();
+                            });
+                        }),
+                $("#shoppinglists").on("click",
+                    ".js-delete",
+                    function() {
+                    var button = $(this);
+
+                    bootbox.confirm("Är du säker på att du vill ta bort denna inköpslista?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/shoppinglists/Delete/" + button.attr("data-shoppinglist-id"),
+                                    method: "DELETE",
+                                    success: function() {
+                                        table1.row(button.parents("tr")).remove().draw();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                });
+    </script>
+}
