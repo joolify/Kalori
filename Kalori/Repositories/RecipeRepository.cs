@@ -36,7 +36,10 @@ namespace Kalori.Repositories
             _context.Recipes.Add(recipe);
             _context.SaveChanges();
         }
-
+        public void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
     }
 }

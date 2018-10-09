@@ -11,5 +11,6 @@ namespace Kalori.Interfaces
         List<Recipe> Get();
         Recipe Get(int id);
         void Add(Recipe recipe);
+        void Dispose(bool disposing);
     }
 }

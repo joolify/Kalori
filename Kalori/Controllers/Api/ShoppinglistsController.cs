@@ -8,24 +8,23 @@ using System.Web.Http;
 using AutoMapper;
 using Kalori.Dtos;
 using Kalori.Models;
+using Kalori.Services;
 
 namespace Kalori.Controllers.Api
 {
     public class ShoppinglistsController : ApiController
     {
-        private ApplicationDbContext _context;
+        private ShoppinglistService _service;
 
         public ShoppinglistsController()
         {
-            _context = new ApplicationDbContext();
+            _service = new ShoppinglistService();
         }
 
         // GET /api/shoppinglists
         public IHttpActionResult Get()
         {
-            var shoppinglistDtos = _context.Shoppinglists
-                .Include(m => m.Products)
-                .ToList()
+            var shoppinglistDtos = _service.GetList()
                 .Select(Mapper.Map<Shoppinglist, ShoppinglistDto>);
 
             return Ok(shoppinglistDtos);
@@ -33,11 +32,7 @@ namespace Kalori.Controllers.Api
 
         public IHttpActionResult GetProducts(int id)
         {
-            var productDtos = _context.Products
-                .Include(m => m.Food)
-                .Include(m => m.CategoryType)
-                .ToList()
-                .Where(m => m.ShoppinglistId == id)
+            var productDtos = _service.GetProducts(id)
                 .Select(Mapper.Map<Product, ProductDto>);
 
             return Ok(productDtos);
@@ -47,7 +42,7 @@ namespace Kalori.Controllers.Api
         // GET /api/shoppinglists/1
         public IHttpActionResult Get(int id)
         {
-            var shoppinglist = _context.Shoppinglists.SingleOrDefault(c => c.Id == id);
+            var shoppinglist = _service.Get(id);
 
             if (shoppinglist == null)
                 return NotFound();
@@ -63,8 +58,7 @@ namespace Kalori.Controllers.Api
                 return BadRequest();
 
             var shoppinglist = Mapper.Map<ShoppinglistDto, Shoppinglist>(shoppinglistDto);
-            _context.Shoppinglists.Add(shoppinglist);
-            _context.SaveChanges();
+            _service.Add(shoppinglist);
 
             shoppinglistDto.Id = shoppinglist.Id;
 
@@ -79,14 +73,14 @@ namespace Kalori.Controllers.Api
                 return BadRequest();
 
             var id = shoppinglistDto.Id;
-            var shoppinglistInDb = _context.Shoppinglists.SingleOrDefault(c => c.Id == id);
+            var shoppinglistInDb = _service.Get(id);
 
             if(shoppinglistInDb == null)
                 return NotFound();
 
             Mapper.Map(shoppinglistDto, shoppinglistInDb);
 
-            _context.SaveChanges();
+            _service.Save();
 
             return Ok();
         }
@@ -95,20 +89,19 @@ namespace Kalori.Controllers.Api
         [HttpDelete]
         public IHttpActionResult Delete(int id)
         {
-            var shoppinglistInDb = _context.Shoppinglists.SingleOrDefault(c => c.Id == id);
+            var shoppinglistInDb = _service.Get(id);
 
             if (shoppinglistInDb == null)
                 return NotFound();
             var sId = shoppinglistInDb.Id;
-            var products = _context.Products.Where(c => c.ShoppinglistId == sId);
+            var products = _service.GetProducts(sId);
 
             foreach (var product in products)
             {
-                _context.Products.Remove(product);
+                _service.RemoveProduct(product);
             }
 
-            _context.Shoppinglists.Remove(shoppinglistInDb);
-            _context.SaveChanges();
+            _service.Remove(shoppinglistInDb);
 
             return Ok();
         }
@@ -119,7 +112,7 @@ namespace Kalori.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var product = _context.Products.FirstOrDefault(c => c.Id == productDto.Id);
+            var product = _service.GetProduct(productDto.Id);
 
             if (product == null)
                 return BadRequest();
@@ -128,15 +121,15 @@ namespace Kalori.Controllers.Api
             product.PricePerKg = productDto.PricePerKg;
             product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
             var foodId = product.FoodId;
-            var food = _context.Foods.FirstOrDefault(c => c.Id == foodId);
+            var food = _service.GetFood(foodId);
             var catId = food.Category1;
-            var category = _context.CategoryTypes.FirstOrDefault(c => c.Category == catId);
+            var category = _service.GetCategoryType(catId);
             product.Food = food;
             product.CategoryType = category;
         
             productDto = Mapper.Map<Product, ProductDto>(product);
 
-            _context.SaveChanges();
+            _service.Save();
 
             return Ok(productDto);
 
@@ -145,12 +138,11 @@ namespace Kalori.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteIngredient(int id)
         {
-            var productInDb = _context.Products.SingleOrDefault(c => c.Id == id);
+            var productInDb = _service.GetProduct(id);
             if (productInDb == null)
                 return NotFound();
 
-            _context.Products.Remove(productInDb);
-            _context.SaveChanges();
+            _service.RemoveProduct(productInDb);
 
             return Ok();
         }

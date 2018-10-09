@@ -79,7 +79,7 @@ namespace Kalori.Controllers
                 Id = id
             };
 
-            var products = _service.GetProducts(id);
+            var products = _service.GetProducts(id).ToList();
 
             var productTotal = new Product
             {
@@ -164,7 +164,7 @@ namespace Kalori.Controllers
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();
-            var products = _service.GetProducts(id);
+            var products = _service.GetProducts(id).ToList();
             for (int i = 0; i < products.Count; i++)
             {
                 var food = new Food();

@@ -25,6 +25,11 @@ namespace Kalori.Services
             _recipeRepo = recipeRepo;
         }
 
+        public void Dispose(bool disposing)
+        {
+            _recipeRepo.Dispose(disposing);
+        }
+
         public List<Recipe> Get()
         {
             return _recipeRepo.Get();

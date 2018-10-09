@@ -26,6 +26,10 @@ namespace Kalori.Controllers
         {
             return View(_service.Get());
         }
+        protected override void Dispose(bool disposing)
+        {
+            _service.Dispose(disposing);
+        }
 
         public ViewResult New()
         {

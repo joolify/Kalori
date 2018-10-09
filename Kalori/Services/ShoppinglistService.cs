@@ -34,9 +34,38 @@ namespace Kalori.Services
             return _shoppinglistRepo.Get(id);
         }
 
+        public IEnumerable<Shoppinglist> GetList()
+        {
+            return _shoppinglistRepo.GetList();
+        }
+
+        public Product GetProduct(int id)
+        {
+            return _shoppinglistRepo.GetProduct(id);
+        }
+
         public List<Product> GetProducts(int id)
         {
             return _shoppinglistRepo.GetProducts(id).ToList();
+        }
+
+        public void Add(Shoppinglist shoppinglist)
+        {
+            _shoppinglistRepo.Add(shoppinglist);
+        }
+
+        public void Save()
+        {
+            _shoppinglistRepo.Save();
+        }
+
+        public void Remove(Shoppinglist shoppinglist)
+        {
+            _shoppinglistRepo.Remove(shoppinglist);
+        }
+        public void RemoveProduct(Product product)
+        {
+            _shoppinglistRepo.RemoveProduct(product);
         }
 
         public void Create(Shoppinglist model)
@@ -44,9 +73,9 @@ namespace Kalori.Services
             var shoppinglist = new Shoppinglist();
             shoppinglist.Name = model.Name;
 
-            _shoppinglistRepo.Save(shoppinglist);
+            _shoppinglistRepo.Add(shoppinglist);
         }
-
+        //FIXME Refactor CreateProduct
         public void CreateProduct(NewProductShoppinglistViewModel viewModel)
         {
             var food = _shoppinglistRepo.GetFood(viewModel.Product.FoodId);

@@ -17,13 +17,32 @@ namespace Kalori.Repositories
             return _context.Shoppinglists.Include(c => c.Products).SingleOrDefault(c => c.Id == id);
         }
 
+        public IEnumerable<Shoppinglist> GetList()
+        {
+            return _context.Shoppinglists.Include(m => m.Products).ToList();
+        }
+
         public IEnumerable<Product> GetProducts(int id)
         {
-            return _context.Products.Include(c => c.Food).Where(c => c.ShoppinglistId == id).ToList();      
+            return _context.Products
+                .Include(c => c.Food)
+                .Include(c => c.CategoryType)
+                .Where(c => c.ShoppinglistId == id).ToList();      
+        }
+
+        public void RemoveProduct(Product product)
+        {
+            _context.Products.Remove(product);
+            _context.SaveChanges();
         }
         public Food GetFood(int? id)
         {
             return _context.Foods.FirstOrDefault(c => c.Id == id);
+        }
+
+        public Product GetProduct(int id)
+        {
+            return _context.Products.FirstOrDefault(c => c.Id == id);
         }
 
         public CategoryType GetCategoryType(int? id)
@@ -31,9 +50,19 @@ namespace Kalori.Repositories
             return _context.CategoryTypes.FirstOrDefault(c => c.Category == id);
         }
 
-        public void Save(Shoppinglist shoppinglist)
+        public void Add(Shoppinglist shoppinglist)
         {
             _context.Shoppinglists.Add(shoppinglist);
+            _context.SaveChanges();
+        }
+
+        public void Remove(Shoppinglist shoppinglist)
+        {
+            _context.Shoppinglists.Remove(shoppinglist);
+            _context.SaveChanges();
+        }
+        public void Save()
+        {
             _context.SaveChanges();
         }
 
