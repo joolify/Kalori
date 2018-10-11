@@ -76,7 +76,10 @@ namespace Kalori.Services
         {
             _unitOfWork.Products.AddOrUpdate(product);
         }
-
+        public void SetTempRecipe(string key, Recipe value)
+        {
+            System.Web.Helpers.WebCache.Set(key, value);
+        }
         /********************************************************
          **** REMOVERS
          ********************************************************/
@@ -96,6 +99,5 @@ namespace Kalori.Services
             _unitOfWork.Products.AttachRange(products);
             _unitOfWork.Products.RemoveRange(products);
         }
-
     }
 }

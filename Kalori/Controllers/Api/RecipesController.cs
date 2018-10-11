@@ -16,25 +16,27 @@ namespace Kalori.Controllers.Api
 {
     public class RecipesController : ApiController
     {
-        private ApplicationDbContext _context;
         private RecipeService _service;
 
         public RecipesController()
         {
-            _context = new ApplicationDbContext();
             _service = new RecipeService();
         }
 
-        // GET /api/shoppinglists
+        /********************************************************
+         **** GET
+         ********************************************************/
+
+        // GET /api/recipes/Get
         public IHttpActionResult Get()
         {
-            var recipeDtos = _service.Get()
+            var recipeDtos = _service.GetAll()
                 .Select(Mapper.Map<Recipe, RecipeDto>);
 
             return Ok(recipeDtos);
         }
 
-        // GET /api/recipes/1
+        // GET /api/recipes/Get/1
         public IHttpActionResult Get(int id)
         {
             var recipe = _service.Get(id);
@@ -45,9 +47,10 @@ namespace Kalori.Controllers.Api
             return Ok(Mapper.Map<Recipe, RecipeDto>(recipe));
         }
 
+        // GET /api/recipes/GetProducts
         public IHttpActionResult GetProducts()
         {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             if (recipe == null)
                 return NotFound();
@@ -57,10 +60,11 @@ namespace Kalori.Controllers.Api
             return Ok(productDtos);
         }
 
+        // GET /api/recipes/GetInstructions
         public IHttpActionResult GetInstructions()
         {
 
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             if (recipe == null)
                 return NotFound();
@@ -70,74 +74,31 @@ namespace Kalori.Controllers.Api
             return Ok(instructionDtos);
         }
 
-        // POST /api/recipes
+        /********************************************************
+         **** POST
+         ********************************************************/
+
+        // POST /api/recipes/AddRecipe
         [HttpPost]
-        public IHttpActionResult CreateRecipe(RecipeDto recipeDto)
+        public IHttpActionResult AddRecipe(RecipeDto recipeDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
             var recipe = Mapper.Map<RecipeDto, Recipe>(recipeDto);
-            _service.Add(recipe);
+            _service.AddOrUpdate(recipe);
+            _service.Complete();
 
             recipeDto.Id = recipe.Id;
 
             return Created(new Uri(Request.RequestUri + "/" + recipe.Id), recipeDto);
         }
 
-        // PUT /api/recipes/1
-        [HttpPut]
-        public IHttpActionResult UpdateRecipe(int id, RecipeDto recipeDto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var recipeInDb = _service.Get(id);
-
-            if (recipeInDb == null)
-                return NotFound();
-
-            Mapper.Map(recipeDto, recipeInDb);
-
-            _service.Save();
-
-            return Ok();
-        }
-
-        //DELETE /api/recipes/1
-        [HttpDelete]
-        public IHttpActionResult Delete(int id)
-        {
-            var recipeInDb = _service.Get(id);
-
-            if (recipeInDb == null)
-                return NotFound();
-
-            _service.Remove(recipeInDb);
-            _service.Save();
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        public IHttpActionResult DeleteIngredient(int id)
-        {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
-
-            var product = recipe.Products.SingleOrDefault(c => c.Id == id);
-            if (product == null)
-                return NotFound();
-
-            recipe.Products.Remove(product);
-
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
-
-            return Ok();
-        }
-
+        // POST /api/recipes/AddIngredient
+        [HttpPost]
         public IHttpActionResult AddIngredient(ProductDto productDto)
         {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             var product = new Product();
             var food = _service.GetFood(productDto.FoodId);
@@ -150,14 +111,16 @@ namespace Kalori.Controllers.Api
 
             recipe.Products.Add(product);
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
 
             return Ok();
         }
 
+        // POST /api/recipes/AddInstruction
+        [HttpPost]
         public IHttpActionResult AddInstruction(InstructionDto instructionDto)
         {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             var instruction = new Instruction();
             instruction.Number = recipe.Instructions.Count + 1;
@@ -166,32 +129,19 @@ namespace Kalori.Controllers.Api
 
             recipe.Instructions.Add(instruction);
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
-
-            return Ok();
-        }
-        public IHttpActionResult DeleteInstruction(int id)
-        {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
-
-            var instruction = recipe.Instructions.SingleOrDefault(c => c.Id == id);
-            if (instruction == null)
-                return NotFound();
-
-            recipe.Instructions.Remove(instruction);
-
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
 
             return Ok();
         }
 
+        // POST /api/recipes/Updateproduct
         [HttpPost]
         public IHttpActionResult UpdateProduct(ProductDto productDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             if (recipe == null)
                 return BadRequest();
@@ -207,18 +157,19 @@ namespace Kalori.Controllers.Api
 
             productDto = Mapper.Map<Product, ProductDto>(product);
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
 
             return Ok(productDto);
 
         }
+        // POST /api/recipes/UpdateInstruction
         [HttpPost]
         public IHttpActionResult UpdateInstruction(InstructionDto instructionDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             var instruction = recipe.Instructions.FirstOrDefault(c => c.Id == instructionDto.Id);
             if (instruction != null)
@@ -232,19 +183,19 @@ namespace Kalori.Controllers.Api
 
             instructionDto = Mapper.Map<Instruction, InstructionDto>(instruction);
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
 
-            return Ok(instruction);
+            return Ok(instructionDto);
 
         }
-        // PUT /api/recipes/1
+        // POST /api/recipes/UpdateInstructions
         [HttpPost]
         public IHttpActionResult UpdateInstructions(List<InstructionDto> instructionDtos)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             var instructions = new List<Instruction>();
 
@@ -256,10 +207,86 @@ namespace Kalori.Controllers.Api
 
             recipe.Instructions = instructions;
 
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
 
             return Ok();
 
         }
+        /********************************************************
+         **** PUT
+         ********************************************************/
+
+        // POST /api/recipes/UpdateRecipe
+        [HttpPut]
+        public IHttpActionResult UpdateRecipe(int id, RecipeDto recipeDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var recipeInDb = _service.Get(id);
+
+            if (recipeInDb == null)
+                return NotFound();
+
+            Mapper.Map(recipeDto, recipeInDb);
+
+            _service.AddOrUpdate(recipeInDb);
+            _service.Complete();
+
+            return Ok();
+        }
+
+        /********************************************************
+         **** DELETE
+         ********************************************************/
+
+        //DELETE /api/recipes/Delete/1
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            var recipeInDb = _service.Get(id);
+
+            if (recipeInDb == null)
+                return NotFound();
+
+            _service.Remove(recipeInDb);
+            _service.Complete();
+
+            return Ok();
+        }
+
+        //DELETE /api/recipes/DeleteIngredient/1
+        [HttpDelete]
+        public IHttpActionResult DeleteIngredient(int id)
+        {
+            var recipe = _service.GetTempRecipe("tempRecipe");
+
+            var product = recipe.Products.SingleOrDefault(c => c.Id == id);
+            if (product == null)
+                return NotFound();
+
+            recipe.Products.Remove(product);
+
+            _service.SetTempRecipe("tempRecipe", recipe);
+
+            return Ok();
+        }
+        //DELETE /api/recipes/DeleteInstruction/1
+       public IHttpActionResult DeleteInstruction(int id)
+        {
+            var recipe = _service.GetTempRecipe("tempRecipe");
+
+            var instruction = recipe.Instructions.SingleOrDefault(c => c.Id == id);
+            if (instruction == null)
+                return NotFound();
+
+            recipe.Instructions.Remove(instruction);
+
+            _service.SetTempRecipe("tempRecipe", recipe);
+
+            return Ok();
+        }
+
+        
     }
 }

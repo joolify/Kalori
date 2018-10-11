@@ -28,7 +28,6 @@ namespace Kalori.Controllers
          **** GET
          ********************************************************/
 
-
         public ViewResult Index()
         {
             return View();
@@ -181,8 +180,6 @@ namespace Kalori.Controllers
             return RedirectToAction("Details", "Shoppinglists", new {id = viewModel.Shoppinglist.Id});
         }
 
-     
-        [HttpPost]
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();
@@ -197,7 +194,7 @@ namespace Kalori.Controllers
             }
 
             recipe.Products = products;
-            System.Web.Helpers.WebCache.Set("tempRecipe", recipe);
+            _service.SetTempRecipe("tempRecipe", recipe);
             return RedirectToAction("New", "Recipes");
         }
     }

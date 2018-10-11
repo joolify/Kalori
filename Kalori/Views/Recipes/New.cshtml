@@ -8,7 +8,7 @@
 <h2>Nytt recept</h2>
 <h4>@Html.ActionLink("Tillbaka", "Index", "Recipes", null, new { @class = "btn btn-primary" })</h4>
 
-@using (Html.BeginForm("Create", "Recipes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Add", "Recipes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <fieldset>
         <div class="form-group">

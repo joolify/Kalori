@@ -9,6 +9,7 @@ namespace Kalori.Interfaces
     {
         IFoodRepository Foods { get; }
         IProductRepository Products { get; }
+        IRecipeRepository Recipes { get; }
         IShoppinglistRepository Shoppinglists { get; }
         int Complete();
     }

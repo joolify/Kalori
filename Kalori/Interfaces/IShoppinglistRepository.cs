@@ -9,6 +9,6 @@ namespace Kalori.Interfaces
     public interface IShoppinglistRepository : IRepository<Shoppinglist>
     {
         Shoppinglist GetWithProducts(int id);
-        IEnumerable<Shoppinglist> GetAllWithProducts(); // => GetAll()
+        IEnumerable<Shoppinglist> GetAllWithProducts(); 
     }
 }

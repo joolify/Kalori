@@ -20,20 +20,22 @@ namespace Kalori.Controllers
         {
             _service = new RecipeService();
         }
-
-        // GET: Recipe
-        public ViewResult Index()
-        {
-            return View(_service.Get());
-        }
         protected override void Dispose(bool disposing)
         {
             _service.Dispose(disposing);
         }
 
+        /********************************************************
+         **** GET
+         ********************************************************/
+        public ViewResult Index()
+        {
+            return View(_service.GetAll());
+        }
+
         public ViewResult New()
         {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe;
+            var recipe = _service.GetTempRecipe("tempRecipe");
 
             if(recipe == null)
                 recipe = new Recipe();
@@ -58,11 +60,13 @@ namespace Kalori.Controllers
             return View(recipe);
         }
 
-
+        /********************************************************
+         **** POST
+         ********************************************************/
         [HttpPost]
-        public ActionResult Create(NewRecipeViewModel viewModel, string command)
+        public ActionResult Add(NewRecipeViewModel viewModel, string command)
         {
-            var recipe = System.Web.Helpers.WebCache.Get("tempRecipe") as Recipe; ;
+            var recipe = _service.GetTempRecipe("tempRecipe"); ;
             recipe.Name = viewModel.Recipe.Name;
             recipe.CookingTimeH = viewModel.Recipe.CookingTimeH;
             recipe.CookingTimeM = viewModel.Recipe.CookingTimeM;
@@ -77,10 +81,11 @@ namespace Kalori.Controllers
             recipe.Image = image;
 
             viewModel.Recipe.Image.File.SaveAs(fileName);
-            _service.Add(recipe);
+            _service.AddOrUpdate(recipe);
+            _service.Complete();
 
             var newRecipe = new Recipe();
-            System.Web.Helpers.WebCache.Set("tempRecipe", newRecipe);
+            _service.SetTempRecipe("tempRecipe", newRecipe);
             return RedirectToAction("Index", "Recipes");
 
         }

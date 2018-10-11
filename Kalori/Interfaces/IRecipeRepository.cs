@@ -6,15 +6,11 @@ using Kalori.Models;
 
 namespace Kalori.Interfaces
 {
-    public interface IRecipeRepository
+    public interface IRecipeRepository : IRepository<Recipe>
     {
-        List<Recipe> Get();
-        Recipe Get(int id);
-        Food GetFood(int? id);
-        CategoryType GetCategoryType(int? id);
-        void Add(Recipe recipe);
-        void Save();
-        void Remove(Recipe recipe);
-        void Dispose(bool disposing);
+        IEnumerable<Recipe> GetAllRecipes();
+        Recipe GetRecipe(int id);
+        void RemoveRange(IEnumerable<Instruction> instructions);
+        void AttachRange(IEnumerable<Instruction> instructions);
     }
 }

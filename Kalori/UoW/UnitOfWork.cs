@@ -17,11 +17,13 @@ namespace Kalori.UoW
             _context = context;
             Foods = new FoodRepository(_context);
             Products = new ProductRepository(_context);
+            Recipes = new RecipeRepository(_context);
             Shoppinglists = new ShoppinglistRepository(_context);
         }
 
         public IFoodRepository Foods { get; private set; }
         public IProductRepository Products { get; private set; }
+        public IRecipeRepository Recipes { get; private set; }
         public IShoppinglistRepository Shoppinglists { get; private set; }
 
     public int Complete()

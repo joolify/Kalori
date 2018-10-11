@@ -9,20 +9,21 @@ using Kalori.Models;
 
 namespace Kalori.Repositories
 {
-    public class RecipeRepository : IRecipeRepository
+    public class RecipeRepository : Repository<Recipe>, IRecipeRepository
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
-        public RecipeRepository()
+        public RecipeRepository(ApplicationDbContext context)
+            : base(context)
         {
-            _context = new ApplicationDbContext();
+
         }
-        public List<Recipe> Get()
+        public IEnumerable<Recipe> GetAllRecipes()
         {
             return _context.Recipes.Include(c => c.Products).ToList();
         }
 
-        public Recipe Get(int id)
+        public Recipe GetRecipe(int id)
         {
             return _context.Recipes
                 .Include(c => c.Image)
@@ -31,33 +32,22 @@ namespace Kalori.Repositories
                 .SingleOrDefault(c => c.Id == id);
         }
 
-        public Food GetFood(int? id)
+        public void RemoveRange(IEnumerable<Instruction> instructions)
         {
-            return _context.Foods.SingleOrDefault(c => c.Id == id);
-        }
-        public CategoryType GetCategoryType(int? id)
-        {
-            return _context.CategoryTypes.SingleOrDefault(c => c.Id == id);
+            _context.Instructions.RemoveRange(instructions);
         }
 
-        public void Add(Recipe recipe)
+        public void AttachRange(IEnumerable<Instruction> instructions)
         {
-            _context.Recipes.Add(recipe);
-            _context.SaveChanges();
+            foreach (var instruction in instructions)
+            {
+                if (!_context.Instructions.Local.Contains(instruction))
+                    _context.Instructions.Attach(instruction);
+            }
         }
-
-        public void Save()
+        public ApplicationDbContext ApplicationDbContext
         {
-            _context.SaveChanges();
-        }
-
-        public void Remove(Recipe recipe)
-        {
-            _context.Recipes.Remove(recipe);
-        }
-        public void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            get { return _context as ApplicationDbContext; }
         }
 
     }
