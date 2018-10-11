@@ -8,24 +8,22 @@ using Kalori.Models;
 
 namespace Kalori.Repositories
 {
-    public class ShoppinglistRepository : Repository<Shoppinglist>, IShoppinglistRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private ApplicationDbContext _context = new ApplicationDbContext();
 
-        public ShoppinglistRepository(ApplicationDbContext context)
+        public ProductRepository(ApplicationDbContext context)
             : base(context)
         {
 
         }
-
-        public Shoppinglist GetWithProducts(int id)
+        //FIXME => IProductRepository
+        public IEnumerable<Product> GetProductsWithFoodAndCategoryTypeOfShoppingList(int id)
         {
-            return _context.Shoppinglists.Include(c => c.Products).SingleOrDefault(c => c.Id == id);
-        }
-
-        public IEnumerable<Shoppinglist> GetAllWithProducts()
-        {
-            return _context.Shoppinglists.Include(m => m.Products).ToList();
+            return _context.Products
+                .Include(c => c.Food)
+                .Include(c => c.CategoryType)
+                .Where(c => c.ShoppinglistId == id).ToList();      
         }
 
         public ApplicationDbContext ApplicationDbContext

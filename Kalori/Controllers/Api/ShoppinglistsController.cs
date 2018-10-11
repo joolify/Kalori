@@ -24,7 +24,7 @@ namespace Kalori.Controllers.Api
         // GET /api/shoppinglists
         public IHttpActionResult Get()
         {
-            var shoppinglistDtos = _service.GetList()
+            var shoppinglistDtos = _service.GetAll()
                 .Select(Mapper.Map<Shoppinglist, ShoppinglistDto>);
 
             return Ok(shoppinglistDtos);
@@ -80,7 +80,7 @@ namespace Kalori.Controllers.Api
 
             Mapper.Map(shoppinglistDto, shoppinglistInDb);
 
-            _service.Save();
+            _service.Complete();
 
             return Ok();
         }
@@ -120,16 +120,14 @@ namespace Kalori.Controllers.Api
             product.Mass = productDto.Mass;
             product.PricePerKg = productDto.PricePerKg;
             product.PriceTotal = productDto.Mass * (productDto.PricePerKg / 1000);
-            var foodId = product.FoodId;
-            var food = _service.GetFood(foodId);
-            var catId = food.Category1;
-            var category = _service.GetCategoryType(catId);
+            var food = _service.GetFood(product.FoodId);
+            var category = _service.GetCategoryType(food.Category1);
             product.Food = food;
             product.CategoryType = category;
         
             productDto = Mapper.Map<Product, ProductDto>(product);
 
-            _service.Save();
+            _service.Complete();
 
             return Ok(productDto);
 

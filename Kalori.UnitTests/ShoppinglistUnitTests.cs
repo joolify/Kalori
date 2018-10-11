@@ -19,7 +19,7 @@ namespace Kalori.UnitTests
         {
             // Arrange
             Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
-            mockRepo.Setup(m => m.Get(1))
+            mockRepo.Setup(m => m.GetWithProducts(1))
                 .Returns(
                     new Shoppinglist {Id = 1, Name = "Test"}
                     );

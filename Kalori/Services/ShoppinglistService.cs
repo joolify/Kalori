@@ -8,99 +8,90 @@ using Kalori.Interfaces;
 using Kalori.Models;
 using Kalori.Repositories;
 using Kalori.ViewModels;
+using Kalori.UoW;
 
 namespace Kalori.Services
 {
     public class ShoppinglistService
     {
-        private readonly IShoppinglistRepository _shoppinglistRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ShoppinglistService()
         {
-            _shoppinglistRepo = new ShoppinglistRepository();
+            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
         }
-        public ShoppinglistService(IShoppinglistRepository shoppinglistRepo)
-        {
-            _shoppinglistRepo = shoppinglistRepo;
-        }
-        
+
         public void Dispose(bool disposing)
         {
-            _shoppinglistRepo.Dispose(disposing);
+            _unitOfWork.Dispose();
         }
+
+        public void Complete()
+        {
+            _unitOfWork.Complete();
+        }
+
+        /********************************************************
+         **** GETTERS
+         ********************************************************/
 
         public Shoppinglist Get(int id)
         {
-            return _shoppinglistRepo.Get(id);
+            return _unitOfWork.Shoppinglists.GetWithProducts(id);
         }
 
-        public IEnumerable<Shoppinglist> GetList()
+        public IEnumerable<Shoppinglist> GetAll()
         {
-            return _shoppinglistRepo.GetList();
+            return _unitOfWork.Shoppinglists.GetAllWithProducts();
         }
 
         public Product GetProduct(int id)
         {
-            return _shoppinglistRepo.GetProduct(id);
+            return _unitOfWork.Products.Get(id);
         }
 
-        public List<Product> GetProducts(int id)
+        public IEnumerable<Product> GetProducts(int id)
         {
-            return _shoppinglistRepo.GetProducts(id).ToList();
+            return _unitOfWork.Products.GetProductsWithFoodAndCategoryTypeOfShoppingList(id);
         }
-
-        public void Add(Shoppinglist shoppinglist)
-        {
-            _shoppinglistRepo.Add(shoppinglist);
-        }
-
-        public void Save()
-        {
-            _shoppinglistRepo.Save();
-        }
-
-        public void Remove(Shoppinglist shoppinglist)
-        {
-            _shoppinglistRepo.Remove(shoppinglist);
-        }
-        public void RemoveProduct(Product product)
-        {
-            _shoppinglistRepo.RemoveProduct(product);
-        }
-
-        public void Create(Shoppinglist model)
-        {
-            var shoppinglist = new Shoppinglist();
-            shoppinglist.Name = model.Name;
-
-            _shoppinglistRepo.Add(shoppinglist);
-        }
-        //FIXME Refactor CreateProduct
-        public void CreateProduct(NewProductShoppinglistViewModel viewModel)
-        {
-            var food = _shoppinglistRepo.GetFood(viewModel.Product.FoodId);
-            var categoryType = _shoppinglistRepo.GetCategoryType(food.Category1);
-
-            var product = new Product();
-            product.ShoppinglistId = viewModel.Shoppinglist.Id;
-            product.Food = food;
-            product.FoodId = viewModel.Product.FoodId;
-            product.Mass = viewModel.Product.Mass;
-            product.PricePerKg = viewModel.Product.PricePerKg;
-            product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
-            product.CategoryType = categoryType;
-
-            _shoppinglistRepo.SaveProduct(product);
-        }
-
         public Food GetFood(int? id)
         {
-            return _shoppinglistRepo.GetFood(id);
+            return _unitOfWork.Foods.Get(id);
         }
 
         public CategoryType GetCategoryType(int? id)
         {
-            return _shoppinglistRepo.GetCategoryType(id);
+            return _unitOfWork.Foods.GetCategoryType(id);
         }
+
+        /********************************************************
+         **** ADDERS
+         ********************************************************/
+
+        public void Add(Shoppinglist shoppinglist)
+        {
+            _unitOfWork.Shoppinglists.Add(shoppinglist);
+            _unitOfWork.Complete();
+        }
+        public void AddProduct(Product product)
+        {
+            _unitOfWork.Products.Add(product);
+            _unitOfWork.Complete();
+        }
+
+        /********************************************************
+         **** REMOVERS
+         ********************************************************/
+        public void Remove(Shoppinglist shoppinglist)
+        {
+            _unitOfWork.Shoppinglists.Remove(shoppinglist);
+            _unitOfWork.Complete();
+        }
+        public void RemoveProduct(Product product)
+        {
+            _unitOfWork.Products.Remove(product);
+            _unitOfWork.Complete();
+        }
+
     }
 }

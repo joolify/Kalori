@@ -238,7 +238,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IFoodRepository.cs" />
     <Compile Include="Interfaces\IRecipeRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IProductRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Migrations\201810082053222_InitialModel.cs" />
     <Compile Include="Migrations\201810082053222_InitialModel.Designer.cs">
       <DependentUpon>201810082053222_InitialModel.cs</DependentUpon>
@@ -258,12 +262,16 @@
     <Compile Include="Models\Shoppinglist.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Repositories\FoodRepository.cs" />
     <Compile Include="Repositories\RecipeRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\ShoppinglistRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RecipeService.cs" />
     <Compile Include="Services\ShoppinglistService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="UoW\UnitOfWork.cs" />
     <Compile Include="ViewModels\MemberFormViewModel.cs" />
     <Compile Include="ViewModels\DetailsFoodViewModel.cs" />
     <Compile Include="ViewModels\NewRecipeViewModel.cs" />

@@ -39,7 +39,9 @@ namespace Kalori.Controllers
         [HttpPost]
         public ActionResult Create(Shoppinglist model)
         {
-            _service.Create(model);
+            var shoppinglist = new Shoppinglist();
+            shoppinglist.Name = model.Name;
+            _service.Add(shoppinglist);
             
             return RedirectToAction("Index", "Shoppinglists");
         }
@@ -66,8 +68,19 @@ namespace Kalori.Controllers
         [HttpPost]
         public ActionResult CreateProduct(NewProductShoppinglistViewModel viewModel)
         {
+            var food = _service.GetFood(viewModel.Product.FoodId);
+            var categoryType = _service.GetCategoryType(food.Category1);
 
-            _service.CreateProduct(viewModel);
+             var product = new Product();
+            product.ShoppinglistId = viewModel.Shoppinglist.Id;
+            product.Food = food;
+            product.FoodId = viewModel.Product.FoodId;
+            product.Mass = viewModel.Product.Mass;
+            product.PricePerKg = viewModel.Product.PricePerKg;
+            product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
+            product.CategoryType = categoryType;
+
+            _service.AddProduct(product);
 
             return RedirectToAction("Details", "Shoppinglists", new {id = viewModel.Shoppinglist.Id});
         }

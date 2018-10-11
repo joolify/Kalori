@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Kalori.Interfaces;
+using Kalori.Models;
+using Kalori.Repositories;
+
+namespace Kalori.UoW
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        private readonly ApplicationDbContext _context;
+
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            _context = context;
+            Foods = new FoodRepository(_context);
+            Products = new ProductRepository(_context);
+            Shoppinglists = new ShoppinglistRepository(_context);
+        }
+
+        public IFoodRepository Foods { get; private set; }
+        public IProductRepository Products { get; private set; }
+        public IShoppinglistRepository Shoppinglists { get; private set; }
+
+        public int Complete()
+        {
+            return _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+    }
+}
