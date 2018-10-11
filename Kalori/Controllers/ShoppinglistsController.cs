@@ -24,7 +24,11 @@ namespace Kalori.Controllers
             _service.Dispose(disposing);
         }
 
-        // GET: Shoppinglist
+        /********************************************************
+         **** GET
+         ********************************************************/
+
+
         public ViewResult Index()
         {
             return View();
@@ -35,23 +39,11 @@ namespace Kalori.Controllers
             return View();
 
         }
-
-        [HttpPost]
-        public ActionResult Create(Shoppinglist model)
-        {
-            var shoppinglist = new Shoppinglist();
-            shoppinglist.Name = model.Name;
-            _service.Add(shoppinglist);
-            
-            return RedirectToAction("Index", "Shoppinglists");
-        }
-
         public ActionResult Details(int id)
         {
             return View(_service.Get(id));
 
         }
-
         public ViewResult NewProduct(int id)
         {
             var viewModel = new NewProductShoppinglistViewModel()
@@ -64,35 +56,14 @@ namespace Kalori.Controllers
             };
             return View(viewModel);
         }
-
-        [HttpPost]
-        public ActionResult CreateProduct(NewProductShoppinglistViewModel viewModel)
-        {
-            var food = _service.GetFood(viewModel.Product.FoodId);
-            var categoryType = _service.GetCategoryType(food.Category1);
-
-             var product = new Product();
-            product.ShoppinglistId = viewModel.Shoppinglist.Id;
-            product.Food = food;
-            product.FoodId = viewModel.Product.FoodId;
-            product.Mass = viewModel.Product.Mass;
-            product.PricePerKg = viewModel.Product.PricePerKg;
-            product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
-            product.CategoryType = categoryType;
-
-            _service.AddProduct(product);
-
-            return RedirectToAction("Details", "Shoppinglists", new {id = viewModel.Shoppinglist.Id});
-        }
-
-        public ViewResult Total(int id)
+       public ViewResult Total(int id)
         {
             var shoppingList = new Shoppinglist
             {
                 Id = id
             };
 
-            var products = _service.GetProducts(id).ToList();
+            var products = _service.GetAllProducts(id).ToList();
 
             var productTotal = new Product
             {
@@ -174,10 +145,48 @@ namespace Kalori.Controllers
             return View(viewModel);
         }
 
+        /********************************************************
+         **** POST
+         ********************************************************/
+
+        [HttpPost]
+        public ActionResult Add(Shoppinglist model)
+        {
+            var shoppinglist = new Shoppinglist();
+            shoppinglist.Name = model.Name;
+            _service.AddOrUpdate(shoppinglist);
+            _service.Complete();
+            
+            return RedirectToAction("Index", "Shoppinglists");
+        }
+
+        [HttpPost]
+        public ActionResult CreateProduct(NewProductShoppinglistViewModel viewModel)
+        {
+            var food = _service.GetFood(viewModel.Product.FoodId);
+            var categoryType = _service.GetCategoryType(food.Category1);
+
+             var product = new Product();
+            product.ShoppinglistId = viewModel.Shoppinglist.Id;
+            product.Food = food;
+            product.FoodId = viewModel.Product.FoodId;
+            product.Mass = viewModel.Product.Mass;
+            product.PricePerKg = viewModel.Product.PricePerKg;
+            product.PriceTotal = viewModel.Product.PricePerKg * (viewModel.Product.Mass / 1000);
+            product.CategoryType = categoryType;
+
+            _service.AddOrUpdate(product);
+            _service.Complete();
+
+            return RedirectToAction("Details", "Shoppinglists", new {id = viewModel.Shoppinglist.Id});
+        }
+
+     
+        [HttpPost]
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();
-            var products = _service.GetProducts(id).ToList();
+            var products = _service.GetAllProducts(id).ToList();
             for (int i = 0; i < products.Count; i++)
             {
                 var food = new Food();

@@ -21,25 +21,12 @@ namespace Kalori.Controllers.Api
             _service = new ShoppinglistService();
         }
 
-        // GET /api/shoppinglists
-        public IHttpActionResult Get()
-        {
-            var shoppinglistDtos = _service.GetAll()
-                .Select(Mapper.Map<Shoppinglist, ShoppinglistDto>);
 
-            return Ok(shoppinglistDtos);
-        }
+        /********************************************************
+         **** GET
+         ********************************************************/
 
-        public IHttpActionResult GetProducts(int id)
-        {
-            var productDtos = _service.GetProducts(id)
-                .Select(Mapper.Map<Product, ProductDto>);
-
-            return Ok(productDtos);
-        }
-
-
-        // GET /api/shoppinglists/1
+        // GET /api/shoppinglists/Get/1
         public IHttpActionResult Get(int id)
         {
             var shoppinglist = _service.Get(id);
@@ -50,22 +37,44 @@ namespace Kalori.Controllers.Api
             return Ok(Mapper.Map<Shoppinglist, ShoppinglistDto>(shoppinglist));
         }
 
-        // POST /api/shoppinglists
+        // GET /api/shoppinglists/GetAll
+        public IHttpActionResult GetAll()
+        {
+            var shoppinglistDtos = _service.GetAll()
+                .Select(Mapper.Map<Shoppinglist, ShoppinglistDto>);
+
+            return Ok(shoppinglistDtos);
+        }
+
+        // GET /api/shoppinglists/GetAllProducts
+        public IHttpActionResult GetAllProducts(int id)
+        {
+            var productDtos = _service.GetAllProducts(id)
+                .Select(Mapper.Map<Product, ProductDto>);
+
+            return Ok(productDtos);
+        }
+        /********************************************************
+         **** POST
+         ********************************************************/
+
+        // POST /api/shoppinglists/Add
         [HttpPost]
-        public IHttpActionResult CreateShoppinglist(ShoppinglistDto shoppinglistDto)
+        public IHttpActionResult Add(ShoppinglistDto shoppinglistDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
             var shoppinglist = Mapper.Map<ShoppinglistDto, Shoppinglist>(shoppinglistDto);
-            _service.Add(shoppinglist);
+            _service.AddOrUpdate(shoppinglist);
 
             shoppinglistDto.Id = shoppinglist.Id;
+            _service.Complete();
 
             return Created(new Uri(Request.RequestUri + "/" + shoppinglist.Id), shoppinglistDto);
         }
 
-        // PUT /api/shoppinglists/1
+        // POST /api/shoppinglists/Update
         [HttpPost]
         public IHttpActionResult Update(ShoppinglistDto shoppinglistDto)
         {
@@ -75,37 +84,19 @@ namespace Kalori.Controllers.Api
             var id = shoppinglistDto.Id;
             var shoppinglistInDb = _service.Get(id);
 
-            if(shoppinglistInDb == null)
+            if (shoppinglistInDb == null)
                 return NotFound();
 
             Mapper.Map(shoppinglistDto, shoppinglistInDb);
+
+            _service.AddOrUpdate(shoppinglistInDb);
 
             _service.Complete();
 
             return Ok();
         }
 
-        //DELETE /api/shoppinglists/1
-        [HttpDelete]
-        public IHttpActionResult Delete(int id)
-        {
-            var shoppinglistInDb = _service.Get(id);
-
-            if (shoppinglistInDb == null)
-                return NotFound();
-            var sId = shoppinglistInDb.Id;
-            var products = _service.GetProducts(sId);
-
-            foreach (var product in products)
-            {
-                _service.RemoveProduct(product);
-            }
-
-            _service.Remove(shoppinglistInDb);
-
-            return Ok();
-        }
-
+        // POST /api/shoppinglists/UpdateProduct
         [HttpPost]
         public IHttpActionResult UpdateProduct(ProductDto productDto)
         {
@@ -124,7 +115,7 @@ namespace Kalori.Controllers.Api
             var category = _service.GetCategoryType(food.Category1);
             product.Food = food;
             product.CategoryType = category;
-        
+
             productDto = Mapper.Map<Product, ProductDto>(product);
 
             _service.Complete();
@@ -133,6 +124,34 @@ namespace Kalori.Controllers.Api
 
         }
 
+        /********************************************************
+         **** DELETE
+         ********************************************************/
+
+        //DELETE /api/shoppinglists/Delete
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            var shoppinglistInDb = _service.Get(id);
+
+            if (shoppinglistInDb == null)
+                return NotFound();
+            var products = _service.GetAllProducts(shoppinglistInDb.Id);
+
+            _service.RemoveRange(products);
+
+            shoppinglistInDb.Products = null;
+
+            _service.Remove(shoppinglistInDb);
+
+            _service.Complete();
+
+            return Ok();
+        }
+
+
+
+        //DELETE /api/shoppinglists/DeleteIngredient
         [HttpDelete]
         public IHttpActionResult DeleteIngredient(int id)
         {
@@ -140,7 +159,7 @@ namespace Kalori.Controllers.Api
             if (productInDb == null)
                 return NotFound();
 
-            _service.RemoveProduct(productInDb);
+            _service.Remove(productInDb);
 
             return Ok();
         }

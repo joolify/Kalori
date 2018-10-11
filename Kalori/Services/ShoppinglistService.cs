@@ -50,7 +50,7 @@ namespace Kalori.Services
             return _unitOfWork.Products.Get(id);
         }
 
-        public IEnumerable<Product> GetProducts(int id)
+        public IEnumerable<Product> GetAllProducts(int id)
         {
             return _unitOfWork.Products.GetProductsWithFoodAndCategoryTypeOfShoppingList(id);
         }
@@ -68,15 +68,13 @@ namespace Kalori.Services
          **** ADDERS
          ********************************************************/
 
-        public void Add(Shoppinglist shoppinglist)
+        public void AddOrUpdate(Shoppinglist shoppinglist)
         {
-            _unitOfWork.Shoppinglists.Add(shoppinglist);
-            _unitOfWork.Complete();
+            _unitOfWork.Shoppinglists.AddOrUpdate(shoppinglist);
         }
-        public void AddProduct(Product product)
+        public void AddOrUpdate(Product product)
         {
-            _unitOfWork.Products.Add(product);
-            _unitOfWork.Complete();
+            _unitOfWork.Products.AddOrUpdate(product);
         }
 
         /********************************************************
@@ -84,13 +82,19 @@ namespace Kalori.Services
          ********************************************************/
         public void Remove(Shoppinglist shoppinglist)
         {
+            _unitOfWork.Shoppinglists.Attach(shoppinglist);
             _unitOfWork.Shoppinglists.Remove(shoppinglist);
-            _unitOfWork.Complete();
         }
-        public void RemoveProduct(Product product)
+        public void Remove(Product product)
         {
+            _unitOfWork.Products.Attach(product);
             _unitOfWork.Products.Remove(product);
-            _unitOfWork.Complete();
+        }
+
+        public void RemoveRange(IEnumerable<Product> products)
+        {
+            _unitOfWork.Products.AttachRange(products);
+            _unitOfWork.Products.RemoveRange(products);
         }
 
     }

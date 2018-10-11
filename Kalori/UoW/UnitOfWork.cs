@@ -24,10 +24,10 @@ namespace Kalori.UoW
         public IProductRepository Products { get; private set; }
         public IShoppinglistRepository Shoppinglists { get; private set; }
 
-        public int Complete()
-        {
-            return _context.SaveChanges();
-        }
+    public int Complete()
+    {
+        return _context.SaveChanges();
+    }
 
         public void Dispose()
         {

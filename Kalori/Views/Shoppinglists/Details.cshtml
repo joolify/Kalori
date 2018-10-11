@@ -50,7 +50,7 @@
 
                     ajax: {
                         type: "GET",
-                        url: "/api/shoppinglists/GetProducts/" + @Html.Raw(Json.Encode(Model.Id)),
+                        url: "/api/shoppinglists/GetAllProducts/" + @Html.Raw(Json.Encode(Model.Id)),
                         datatype: "json",
                         dataSrc: ""
                     },

@@ -80,7 +80,7 @@ namespace Kalori.UnitTests
             ShoppinglistService service = new ShoppinglistService(mockRepo.Object);
 
             // Act
-            var actual = service.GetProducts(1);
+            var actual = service.GetAllProducts(1);
 
             // Assert
             Assert.AreEqual(3, actual.Count);

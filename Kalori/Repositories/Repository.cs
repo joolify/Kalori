@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -50,9 +51,9 @@ namespace Kalori.Repositories
             return _context.Set<TEntity>().SingleOrDefault(predicate);
         }
 
-        public void Add(TEntity entity)
+        public void AddOrUpdate(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
+            _context.Set<TEntity>().AddOrUpdate(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
@@ -68,6 +69,20 @@ namespace Kalori.Repositories
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _context.Set<TEntity>().RemoveRange(entities);
+        }
+
+        public void Attach(TEntity entity)
+        {
+            if (!_context.Set<TEntity>().Local.Contains(entity))
+                _context.Set<TEntity>().Attach(entity);
+        }
+        public void AttachRange(IEnumerable<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                if (!_context.Set<TEntity>().Local.Contains(entity))
+                    _context.Set<TEntity>().Attach(entity);
+            }
         }
     }
 }
