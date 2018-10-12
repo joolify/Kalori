@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Kalori
+// Author           : Joel Wiklund
+// Created          : 10-11-2018
+//
+// Last Modified By : Joel Wiklund
+// Last Modified On : 10-11-2018
+// ***********************************************************************
+// <copyright file="FoodRepository.cs" company="joolify">
+//     Copyright (c) joolify. All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;

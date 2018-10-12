@@ -1,7 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// ***********************************************************************
+// Assembly         : Kalori
+// Author           : Joel Wiklund
+// Created          : 10-11-2018
+//
+// Last Modified By : Joel Wiklund
+// Last Modified On : 10-12-2018
+// ***********************************************************************
+// <copyright file="UnitOfWork.cs" company="joolify">
+//     Copyright (c) joolify. All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
 using Kalori.Interfaces;
 using Kalori.Models;
 using Kalori.Repositories;
@@ -26,10 +35,10 @@ namespace Kalori.UoW
         public IRecipeRepository Recipes { get; private set; }
         public IShoppinglistRepository Shoppinglists { get; private set; }
 
-    public int Complete()
-    {
-        return _context.SaveChanges();
-    }
+        public int Complete()
+        {
+            return _context.SaveChanges();
+        }
 
         public void Dispose()
         {

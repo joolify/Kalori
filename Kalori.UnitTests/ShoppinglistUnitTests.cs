@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kalori.Interfaces;
 using Kalori.Models;
 using Kalori.Services;
+using Kalori.UoW;
 using Moq;
 using NUnit.Framework;
 
@@ -37,6 +38,8 @@ namespace Kalori.UnitTests
         {
             // Arrange
             Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
+            Mock<ApplicationDbContext> mockContext = new Mock<ApplicationDbContext>();
+            UnitOfWork unitOfWork = new UnitOfWork(mockContext);
             mockRepo.Setup(m => m.GetFood(1))
                 .Returns(
                     new Food { Id = 1, Name = "Test" }

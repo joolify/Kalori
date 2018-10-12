@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Kalori
+// Author           : Joel Wiklund
+// Created          : 10-11-2018
+//
+// Last Modified By : Joel Wiklund
+// Last Modified On : 10-12-2018
+// ***********************************************************************
+// <copyright file="Repository.cs" company="joolify">
+//     Copyright (c) joolify. All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -12,77 +25,76 @@ namespace Kalori.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _context;
+        private DbSet<TEntity> _entities;
 
         public Repository(DbContext context)
         {
             _context = context;
+            _entities = _context.Set<TEntity>();
         }
 
         public TEntity Get(int id)
         {
-            // Here we are working with a DbContext, not PlutoContext. So we don't have DbSets 
-            // such as Courses or Authors, and we need to use the generic Set() method to access them.
-            return _context.Set<TEntity>().Find(id);
+            return _entities.Find(id);
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            // Note that here I've repeated _context.Set<TEntity>() in every method and this is causing
-            // too much noise. I could get a reference to the DbSet returned from this method in the 
-            // constructor and store it in a private field like _entities. This way, the implementation
-            // of our methods would be cleaner:
-            // 
-            // _entities.ToList();
-            // _entities.Where();
-            // _entities.SingleOrDefault();
-            // 
-            // I didn't change it because I wanted the code to look like the videos. But feel free to change
-            // this on your own.
-            return _context.Set<TEntity>().ToList();
+            return _entities.ToList();
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return _context.Set<TEntity>().Where(predicate);
+            return _entities.Where(predicate);
         }
 
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return _context.Set<TEntity>().SingleOrDefault(predicate);
+            return _entities.SingleOrDefault(predicate);
         }
 
         public void AddOrUpdate(TEntity entity)
         {
-            _context.Set<TEntity>().AddOrUpdate(entity);
+            _entities.AddOrUpdate(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().AddRange(entities);
+            _entities.AddRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            _entities.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().RemoveRange(entities);
+            _entities.RemoveRange(entities);
         }
 
         public void Attach(TEntity entity)
         {
-            if (!_context.Set<TEntity>().Local.Contains(entity))
-                _context.Set<TEntity>().Attach(entity);
+            if (!_entities.Local.Contains(entity))
+                _entities.Attach(entity);
         }
         public void AttachRange(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
-                if (!_context.Set<TEntity>().Local.Contains(entity))
+                if (!_entities.Local.Contains(entity))
                     _context.Set<TEntity>().Attach(entity);
             }
+        }
+
+        public void SetTempObj(String key, object value)
+        {
+            System.Web.Helpers.WebCache.Set(key, value);
+        }
+
+        public object GetTempObj(String key)
+        {
+            return System.Web.Helpers.WebCache.Get(key);
         }
     }
 }
