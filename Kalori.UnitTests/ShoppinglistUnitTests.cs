@@ -43,16 +43,15 @@ namespace Kalori.UnitTests
         public void GetAll_IdOne_Returns_ThreeRows()
         {
             // Arrange
-            var mockRepo = new Mock<IShoppinglistRepository>();
-            mockRepo.Setup(m => m.GetAllWithProducts())
-                .Returns(
-                     new[]
-                    {
+            IEnumerable<Shoppinglist> shoppinglists = new[] {
                         new Shoppinglist {Id = 1, Name = "Test"},
                         new Shoppinglist {Id = 2, Name = "Test2"},
                         new Shoppinglist {Id = 3, Name = "Test3"}
-                    }.AsQueryable()
-
+            };
+            var mockRepo = new Mock<IShoppinglistRepository>();
+            mockRepo.Setup(m => m.GetAllWithProducts())
+                .Returns(
+                    shoppinglists
                 );
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(uow => uow.Shoppinglists).Returns(mockRepo.Object);
@@ -70,10 +69,11 @@ namespace Kalori.UnitTests
         public void GetProduct_IdOne_Returns_Product()
         {
             // Arrange
+            var ID = 1;
             var mockRepo = new Mock<IProductRepository>();
-            mockRepo.Setup(m => m.Get(1))
+            mockRepo.Setup(m => m.Get(ID))
                 .Returns(
-                    new Product { Id = 1 }
+                    new Product { Id = ID }
                 );
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(uow => uow.Products).Returns(mockRepo.Object);
@@ -81,7 +81,7 @@ namespace Kalori.UnitTests
             ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
 
             // Act
-            var actual = service.GetProduct(1);
+            var actual = service.GetProduct(ID);
 
             // Assert
             Assert.IsTrue(actual.GetType() == typeof(Product));
@@ -91,15 +91,15 @@ namespace Kalori.UnitTests
         public void GetAllProducts_IdOne_Returns_ThreeRows()
         {
             // Arrange
+            IEnumerable<Product> products = new[] {
+                new Product {Id = 1},
+                new Product {Id = 2},
+                new Product {Id = 3}
+            };
             var mockRepo = new Mock<IProductRepository>();
             mockRepo.Setup(m => m.GetAllFromShoppingList(1))
                 .Returns(
-                     new[]
-                    {
-                        new Product {Id = 1},
-                        new Product {Id = 2},
-                        new Product {Id = 3}
-                    }.AsQueryable()
+                     products
                 );
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(uow => uow.Products).Returns(mockRepo.Object);
@@ -116,10 +116,11 @@ namespace Kalori.UnitTests
         public void GetFood_IdOne_Returns_Food()
         {
             // Arrange
+            var ID = 1;
             var mockRepo = new Mock<IFoodRepository>();
-            mockRepo.Setup(m => m.Get(1))
+            mockRepo.Setup(m => m.Get(ID))
                 .Returns(
-                    new Food { Id = 1, Name = "Test" }
+                    new Food { Id = ID, Name = "Test" }
                 );
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork.Setup(uow => uow.Foods).Returns(mockRepo.Object);
@@ -127,7 +128,7 @@ namespace Kalori.UnitTests
             ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
 
             // Act
-            var actual = service.GetFood(1);
+            var actual = service.GetFood(ID);
 
             // Assert
             Assert.IsTrue(actual.GetType() == typeof(Food));
@@ -152,6 +153,120 @@ namespace Kalori.UnitTests
 
             // Assert
             Assert.IsTrue(actual.GetType() == typeof(CategoryType));
+        }
+        [Test]
+        public void AddOrUpdate_Shoppinglist_Returns_True()
+        {
+            // Arrange
+            var shoppinglist = new Shoppinglist { Name = "test" };
+            var mockRepo = new Mock<IShoppinglistRepository>();
+            mockRepo.Setup(m => m.AddOrUpdate(shoppinglist))
+                .Returns(
+                    true
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Shoppinglists).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
+
+            // Act
+            var actual = service.AddOrUpdate(shoppinglist);
+
+            // Assert
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void AddOrUpdate_Product_Returns_True()
+        {
+            // Arrange
+            var product = new Product { Mass = 50 };
+            var mockRepo = new Mock<IProductRepository>();
+            mockRepo.Setup(m => m.AddOrUpdate(product))
+                .Returns(
+                    true
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Products).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
+
+            // Act
+            var actual = service.AddOrUpdate(product);
+
+            // Assert
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void Remove_Product_Returns_True()
+        {
+            // Arrange
+            var product = new Product { Mass = 50 };
+            var mockRepo = new Mock<IProductRepository>();
+            mockRepo.Setup(m => m.Remove(product))
+                .Returns(
+                    true
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Products).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
+
+            // Act
+            var actual = service.Remove(product);
+
+            // Assert
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void Remove_Shoppinglist_Returns_True()
+        {
+            // Arrange
+            var shoppinglist = new Shoppinglist { Name = "test" };
+            var mockRepo = new Mock<IShoppinglistRepository>();
+            mockRepo.Setup(m => m.Remove(shoppinglist))
+                .Returns(
+                    true
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Shoppinglists).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
+
+            // Act
+            var actual = service.Remove(shoppinglist);
+
+            // Assert
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void RemoveRange_Products_Returns_True()
+        {
+            // Arrange
+            IEnumerable<Product> products = new[] {
+                new Product {Id = 1},
+                new Product {Id = 2},
+                new Product {Id = 3}
+            };
+
+            var mockRepo = new Mock<IProductRepository>();
+            mockRepo.Setup(m => m.RemoveRange(products))
+                .Returns(
+                    true
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Products).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
+
+            // Act
+            var actual = service.RemoveRange(products);
+
+            // Assert
+            Assert.IsTrue(actual);
         }
     }
 }

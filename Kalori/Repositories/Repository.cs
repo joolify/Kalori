@@ -18,6 +18,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using AutoMapper.Internal;
 using Kalori.Interfaces;
 
 namespace Kalori.Repositories
@@ -48,14 +49,20 @@ namespace Kalori.Repositories
             return _entities.Where(predicate);
         }
 
+        public bool Exists<TEntity>(TEntity entity) where TEntity : class
+        {
+            return _entities.Local.Any(e => e == entity);
+        }
+
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return _entities.SingleOrDefault(predicate);
         }
 
-        public void AddOrUpdate(TEntity entity)
+        public bool AddOrUpdate(TEntity entity)
         {
             _entities.AddOrUpdate(entity);
+            return Exists(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
@@ -63,14 +70,22 @@ namespace Kalori.Repositories
             _entities.AddRange(entities);
         }
 
-        public void Remove(TEntity entity)
+        public bool Remove(TEntity entity)
         {
             _entities.Remove(entity);
+            return !Exists(entity);
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
+        public bool RemoveRange(IEnumerable<TEntity> entities)
         {
             _entities.RemoveRange(entities);
+            foreach (var entity in entities)
+            {
+                if (Exists(entity))
+                    return false;
+            }
+
+            return true;
         }
 
         public void Attach(TEntity entity)

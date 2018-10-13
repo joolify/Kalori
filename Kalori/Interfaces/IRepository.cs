@@ -44,6 +44,14 @@ namespace Kalori.Interfaces
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
+        /// Checks if the entity exists.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the t entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <returns><c>true</c> if exists, <c>false</c> otherwise.</returns>
+        bool Exists<TEntity>(TEntity entity) where TEntity : class;
+
+        /// <summary>
         /// Single or default.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -51,26 +59,30 @@ namespace Kalori.Interfaces
         TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        /// Adds or update the entity.
+        /// Adds or updates the entity
         /// </summary>
         /// <param name="entity">The entity.</param>
-        void AddOrUpdate(TEntity entity);
+        /// <returns><c>true</c> if added, <c>false</c> otherwise.</returns>
+        bool AddOrUpdate(TEntity entity);
         /// <summary>
         /// Adds a list of entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
         void AddRange(IEnumerable<TEntity> entities);
 
+
         /// <summary>
         /// Removes the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        void Remove(TEntity entity);
+        /// <returns><c>true</c> if removed, <c>false</c> otherwise.</returns>
+        bool Remove(TEntity entity);
+
         /// <summary>
         /// Removes a list of entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        void RemoveRange(IEnumerable<TEntity> entities);
+        bool RemoveRange(IEnumerable<TEntity> entities);
         /// <summary>
         /// Attaches the specified entity.
         /// </summary>

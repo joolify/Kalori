@@ -42,7 +42,7 @@ namespace Kalori.Services
         /// <summary>
         /// Gets the specified Product.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The Product identifier.</param>
         /// <returns>Product.</returns>
         public Product Get(int id)
         {
@@ -50,7 +50,7 @@ namespace Kalori.Services
         }
 
         /// <summary>
-        /// Gets all Shoppinglists.
+        /// Gets all Products from a specific Shoppinglist.
         /// </summary>
         /// <param name="id">The Shoppinglist identifier.</param>
         /// <returns>IEnumerable&lt;Product&gt;.</returns>

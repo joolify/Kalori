@@ -103,17 +103,17 @@ namespace Kalori.Services
         /// Adds or updates a Shoppinglist.
         /// </summary>
         /// <param name="shoppinglist">The shoppinglist.</param>
-        public void AddOrUpdate(Shoppinglist shoppinglist)
+        public bool AddOrUpdate(Shoppinglist shoppinglist)
         {
-            _unitOfWork.Shoppinglists.AddOrUpdate(shoppinglist);
+            return _unitOfWork.Shoppinglists.AddOrUpdate(shoppinglist);
         }
         /// <summary>
         /// Adds or updates a Product.
         /// </summary>
         /// <param name="product">The product.</param>
-        public void AddOrUpdate(Product product)
+        public bool AddOrUpdate(Product product)
         {
-            _unitOfWork.Products.AddOrUpdate(product);
+            return _unitOfWork.Products.AddOrUpdate(product);
         }
         /// <summary>
         /// Sets the temporary Recipe.
@@ -131,29 +131,29 @@ namespace Kalori.Services
         /// Removes the specified Shoppinglist.
         /// </summary>
         /// <param name="shoppinglist">The shoppinglist.</param>
-        public void Remove(Shoppinglist shoppinglist)
+        public bool Remove(Shoppinglist shoppinglist)
         {
             _unitOfWork.Shoppinglists.Attach(shoppinglist);
-            _unitOfWork.Shoppinglists.Remove(shoppinglist);
+            return _unitOfWork.Shoppinglists.Remove(shoppinglist);
         }
         /// <summary>
         /// Removes the specified Product.
         /// </summary>
         /// <param name="product">The product.</param>
-        public void Remove(Product product)
+        public bool Remove(Product product)
         {
             _unitOfWork.Products.Attach(product);
-            _unitOfWork.Products.Remove(product);
+            return _unitOfWork.Products.Remove(product);
         }
 
         /// <summary>
         /// Removes a list of Products. 
         /// </summary>
         /// <param name="products">The products.</param>
-        public void RemoveRange(IEnumerable<Product> products)
+        public bool RemoveRange(IEnumerable<Product> products)
         {
             _unitOfWork.Products.AttachRange(products);
-            _unitOfWork.Products.RemoveRange(products);
+            return _unitOfWork.Products.RemoveRange(products);
         }
     }
 }
