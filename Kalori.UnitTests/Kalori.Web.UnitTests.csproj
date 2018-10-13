@@ -87,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShoppinglistsControllerApiUnitTests.cs" />
     <Compile Include="ShoppinglistsControllerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShoppinglistUnitTests.cs" />

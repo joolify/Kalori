@@ -11,16 +11,10 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
-using System.Web;
-using System.Web.Mvc;
 using Kalori.Interfaces;
 using Kalori.Models;
-using Kalori.Repositories;
-using Kalori.ViewModels;
+using Kalori.Services;
 using Kalori.UoW;
 
 namespace Kalori.Services
@@ -28,42 +22,21 @@ namespace Kalori.Services
     /// <summary>
     /// Class ShoppinglistService.
     /// </summary>
-    public class ShoppinglistService
+    public class ShoppinglistService : Service<Shoppinglist>
     {
-        /// <summary>
-        /// The unit of work
-        /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ShoppinglistService"/> class.
-        /// </summary>
-        public ShoppinglistService()
+        public ShoppinglistService() : base()
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            
         }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        public void Dispose(bool disposing)
+        public ShoppinglistService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork.Dispose();
-        }
-
-        /// <summary>
-        /// Saves the changes to the DbContext.
-        /// </summary>
-        public void Complete()
-        {
-            _unitOfWork.Complete();
+            
         }
 
         /********************************************************
          **** GETTERS
          ********************************************************/
-
         /// <summary>
         /// Gets the specified Shoppinglist with Products
         /// </summary>

@@ -21,38 +21,16 @@ namespace Kalori.Services
     /// <summary>
     /// Class RecipeService.
     /// </summary>
-    public class RecipeService
+    public class RecipeService : Service<Recipe>
     {
-        /// <summary>
-        /// The unit of work
-        /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RecipeService"/> class.
-        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
-        /// </summary>
-        public RecipeService()
+        public RecipeService() : base()
         {
-            _unitOfWork = new UnitOfWork(new ApplicationDbContext());
+            
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        public void Dispose(bool disposing)
+        public RecipeService(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            if (disposing)
-                _unitOfWork.Dispose();
-        }
-
-        /// <summary>
-        /// Saves the changes to the DbContext.
-        /// </summary>
-        public void Complete()
-        {
-            _unitOfWork.Complete();
+            
         }
         /********************************************************
          **** GETTERS

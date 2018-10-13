@@ -25,9 +25,9 @@ namespace Kalori
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                    "~/Content/Site.css",
                     "~/Content/bootstrap-lumen.css", 
-                    "~/Content/DataTables/css/dataTables.bootstrap.css",
-                    "~/Content/Site.css"
+                    "~/Content/DataTables/css/dataTables.bootstrap.css"
                 ));
         }
     }

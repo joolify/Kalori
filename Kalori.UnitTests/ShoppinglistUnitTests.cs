@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,16 +16,21 @@ namespace Kalori.UnitTests
     [TestFixture]
     class ShoppinglistUnitTests
     {
+
+        //FIXME Change method name
         [Test]
-        public void Details_Returns_Shoppinglist()
+        public void GetWithProducts_IdOne_ReturnsShoppinglist()
         {
             // Arrange
-            Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
+            var mockRepo = new Mock<IShoppinglistRepository>();
             mockRepo.Setup(m => m.GetWithProducts(1))
                 .Returns(
-                    new Shoppinglist {Id = 1, Name = "Test"}
-                    );
-            ShoppinglistService service = new ShoppinglistService(mockRepo.Object);
+                    new Shoppinglist { Id = 1, Name = "Test" }
+                );
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Shoppinglists).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService(mockUnitOfWork.Object);
 
             // Act
             var actual = service.Get(1);
@@ -34,59 +40,31 @@ namespace Kalori.UnitTests
         }
 
         [Test]
-        public void CreateProduct_Returns_Food()
+        public void GetAllWithProducts_IdOne_ReturnThreeRows()
         {
             // Arrange
-            Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
-            Mock<ApplicationDbContext> mockContext = new Mock<ApplicationDbContext>();
-            UnitOfWork unitOfWork = new UnitOfWork(mockContext);
-            mockRepo.Setup(m => m.GetFood(1))
+            var mockRepo = new Mock<IShoppinglistRepository>();
+            mockRepo.Setup(m => m.GetAllWithProducts())
                 .Returns(
-                    new Food { Id = 1, Name = "Test" }
+                     new Shoppinglist[]
+                    {
+                        new Shoppinglist {Id = 1, Name = "Test"},
+                        new Shoppinglist {Id = 2, Name = "Test2"},
+                        new Shoppinglist {Id = 3, Name = "Test3"}
+                    }.AsQueryable()
+                    
                 );
-            ShoppinglistService service = new ShoppinglistService(mockRepo.Object);
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.Shoppinglists).Returns(mockRepo.Object);
+
+            ShoppinglistService service = new ShoppinglistService();
 
             // Act
-            var actual = service.GetFood(1);
+            var actual = service.GetAll();
 
             // Assert
-            Assert.IsTrue(actual.GetType() == typeof(Food));
+            Assert.AreEqual(3, actual.Count());
         }
 
-        [Test]
-        public void CreateProduct_Returns_CategoryType()
-        {
-            // Arrange
-            Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
-            mockRepo.Setup(m => m.GetCategoryType(1))
-                .Returns(
-                    new CategoryType { Id = 1, Name = "Test" }
-                );
-            ShoppinglistService service = new ShoppinglistService(mockRepo.Object);
-
-            // Act
-            var actual = service.GetCategoryType(1);
-
-            // Assert
-            Assert.IsTrue(actual.GetType() == typeof(CategoryType));
-        }
-
-        [Test]
-        public void Total_Returns_ThreeRows()
-        {
-            // Arrange
-            Mock<IShoppinglistRepository> mockRepo = new Mock<IShoppinglistRepository>();
-            mockRepo.Setup(m => m.GetProducts(1))
-                .Returns(
-                    new Product[] { new Product { Id = 1}, new Product { Id = 2}, new Product { Id = 3 } }.AsQueryable()
-                );
-            ShoppinglistService service = new ShoppinglistService(mockRepo.Object);
-
-            // Act
-            var actual = service.GetAllProducts(1);
-
-            // Assert
-            Assert.AreEqual(3, actual.Count);
-        }
     }
 }
