@@ -40,7 +40,7 @@ namespace Kalori.Controllers
             var products = _context.Products.Include(c => c.Food).ToList();
             TempData["products"] = null;
             TempData["products"] = products;
-            return RedirectToAction("New", "Recipe");
+            return RedirectToAction("New", "Recipes");
         }
 
         public ViewResult New()
@@ -61,67 +61,7 @@ namespace Kalori.Controllers
             {
                 Mass = 0
             };
-            product.Food = new Food
-            {
-                Alkohol = 0,
-                Arakidinsyra = 0,
-                Arakidonsyra = 0,
-                Aska = 0,
-                Avfall = 0,
-                DHA = 0,
-                Disackarider = 0,
-                DPA = 0,
-                EnergiKJ = 0,
-                EnergiKcal = 0,
-                EPA = 0,
-                Fett = 0,
-                Fettsyra = 0,
-                Fibrer = 0,
-                Folat = 0,
-                FullkornTotalt = 0,
-                Jod = 0,
-                Jarn = 0,
-                Kalcium = 0,
-                Kalium = 0,
-                Karoten = 0,
-                Kolesterol = 0,
-                Kolhydrater = 0,
-                Koppar = 0,
-                Laurinsyra = 0,
-                Linolensyra = 0,
-                Linolsyra = 0,
-                Magnesium = 0,
-                Monosackarider = 0,
-                Myristinsyra = 0,
-                Natrium = 0,
-                Niacin = 0,
-                Niacinekvivalenter = 0,
-                Oljesyra = 0,
-                Palmitinsyra = 0,
-                Palmitoljesyra = 0,
-                Protein = 0,
-                Retinol = 0,
-                Riboflavin = 0,
-                Sackaros = 0,
-                Salt = 0,
-                Selen = 0,
-                Sockerarter = 0,
-                Stearinsyra = 0,
-                Starkelse = 0,
-                SummaEnkelOmattadeFettsyror = 0,
-                SummaFleromattadeFettsyror = 0,
-                SummaMattadeFettsyror = 0,
-                Tiamin = 0,
-                Vatten = 0,
-                VitaminA = 0,
-                VitaminB6 = 0,
-                VitaminB12 = 0,
-                VitaminC = 0,
-                VitaminD = 0,
-                VitaminE = 0,
-                VitaminK = 0,
-                Zink = 0
-            };
+            product.Food = new Food();
 
 
             for (int i = 0; i < products.Count; i++)

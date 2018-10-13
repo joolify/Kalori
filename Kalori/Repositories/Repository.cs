@@ -91,7 +91,6 @@ namespace Kalori.Repositories
         {
             System.Web.Helpers.WebCache.Set(key, value);
         }
-
         public object GetTempObj(String key)
         {
             return System.Web.Helpers.WebCache.Get(key);

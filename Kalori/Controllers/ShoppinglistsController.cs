@@ -1,4 +1,17 @@
-﻿using System;
+﻿// ***********************************************************************
+// Assembly         : Kalori
+// Author           : Joel Wiklund
+// Created          : 10-09-2018
+//
+// Last Modified By : Joel Wiklund
+// Last Modified On : 10-13-2018
+// ***********************************************************************
+// <copyright file="ShoppinglistsController.cs" company="joolify">
+//     Copyright (c) joolify. All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -10,15 +23,30 @@ using Kalori.ViewModels;
 
 namespace Kalori.Controllers
 {
+    /// <summary>
+    /// Class ShoppinglistsController creates lists and edits Shoppinglists
+    /// </summary>
+    /// <seealso cref="System.Web.Mvc.Controller" />
     public class ShoppinglistsController : Controller
     {
+        /// <summary>
+        /// A Shoppinglist Service layer. 
+        /// </summary>
         private ShoppinglistService _service;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShoppinglistsController"/> class.
+        /// Initializes a new instance of the <see cref="ShoppinglistService"/> class.
+        /// </summary>
         public ShoppinglistsController()
         {
             _service = new ShoppinglistService();
         }
 
+        /// <summary>
+        /// Releases unmanaged resources and optionally releases managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             _service.Dispose(disposing);
@@ -28,21 +56,39 @@ namespace Kalori.Controllers
          **** GET
          ********************************************************/
 
+        /// <summary>
+        /// Returns a list of Shoppinglists
+        /// </summary>
+        /// <returns>ViewResult.</returns>
         public ViewResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Returns a new Shoppinglist
+        /// </summary>
+        /// <returns>ViewResult.</returns>
         public ViewResult New()
         {
             return View();
 
         }
+        /// <summary>
+        ///A detailed Shoppinglist
+        /// </summary>
+        /// <param name="id">The Shoppinglist identifier.</param>
+        /// <returns>ActionResult.</returns>
         public ActionResult Details(int id)
         {
             return View(_service.Get(id));
 
         }
+        /// <summary>
+        /// Creates a new Product
+        /// </summary>
+        /// <param name="id">The Shoppinglist identifier.</param>
+        /// <returns>ViewResult.</returns>
         public ViewResult NewProduct(int id)
         {
             var viewModel = new NewProductShoppinglistViewModel()
@@ -55,7 +101,12 @@ namespace Kalori.Controllers
             };
             return View(viewModel);
         }
-       public ViewResult Total(int id)
+        /// <summary>
+        /// Lists all nutrient contents of a list of Products.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>ViewResult.</returns>
+        public ViewResult Total(int id)
         {
             var shoppingList = new Shoppinglist
             {
@@ -148,6 +199,11 @@ namespace Kalori.Controllers
          **** POST
          ********************************************************/
 
+        /// <summary>
+        /// Adds a new Shoppinglist
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         public ActionResult Add(Shoppinglist model)
         {
@@ -159,6 +215,11 @@ namespace Kalori.Controllers
             return RedirectToAction("Index", "Shoppinglists");
         }
 
+        /// <summary>
+        /// Creates a new Product
+        /// </summary>
+        /// <param name="viewModel">The view model.</param>
+        /// <returns>ActionResult.</returns>
         [HttpPost]
         public ActionResult CreateProduct(NewProductShoppinglistViewModel viewModel)
         {
@@ -180,6 +241,11 @@ namespace Kalori.Controllers
             return RedirectToAction("Details", "Shoppinglists", new {id = viewModel.Shoppinglist.Id});
         }
 
+        /// <summary>
+        /// Creates a temporary Recipe for the Recipe View
+        /// </summary>
+        /// <param name="id">The Shoppinglist identifier.</param>
+        /// <returns>ActionResult.</returns>
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();
