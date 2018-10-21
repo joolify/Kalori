@@ -75,7 +75,7 @@ namespace Kalori.Services
         /// <returns>IEnumerable&lt;Food&gt;.</returns>
         public IEnumerable<Food> GetTempFoods(string key)
         {
-            return _unitOfWork.Recipes.GetTempObj(key) as IEnumerable<Food>;
+            return _unitOfWork.Recipes.GetCache(key) as IEnumerable<Food>;
         }
 
 
@@ -87,9 +87,9 @@ namespace Kalori.Services
         /// Adds or updates a Product.
         /// </summary>
         /// <param name="product">The product.</param>
-        public void AddOrUpdate(Product product)
+        public bool AddOrUpdate(Product product)
         {
-            _unitOfWork.Products.AddOrUpdate(product);
+            return _unitOfWork.Products.AddOrUpdate(product);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Kalori.Services
         /// <param name="value">The value.</param>
         public void SetTempFoods(string key, IEnumerable<Food> value)
         {
-            _unitOfWork.Products.SetTempObj(key, value);
+            _unitOfWork.Products.SetCache(key, value);
         }
 
         /********************************************************
@@ -109,10 +109,10 @@ namespace Kalori.Services
         /// Removes the specified product.
         /// </summary>
         /// <param name="product">The product.</param>
-        public void Remove(Product product)
+        public bool Remove(Product product)
         {
             _unitOfWork.Products.Attach(product);
-            _unitOfWork.Products.Remove(product);
+            return _unitOfWork.Products.Remove(product);
         }
 
     }

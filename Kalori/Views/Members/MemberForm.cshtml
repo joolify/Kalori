@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>New Member</h2>
+<h2>Ny medlem</h2>
 <h4>@Html.ActionLink("Tillbaka", "Index", "Members", null, new { @class = "btn btn-primary"})</h4>
 @using (Html.BeginForm("Save", "Members"))
 {
-    @Html.ValidationSummary(true, "Please fix the following errors.")
+    @Html.ValidationSummary(true, "Var god ändra följande fel")
     <div class="form-group">
         @Html.LabelFor(m => m.Member.Name)
         @Html.TextBoxFor(m => m.Member.Name, new { @class = "form-control"})
@@ -23,14 +23,14 @@
         @Html.LabelFor(m => m.Member.MembershipTypeId)
         @Html.DropDownListFor(m => m.Member.MembershipTypeId, 
             new SelectList(Model.MembershipTypes, "Id", "Name"),
-            "Select Membership Type",
+            "Välj medlemstyp",
             new {@class = "form-control"})
         @Html.ValidationMessageFor(m => m.Member.MembershipTypeId)
 
     </div>
     <div class="checkbox">
         <label>
-            @Html.CheckBoxFor(m => m.Member.IsSubscribedToNewsLetter) Subscribed to Newsletter?
+            @Html.CheckBoxFor(m => m.Member.IsSubscribedToNewsLetter) Prenumerera på nyhetsbrev?
         </label>
     </div>
     @Html.HiddenFor(m => m.Member.Id)

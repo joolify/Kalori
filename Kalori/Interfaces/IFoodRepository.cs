@@ -32,7 +32,7 @@ namespace Kalori.Interfaces
         /// <returns>Food.</returns>
         Food Get(int? id);
         /// <summary>
-        /// Gets the specifiend CategoryType.
+        /// Gets the specified CategoryType.
         /// </summary>
         /// <param name="id">The CategoryType identifier.</param>
         /// <returns>CategoryType.</returns>

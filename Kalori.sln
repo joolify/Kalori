@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kalori.Web", "Kalori\Kalori
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kalori.Web.UnitTests", "Kalori.UnitTests\Kalori.Web.UnitTests.csproj", "{62434972-9449-490D-BE25-09C70C5B9B16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kalori.MVC", "Kalori.MVC\Kalori.MVC.csproj", "{7C423B54-41F3-48F9-84E2-2110F5D6EC9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{62434972-9449-490D-BE25-09C70C5B9B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62434972-9449-490D-BE25-09C70C5B9B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62434972-9449-490D-BE25-09C70C5B9B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C423B54-41F3-48F9-84E2-2110F5D6EC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C423B54-41F3-48F9-84E2-2110F5D6EC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C423B54-41F3-48F9-84E2-2110F5D6EC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C423B54-41F3-48F9-84E2-2110F5D6EC9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

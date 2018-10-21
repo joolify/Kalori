@@ -1,9 +1,9 @@
 ﻿@model Kalori.ViewModels.NewRecipeViewModel
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Nytt recept";
-                Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Nytt recept";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Nytt recept</h2>
 <h4>@Html.ActionLink("Tillbaka", "Index", "Recipes", null, new { @class = "btn btn-primary" })</h4>
@@ -149,11 +149,14 @@
         </div>
     </fieldset>
 }@section Scripts {
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-     <script type="text/javascript">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript">
+        var recipe = JSON.parse(localStorage.getItem('recipe'));
+        console.log(recipe);    
          $(document).ready(function() {
+
              table1 = $("#ingredients").DataTable({
                      "language": {
                          "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json"
@@ -218,6 +221,8 @@
                          }
                      ]
                  }),
+
+
                  $("#ingredients ").on("click",
                      ".js-delete",
                      function() {
@@ -495,5 +500,5 @@
                      }
                  });
          });
-     </script>
- }
+    </script>
+}

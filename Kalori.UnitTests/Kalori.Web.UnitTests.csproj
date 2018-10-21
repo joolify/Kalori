@@ -87,19 +87,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShoppinglistsControllerApiUnitTests.cs" />
-    <Compile Include="ShoppinglistsControllerUnitTests.cs" />
+    <Compile Include="Services\ProductUnitTests .cs" />
+    <Compile Include="Apis\ShoppinglistsControllerApiUnitTests.cs" />
+    <Compile Include="Controllers\ShoppinglistsControllerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShoppinglistUnitTests.cs" />
+    <Compile Include="Services\RecipeUnitTests.cs" />
+    <Compile Include="Services\ShoppinglistUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Fakes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Kalori\Kalori.Web.csproj">
       <Project>{61B399AA-172D-40AB-8606-351B5A2A29A8}</Project>

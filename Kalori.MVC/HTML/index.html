@@ -1,0 +1,85 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <title>Javascript MVC</title>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+
+    <style>
+
+        </style>
+
+</head>
+
+
+<body>
+
+<div class="js-container">
+    <!-- start recipe -->
+    Namn:
+    <input type="text" class="js-name-recipe-textbox"><br/>
+    Tillagningstid
+    <input type="text" class="js-cookingtimeH-recipe-textbox"> 
+    <input type="text" class="js-cookingtimeM-recipe-textbox"><br/>
+    Portioner
+    <input type="text" class="js-portions-recipe-textbox"><br/>
+    <!-- end recipe -->
+    <hr />
+    <!-- start products -->
+    Namn:
+    <input type="text" class="js-name-product-textbox"><br/>
+    Mängd (g):
+    <input type="text" class="js-mass-product-textbox"><br/>
+    Pris/kg:
+    <input type="text" class="js-pricePerKg-product-textbox"><br/>
+    <input type="button" class="js-add-product-button" value="Lägg till ingrediens">
+
+    <div class="js-products-container">
+        <table id="ingredients" class="table table-bordered table-hover" style="margin-top: 10px">
+            <thead>
+            <tr bgcolor="#f5f5f5">
+                <th>Vara:</th>
+                <th>Mängd (g):</th>
+                <th>Pris/kg:</th>
+                <th>Pris:</th>
+                <th>Ändra:</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- end products -->
+    
+    <hr />
+    <!-- start instructions -->
+    <input type="text" class="js-name-instruction-textbox"><br/>
+    <input type="button" class="js-add-instruction-button" value="Lägg till instruktion">
+    
+    <div class="js-instructions-container">
+        <table id="instructions" class="table table-bordered table-hover" style="margin-top: 10px">
+            <thead>
+            <tr bgcolor="#f5f5f5">
+                <th>Ordning:</th>
+                <th>Instruktion:</th>
+                <th>Ändra:</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- end instructions -->
+
+</div>
+<!-- end js-container -->
+
+
+
+<script src="../Javascript/Helpers/EventDispatcher.js"></script>
+<script src="../Javascript/Models/RecipeModel.js"></script>
+<script src="../Javascript/Views/RecipeView.js"></script>
+<script src="../Javascript/Controllers/RecipeController.js"></script>
+<script src="../Javascript/Apps/Recipe.js"></script>
+
+</body>
+
+</html>

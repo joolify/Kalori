@@ -210,6 +210,7 @@ namespace Kalori.Controllers.Api
                 return NotFound();
 
             _service.Remove(productInDb);
+            _service.Complete();
 
             return Ok();
         }

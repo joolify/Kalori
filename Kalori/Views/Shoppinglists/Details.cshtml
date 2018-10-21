@@ -15,30 +15,32 @@
     {
         @Html.ActionLink("Totalt näringsinnehåll", "Total", "Shoppinglists", new { id = Model.Id }, new { @class = "btn btn-primary", style = "margin-right:4px;" })
 
-        @Html.ActionLink("Skapa recept", "Recipe", "Shoppinglists", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
+        <a href="#!" class="btn btn-primary js-recipe" id="recipe" style="margin-bottom: 5px; vertical-align: top; ">Skapa recept</a>
+        //@Html.ActionLink("Skapa recept", "Recipe", "Shoppinglists", new { id = Model.Id }, new { @class = "btn btn-primary js-recipe" })
     }
 </h4>
-    <table id="ingredients" class="table table-bordered table-hover">
-        <thead>
-            <tr bgcolor="#f5f5f5">
-                <th>Vara:</th>
-                <th>Mängd (g):</th>
-                <th>Pris/kg:</th>
-                <th>Pris:</th>
-                <th>Ändra:</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-        <tfoot>
-            <tr bgcolor="#f5f5f5">
-                <td></td>
-                <td></td>
-                <td><b>Totalt pris: </b></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tfoot>
-    </table>
+<table id="ingredients" class="table table-bordered table-hover">
+    <thead>
+        <tr bgcolor="#f5f5f5">
+            <th>Vara:</th>
+            <th>Mängd (g):</th>
+            <th>Pris/kg:</th>
+            <th>Pris:</th>
+            <th>Ändra:</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr bgcolor="#f5f5f5">
+            <td></td>
+            <td></td>
+            <td><b>Totalt pris: </b></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
 @section scripts
 {
     <script>
@@ -72,19 +74,19 @@
                         },
                         {
                             data: "mass",
-                            render: function (data, type, product) {
+                            render: function(data, type, product) {
                                 return product.mass + " g";
                             }
                         },
                         {
                             data: "pricePerKg",
-                            render: function (data, type, product) {
+                            render: function(data, type, product) {
                                 return product.pricePerKg + " kr";
                             }
                         },
                         {
                             data: "priceTotal",
-                            render: function (data, type, product) {
+                            render: function(data, type, product) {
                                 return product.priceTotal + " kr";
                             }
                         },
@@ -148,8 +150,23 @@
                             pageTotal + ' kr (' + total + ' kr)'
                         );
                     }
-            }),
-                $("#ingredients ").on("click",
+                }),
+                $('#recipe').click(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/shoppinglists/GetAllProducts/" + @Html.Raw(Json.Encode(Model.Id)),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(products) {
+                            var recipe = {};
+                            recipe.Products = products;
+                            console.log(recipe);
+                            localStorage.setItem('recipe', JSON.stringify(recipe));
+                        }
+                    });
+                });
+
+            $("#ingredients ").on("click",
                     ".js-edit",
                     function() {
                         $(this).removeClass().addClass("js-save");
@@ -190,7 +207,6 @@
                                 }
                             });
 
-                        console.log(JSON.stringify(obj));
 
                         $.ajax({
                             url: "/api/shoppinglists/UpdateProduct/",
@@ -211,17 +227,17 @@
                             function(result) {
                                 if (result) {
                                     $.ajax({
-                                        url: "/api/shoppinglists/DeleteIngredient/" + button.attr("data-ingredient-id"),
+                                        url: "/api/shoppinglists/DeleteIngredient/" +
+                                            button.attr("data-ingredient-id"),
                                         method: "DELETE",
                                         success: function() {
 
-                                            table1.row( button.parents("tr") ).remove().draw();
+                                            table1.row(button.parents("tr")).remove().draw();
                                         }
                                     });
                                 }
                             });
                     });
         });
-
     </script>
 }

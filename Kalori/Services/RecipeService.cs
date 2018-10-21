@@ -92,7 +92,7 @@ namespace Kalori.Services
         /// <returns>Recipe.</returns>
         public Recipe GetTempRecipe(string key)
         {
-            return _unitOfWork.Recipes.GetTempObj(key) as Recipe;
+            return _unitOfWork.Recipes.GetCache(key) as Recipe;
         }
 
 
@@ -104,9 +104,9 @@ namespace Kalori.Services
         /// Adds or updates a Recipe.
         /// </summary>
         /// <param name="recipe">The recipe.</param>
-        public void AddOrUpdate(Recipe recipe)
+        public bool AddOrUpdate(Recipe recipe)
         {
-            _unitOfWork.Recipes.AddOrUpdate(recipe);
+            return _unitOfWork.Recipes.AddOrUpdate(recipe);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Kalori.Services
         /// <param name="value">The value.</param>
         public void SetTempRecipe(string key, Recipe value)
         {
-            _unitOfWork.Recipes.SetTempObj(key, value);
+            _unitOfWork.Recipes.SetCache(key, value);
         }
 
         /********************************************************
@@ -126,30 +126,30 @@ namespace Kalori.Services
         /// Removes the specified recipe.
         /// </summary>
         /// <param name="recipe">The recipe.</param>
-        public void Remove(Recipe recipe)
+        public bool Remove(Recipe recipe)
         {
             _unitOfWork.Recipes.Attach(recipe);
-            _unitOfWork.Recipes.Remove(recipe);
+            return _unitOfWork.Recipes.Remove(recipe);
         }
 
         /// <summary>
         /// Removes a list of Products.
         /// </summary>
         /// <param name="products">The products.</param>
-        public void RemoveRange(IEnumerable<Product> products)
+        public bool RemoveRange(IEnumerable<Product> products)
         {
             _unitOfWork.Products.AttachRange(products);
-            _unitOfWork.Products.RemoveRange(products);
+            return _unitOfWork.Products.RemoveRange(products);
         }
 
         /// <summary>
         /// Removes a list of Instructions.
         /// </summary>
         /// <param name="instructions">The instructions.</param>
-        public void RemoveRange(IEnumerable<Instruction> instructions)
+        public bool RemoveRange(IEnumerable<Instruction> instructions)
         {
             _unitOfWork.Recipes.AttachRange(instructions);
-            _unitOfWork.Recipes.RemoveRange(instructions);
+            return _unitOfWork.Recipes.RemoveRange(instructions);
         }
     }
 }

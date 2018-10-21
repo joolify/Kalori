@@ -307,9 +307,9 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201810082053222_InitialModel.cs" />
-    <Compile Include="Migrations\201810082053222_InitialModel.Designer.cs">
-      <DependentUpon>201810082053222_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201810141738131_InitialModel.cs" />
+    <Compile Include="Migrations\201810141738131_InitialModel.Designer.cs">
+      <DependentUpon>201810141738131_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -672,8 +672,8 @@
     <Content Include="Views\Members\MemberForm.cshtml" />
     <Content Include="Views\Foods\New.cshtml" />
     <Content Include="Views\Foods\Details.cshtml" />
-    <EmbeddedResource Include="Migrations\201810082053222_InitialModel.resx">
-      <DependentUpon>201810082053222_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810141738131_InitialModel.resx">
+      <DependentUpon>201810141738131_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeedData\LivsmedelsDB_20180925.csv" />
     <EmbeddedResource Include="SeedData\Category.csv" />

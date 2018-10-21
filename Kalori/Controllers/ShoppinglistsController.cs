@@ -246,6 +246,7 @@ namespace Kalori.Controllers
         /// </summary>
         /// <param name="id">The Shoppinglist identifier.</param>
         /// <returns>ActionResult.</returns>
+        //TODO Remove
         public ActionResult Recipe(int id)
         {
             var recipe = new Recipe();

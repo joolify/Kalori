@@ -88,6 +88,11 @@ StyleCopReport.xml
 # Chutzpah Test files
 _Chutzpah*
 
+# GhostDoc plugin setting file
+*.GhostDoc.xml
+
+# NCrunch Test files
+
 # Visual C++ cache files
 ipch/
 *.aps
@@ -137,6 +142,8 @@ _TeamCity*
 *.coveragexml
 
 # NCrunch
+globalconfig.crunch.v3.xml
+SOLUTION.v3.ncrunchsolution.user
 _NCrunch_*
 .*crunch*.local.xml
 nCrunchTemp_*

@@ -98,13 +98,13 @@ namespace Kalori.Interfaces
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        void SetTempObj(String key, object value);
+        void SetCache(String key, object value);
         /// <summary>
         /// Gets the temporary object.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>object.</returns>
-        object GetTempObj(String key);
+        object GetCache(String key);
 
     }
 }

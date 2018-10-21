@@ -40,7 +40,7 @@ namespace Kalori.Interfaces
         /// Removes a list of Instructions.
         /// </summary>
         /// <param name="instructions">The instructions.</param>
-        void RemoveRange(IEnumerable<Instruction> instructions);
+        bool RemoveRange(IEnumerable<Instruction> instructions);
         /// <summary>
         /// Attaches a list of Instructions.
         /// </summary>

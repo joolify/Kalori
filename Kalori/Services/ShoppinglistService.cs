@@ -122,7 +122,7 @@ namespace Kalori.Services
         /// <param name="value">The value.</param>
         public void SetTempRecipe(string key, Recipe value)
         {
-            _unitOfWork.Recipes.SetTempObj(key, value);
+            _unitOfWork.Recipes.SetCache(key, value);
         }
         /********************************************************
          **** REMOVERS

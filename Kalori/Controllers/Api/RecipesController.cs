@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Data.Entity;
-using System.Web;
 using System.Web.Http;
-using System.Web.ModelBinding;
 using AutoMapper;
 using Kalori.Dtos;
 using Kalori.Models;
@@ -14,6 +9,10 @@ using Kalori.Services;
 
 namespace Kalori.Controllers.Api
 {
+    /// <summary>
+    /// Class RecipesController.
+    /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
     public class RecipesController : ApiController
     {
         private RecipeService _service;
@@ -48,6 +47,7 @@ namespace Kalori.Controllers.Api
         }
 
         // GET /api/recipes/GetProducts
+        //TODO Remove
         public IHttpActionResult GetProducts()
         {
             var recipe = _service.GetTempRecipe("tempRecipe");
@@ -61,6 +61,7 @@ namespace Kalori.Controllers.Api
         }
 
         // GET /api/recipes/GetInstructions
+        //TODO Remove
         public IHttpActionResult GetInstructions()
         {
 
@@ -94,10 +95,12 @@ namespace Kalori.Controllers.Api
             return Created(new Uri(Request.RequestUri + "/" + recipe.Id), recipeDto);
         }
 
-        // POST /api/recipes/AddIngredient
+        // POST /api/recipes/AddIngredient 
         [HttpPost]
+        //TODO Remove
         public IHttpActionResult AddIngredient(ProductDto productDto)
         {
+
             var recipe = _service.GetTempRecipe("tempRecipe");
 
             var product = new Product();
@@ -118,6 +121,7 @@ namespace Kalori.Controllers.Api
 
         // POST /api/recipes/AddInstruction
         [HttpPost]
+        //TODO Remove
         public IHttpActionResult AddInstruction(InstructionDto instructionDto)
         {
             var recipe = _service.GetTempRecipe("tempRecipe");
@@ -136,6 +140,7 @@ namespace Kalori.Controllers.Api
 
         // POST /api/recipes/Updateproduct
         [HttpPost]
+        //TODO Remove
         public IHttpActionResult UpdateProduct(ProductDto productDto)
         {
             if (!ModelState.IsValid)
@@ -164,6 +169,7 @@ namespace Kalori.Controllers.Api
         }
         // POST /api/recipes/UpdateInstruction
         [HttpPost]
+        //TODO Remove
         public IHttpActionResult UpdateInstruction(InstructionDto instructionDto)
         {
             if (!ModelState.IsValid)
@@ -190,6 +196,7 @@ namespace Kalori.Controllers.Api
         }
         // POST /api/recipes/UpdateInstructions
         [HttpPost]
+        //TODO Remove
         public IHttpActionResult UpdateInstructions(List<InstructionDto> instructionDtos)
         {
             if (!ModelState.IsValid)
@@ -201,7 +208,8 @@ namespace Kalori.Controllers.Api
 
             for (int i = 0; i < instructionDtos.Count; i++)
             {
-               var instruction = Mapper.Map<InstructionDto, Instruction>(instructionDtos[i]);
+                var instruction = Mapper.Map<InstructionDto, Instruction>(instructionDtos[i]);
+                instruction.Id = instructionDtos[i].Id;
                 instructions.Add(instruction);
             }
 
@@ -216,7 +224,6 @@ namespace Kalori.Controllers.Api
          **** PUT
          ********************************************************/
 
-        // POST /api/recipes/UpdateRecipe
         [HttpPut]
         public IHttpActionResult UpdateRecipe(int id, RecipeDto recipeDto)
         {
@@ -257,6 +264,7 @@ namespace Kalori.Controllers.Api
 
         //DELETE /api/recipes/DeleteIngredient/1
         [HttpDelete]
+        //TODO Remove
         public IHttpActionResult DeleteIngredient(int id)
         {
             var recipe = _service.GetTempRecipe("tempRecipe");
@@ -272,7 +280,8 @@ namespace Kalori.Controllers.Api
             return Ok();
         }
         //DELETE /api/recipes/DeleteInstruction/1
-       public IHttpActionResult DeleteInstruction(int id)
+        //TODO Remove
+        public IHttpActionResult DeleteInstruction(int id)
         {
             var recipe = _service.GetTempRecipe("tempRecipe");
 
@@ -287,6 +296,6 @@ namespace Kalori.Controllers.Api
             return Ok();
         }
 
-        
+
     }
 }

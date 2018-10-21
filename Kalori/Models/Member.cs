@@ -38,12 +38,14 @@ namespace Kalori.Models
         /// <value>The name.</value>
         [Required]
         [StringLength(255)]
+        [Display(Name = "Namn")]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is subscribed to news letter.
         /// </summary>
         /// <value><c>true</c> if this instance is subscribed to news letter; otherwise, <c>false</c>.</value>
+        [Display(Name = "Med i nyhetsbrevet?")]
         public bool IsSubscribedToNewsLetter { get; set; }
 
         /// <summary>
@@ -51,12 +53,13 @@ namespace Kalori.Models
         /// </summary>
         /// <value>The membership type identifier.</value>
         [ForeignKey("MembershipType")]
+        [Display(Name = "Medlemstyp")]
         public byte MembershipTypeId { get; set; }
         /// <summary>
         /// Gets or sets the type of the membership.
         /// </summary>
         /// <value>The type of the membership.</value>
-        [Display(Name = "Membership Type")]
+        [Display(Name = "Medlemstyp")]
         public MembershipType MembershipType { get; set; }
 
 
@@ -64,7 +67,7 @@ namespace Kalori.Models
         /// Gets or sets the birth date.
         /// </summary>
         /// <value>The birth date.</value>
-        [Display(Name = "Date of Birth")]
+        [Display(Name = "Födelsedatum")]
         [Min18YearsIfAMember]
         public DateTime? BirthDate { get; set; }
     }
