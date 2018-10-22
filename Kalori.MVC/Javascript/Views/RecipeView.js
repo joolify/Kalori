@@ -18,7 +18,6 @@ var RecipeView = function (model) {
     this.unselectProductEvent = new Event(this);
     this.completeProductEvent = new Event(this);
     this.deleteProductEvent = new Event(this);
-    this.editProductEvent = new Event(this);
     this.saveProductEvent = new Event(this);
 
     /*---------------------------------------------------
@@ -124,6 +123,7 @@ RecipeView.prototype = {
         this.setProductsAsCompletedHandler = this.setProductsAsCompleted.bind(this);
         this.deleteProductsHandler = this.deleteProducts.bind(this);
         this.deleteProductHandler = this.deleteProduct.bind(this);
+        this.saveProductHandler = this.saveProduct.bind(this);
 
         /*---------------------------------------------------*
         ------- instructions
@@ -191,6 +191,7 @@ RecipeView.prototype = {
         this.model.setProductsAsCompletedEvent.attach(this.setProductsAsCompletedHandler);
         this.model.deleteProductsEvent.attach(this.deleteProductsHandler);
         this.model.deleteProductEvent.attach(this.deleteProductHandler);
+        this.model.saveProductEvent.attach(this.saveProductHandler);
 
         /*---------------------------------------------------
         ------- instructions
@@ -269,18 +270,29 @@ RecipeView.prototype = {
         tdName.html("").append("<input type='text' value=\"" + name + "\">");
         tdMass.html("").append("<input type='text' value=\"" + mass + "\">");
         tdPricePerKg.html("").append("<input type='text' value=\"" + pricePerKg + "\">");
-        this.editProductEvent.notify({
+    },
+
+    saveProductLink: function () {
+        $(event.target).removeClass().addClass("js-edit-product");
+        $(event.target).text("edit");
+
+        var tdName = $(event.target).closest('tr').find('.js-name-product');
+        var tdMass = $(event.target).closest('tr').find('.js-mass-product');
+        var tdPricePerKg = $(event.target).closest('tr').find('.js-pricePerKg-product');
+        var index = $(event.target).attr("data-index");
+        var name = tdName.find('input').val();
+        var mass = tdMass.find('input').val();
+        var pricePerKg = tdPricePerKg.find('input').val();
+
+        console.log("view.saveProductLink() " + index + ", " + name + ", " + mass + ", " + pricePerKg);
+
+        this.saveProductEvent.notify({
+            index: index,
             name: name,
             mass: mass,
             pricePerKg: pricePerKg
         });
     },
-
-    saveProductLink: function () {
-        console.log("view.saveProductLink()");
-    },
-
-
 
     completeProductButton: function () {
         this.completeProductEvent.notify();
@@ -343,11 +355,8 @@ RecipeView.prototype = {
         var td = $(event.target).closest('tr').find('.js-name-instruction');
         var index = $(event.target).attr("data-index");
         var name = td.find('input').val();
-        obj.Id = $(this).find("input").val();
         $(event.target).removeClass().addClass("js-edit-instruction");
         $(event.target).text("edit");
-        console.log("view.saveInstructionLink() " + index);
-        console.log("view.saveInstructionLink() " + name);
         td.html(name);
         this.saveInstructionEvent.notify({
             index: index,
@@ -458,6 +467,11 @@ RecipeView.prototype = {
 
     deleteProduct: function () {
         console.log("view.deleteProduct()");
+        this.showProducts();
+    },
+
+    saveProduct: function () {
+        console.log("view.saveProduct()");
         this.showProducts();
     },
 

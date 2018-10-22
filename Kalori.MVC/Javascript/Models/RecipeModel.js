@@ -153,10 +153,6 @@ RecipeModel.prototype = {
 
     },
 
-    editProduct: function (instructions) {
-        console.log("model.editProduct() "+instructions.index);
-    },
-
     saveProduct: function (products) {
         console.log("model.saveProduct() "+ products.name);
         this.recipe.products[products.index].name = products.name;

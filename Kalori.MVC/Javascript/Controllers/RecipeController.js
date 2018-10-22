@@ -34,8 +34,7 @@ RecipeController.prototype = {
         this.unselectProductHandler = this.unselectProduct.bind(this);
         this.completeProductHandler = this.completeProduct.bind(this);
         this.deleteProductHandler = this.deleteProduct.bind(this);
-        this.editInstructionHandler = this.editInstruction.bind(this);
-        this.saveInstructionHandler = this.saveInstruction.bind(this);
+        this.saveProductHandler = this.saveProduct.bind(this);
 
         /*---------------------------------------------------
         ------- instructions
@@ -65,6 +64,7 @@ RecipeController.prototype = {
         this.view.deleteProductEvent.attach(this.deleteProductHandler);
         this.view.selectProductEvent.attach(this.selectProductHandler);
         this.view.unselectProductEvent.attach(this.unselectProductHandler);
+        this.view.saveProductEvent.attach(this.saveProductHandler);
 
         /*---------------------------------------------------
         ------- instructions
@@ -103,7 +103,7 @@ RecipeController.prototype = {
     ------- products
     ----------------------------------------------------*/
     addProduct: function(sender, args) {
-        console.log("controller.addProduct()" + args.name + ", " + args.mass + ", " + args.pricePerKg);
+            console.log("controller.addProduct()" + args.name + ", " + args.mass + ", " + args.pricePerKg);
         this.model.addProduct(args);
     },
 
@@ -127,10 +127,6 @@ RecipeController.prototype = {
         this.model.deleteProduct(args);
     },
 
-    editProduct: function(sender, args) {
-        console.log("controller.editProduct() " + args.index);
-        this.model.editProduct(args);
-    },
     saveProduct: function(sender, args) {
         console.log("controller.saveProduct() " + args.index + ", " + args.name);
         this.model.saveProduct(args);
@@ -140,7 +136,7 @@ RecipeController.prototype = {
     ------- instructions
     ----------------------------------------------------*/
     addInstruction: function(sender, args) {
-        console.log("controller.addInstruction()" + args.name + ", " + args.mass + ", " + args.pricePerKg);
+        console.log("controller.addInstruction()" + args.name);
         this.model.addInstruction(args);
     },
 
