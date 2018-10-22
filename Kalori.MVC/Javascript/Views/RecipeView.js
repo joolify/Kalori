@@ -1,26 +1,42 @@
-﻿var RecipeView = function (model) {
+﻿// <var>The recipe view</var>
+var RecipeView = function (model) {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model">The model.</param>
     this.model = model;
 
-    // recipe
+    /*---------------------------------------------------
+    ------- recipe
+    ----------------------------------------------------*/
     this.recipeNameEvent = new Event(this);
     this.recipeCookingtimeHEvent = new Event(this);
+    this.recipeCookingtimeMEvent = new Event(this);
+    this.recipePortionsEvent = new Event(this);
 
-    // products
+    /*---------------------------------------------------
+    ------- products
+    ----------------------------------------------------*/
     this.addProductEvent = new Event(this);
     this.selectProductEvent = new Event(this);
     this.unselectProductEvent = new Event(this);
     this.completeProductEvent = new Event(this);
     this.deleteProductEvent = new Event(this);
 
-    // instructions
+    /*---------------------------------------------------
+    ------- instructions
+    ----------------------------------------------------*/
     this.addInstructionEvent = new Event(this);
+    this.deleteInstructionEvent = new Event(this);
 
     this.init();
 };
 
-
 RecipeView.prototype = {
 
+    /// <summary>
+    ///  Initialize
+    /// </summary>
     init: function () {
         this.createChildren()
             .setupHandlers()
@@ -28,16 +44,23 @@ RecipeView.prototype = {
             .enable();
     },
 
+    /// <summary>
+    /// Cache objects
+    /// </summary>
     createChildren: function () {
-        // cache the document object
-
         this.$container = $('.js-container');
 
-        //recipe
+        /*---------------------------------------------------
+        ------- recipe
+        ----------------------------------------------------*/
         this.$recipeNameTextBox = this.$container.find('.js-name-recipe-textbox');
         this.$recipeCookingtimeHTextBox = this.$container.find('.js-cookingtimeH-recipe-textbox');
+        this.$recipeCookingtimeMTextBox = this.$container.find('.js-cookingtimeM-recipe-textbox');
+        this.$recipePortionsTextBox = this.$container.find('.js-portions-recipe-textbox');
 
-        // products
+        /*---------------------------------------------------*
+        ------- products
+        *----------------------------------------------------*/
         this.$addProductButton = this.$container.find('.js-add-product-button');
         this.$productNameTextBox = this.$container.find('.js-name-product-textbox');
         this.$productMassTextBox = this.$container.find('.js-mass-product-textbox');
@@ -45,7 +68,9 @@ RecipeView.prototype = {
         this.$productsContainer = this.$container.find('.js-products-container');
         this.$productsTable = this.$productsContainer.find('#ingredients tbody');
 
-        // instructions
+        /*---------------------------------------------------*
+        ------- instructions
+        *----------------------------------------------------*/
         this.$addInstructionButton = this.$container.find('.js-add-instruction-button');
         this.$instructionNameTextBox = this.$container.find('.js-name-instruction-textbox');
         this.$instructionsContainer = this.$container.find('.js-instructions-container');
@@ -54,77 +79,127 @@ RecipeView.prototype = {
         return this;
     },
 
+    /// <summary>
+    /// Sets up the handlers
+    /// </summary>
     setupHandlers: function () {
 
-        // recipe
+        /*---------------------------------------------------*
+        ------- recipe
+        *----------------------------------------------------*/
         this.recipeNameTextBoxHandler = this.recipeNameTextBox.bind(this);
         this.recipeCookingtimeHTextBoxHandler = this.recipeCookingtimeHTextBox.bind(this);
+        this.recipeCookingtimeMTextBoxHandler = this.recipeCookingtimeMTextBox.bind(this);
+        this.recipePortionsTextBoxHandler = this.recipePortionsTextBox.bind(this);
 
-        // products
+        /*---------------------------------------------------*
+        ------- products
+        *----------------------------------------------------*/
         this.addProductButtonHandler = this.addProductButton.bind(this);
+        this.deleteProductLinkHandler = this.deleteProductLink.bind(this);
         this.selectOrUnselectProductHandler = this.selectOrUnselectProduct.bind(this);
         this.completeProductButtonHandler = this.completeProductButton.bind(this);
         this.deleteProductButtonHandler = this.deleteProductButton.bind(this);
 
-        // instructions
+        /*---------------------------------------------------*
+        ------- instructions
+        *----------------------------------------------------*/
         this.addInstructionButtonHandler = this.addInstructionButton.bind(this);
+        this.deleteInstructionLinkHandler = this.deleteInstructionLink.bind(this);
 
-        /**
-        Handlers from Event Dispatcher
-        */
-        // recipe
-        //this.recipeNameHandler = this.recipeName.bind(this);
 
-        // products
+        /*****************************************************
+        ******* Handlers from event dispatcher
+        ******************************************************/
+
+        /*---------------------------------------------------*
+        ------- products
+        *----------------------------------------------------*/
         this.addProductHandler = this.addProduct.bind(this);
         this.clearProductTextBoxHandler = this.clearProductTextBox.bind(this);
         this.setProductsAsCompletedHandler = this.setProductsAsCompleted.bind(this);
         this.deleteProductsHandler = this.deleteProducts.bind(this);
+        this.deleteProductHandler = this.deleteProduct.bind(this);
 
-        // instructions
+        /*---------------------------------------------------*
+        ------- instructions
+        *----------------------------------------------------*/
         this.addInstructionHandler = this.addInstruction.bind(this);
+        this.deleteInstructionHandler = this.deleteInstruction.bind(this);
 
         return this;
     },
 
-
-    setStoredData: function() {
+    /// <summary>
+    /// Sets stored data from localstorage
+    /// </summary>
+    setStoredData: function () {
         this.showName();
         this.showCookingtimeH();
+        this.showCookingtimeM();
+        this.showPortions();
+        this.showProducts();
+        this.showInstructions();
         return this;
     },
 
+    /// <summary>
+    /// Enables the handlers
+    /// </summary>
     enable: function () {
 
-        //recipe
+        /*---------------------------------------------------
+        ------- recipe
+        ----------------------------------------------------*/
         this.$recipeNameTextBox.keyup(this.recipeNameTextBoxHandler);
         this.$recipeCookingtimeHTextBox.keyup(this.recipeCookingtimeHTextBoxHandler);
+        this.$recipeCookingtimeMTextBox.keyup(this.recipeCookingtimeMTextBoxHandler);
+        this.$recipePortionsTextBox.keyup(this.recipePortionsTextBoxHandler);
 
-        // products
+        /*---------------------------------------------------
+        ------- products
+        ----------------------------------------------------*/
         this.$addProductButton.click(this.addProductButtonHandler);
-        this.$container.on('click', '.js-product', this.selectOrUnselectProductHandler);
+        //this.$container.on('click', '.js-product', this.selectOrUnselectProductHandler);
+        this.$container.on('click', '.js-product', this.deleteProductLinkHandler);
         this.$container.on('click', '.js-complete-product-button', this.completeProductButtonHandler);
         this.$container.on('click', '.js-delete-product-button', this.deleteProductButtonHandler);
 
-        // instructions
+        /*---------------------------------------------------
+        ------- instructions
+        ----------------------------------------------------*/
         this.$addInstructionButton.click(this.addInstructionButtonHandler);
+        this.$container.on('click', '.js-instruction', this.deleteInstructionLinkHandler);
 
         /*****************************************************
-         **** Event Dispatcher
-         ****************************************************/
-        // products
+        ******* Event dispatcher
+        ******************************************************/
+
+        /*---------------------------------------------------
+        ------- products
+        ----------------------------------------------------*/
         this.model.addProductEvent.attach(this.addProductHandler);
         this.model.addProductEvent.attach(this.clearProductTextBoxHandler);
         this.model.setProductsAsCompletedEvent.attach(this.setProductsAsCompletedHandler);
         this.model.deleteProductsEvent.attach(this.deleteProductsHandler);
+        this.model.deleteProductEvent.attach(this.deleteProductHandler);
 
-        // instructions
+        /*---------------------------------------------------
+        ------- instructions
+        ----------------------------------------------------*/
         this.model.addInstructionEvent.attach(this.addInstructionHandler);
+        this.model.deleteInstructionEvent.attach(this.deleteInstructionHandler);
 
         return this;
     },
 
-    // recipes
+    /*****************************************************
+    ******* Notify listeners
+    ******************************************************/
+
+    /*---------------------------------------------------
+    ------- recipe
+    ----------------------------------------------------*/
     recipeNameTextBox: function () {
         console.log("view.recipeNameTextBox()");
         this.recipeNameEvent.notify({
@@ -139,13 +214,36 @@ RecipeView.prototype = {
         });
     },
 
+    recipeCookingtimeMTextBox: function () {
+        console.log("view.recipeCookingtimeMTextBox()");
+        this.recipeCookingtimeMEvent.notify({
+            cookingtimeM: this.$recipeCookingtimeMTextBox.val()
+        });
+    },
 
-    // products
+    recipePortionsTextBox: function () {
+        console.log("view.recipePortionsTextBox()");
+        this.recipePortionsEvent.notify({
+            portions: this.$recipePortionsTextBox.val()
+        });
+    },
+
+    /*---------------------------------------------------
+    ------- products
+    ----------------------------------------------------*/
     addProductButton: function () {
         this.addProductEvent.notify({
             name: this.$productNameTextBox.val(),
             mass: this.$productMassTextBox.val(),
             pricePerKg: this.$productPricePerKgTextBox.val()
+        });
+    },
+
+    deleteProductLink: function () {
+        var index = $(event.target).attr("data-index");
+        console.log("view.deleteProductLink() " + index);
+        this.deleteProductEvent.notify({
+            index: index
         });
     },
 
@@ -158,7 +256,6 @@ RecipeView.prototype = {
     },
 
     selectOrUnselectProduct: function () {
-
         var productIndex = $(event.target).attr("data-index");
 
         if ($(event.target).attr('data-product-selected') === 'false') {
@@ -175,23 +272,62 @@ RecipeView.prototype = {
 
     },
 
-    // recipe
-    showName: function() {
+    /*---------------------------------------------------
+    ------- instructions
+    ----------------------------------------------------*/
+    addInstructionButton: function () {
+        console.log("view.addInstructionButton() " + this.$instructionNameTextBox.val());
+        this.addInstructionEvent.notify({
+            name: this.$instructionNameTextBox.val()
+        });
+        this.$instructionNameTextBox.val("");
+    },
+
+    deleteInstructionLink: function () {
+        var index = $(event.target).attr("data-index");
+        console.log("view.deleteInstructionLink() " + index);
+        this.deleteInstructionEvent.notify({
+            index: index
+        });
+    },
+
+    /*****************************************************
+    ******* Get data from model and display it
+    ******************************************************/
+    /*---------------------------------------------------
+    ------- recipe
+    ----------------------------------------------------*/
+    showName: function () {
         var name = this.model.getName();
         console.log("view.showName()" + name);
         var $recipeName = this.$recipeNameTextBox;
         $recipeName.val(name);
     },
 
-    showCookingtimeH: function() {
+    showCookingtimeH: function () {
         var cookingtimeH = this.model.getCookingtimeH();
         console.log("view.showCookingtimeH()" + cookingtimeH);
         var $recipeCookingtimeH = this.$recipeCookingtimeHTextBox;
         $recipeCookingtimeH.val(cookingtimeH);
     },
- 
 
-    // products
+    showCookingtimeM: function () {
+        var cookingtimeM = this.model.getCookingtimeM();
+        console.log("view.showCookingtimeM()" + cookingtimeM);
+        var $recipeCookingtimeM = this.$recipeCookingtimeMTextBox;
+        $recipeCookingtimeM.val(cookingtimeM);
+    },
+
+    showPortions: function () {
+        var portions = this.model.getPortions();
+        console.log("view.showPortions()" + portions);
+        var $recipePortions = this.$recipePortionsTextBox;
+        $recipePortions.val(portions);
+    },
+
+    /*---------------------------------------------------
+    ------- products
+    ----------------------------------------------------*/
     showProducts: function () {
         this.buildProducts();
     },
@@ -204,25 +340,19 @@ RecipeView.prototype = {
 
         var index = 0;
         for (var product in products) {
-           $productsTable.append("<tr><td>" + products[product].productName + "</td>" +
-                "<td>" + products[product].productMass + "</td>" +
-                "<td>" + products[product].productPricePerKg + "</td>" +
-                "<td>" + products[product].productPriceTotal + "</td>" +
-                "<td>delete</td>" +
+            $productsTable.append("<tr><td>" + products[product].name + "</td>" +
+                "<td>" + products[product].mass + "</td>" +
+                "<td>" + products[product].pricePerKg + "</td>" +
+                "<td>" + products[product].priceTotal + "</td>" +
+                "<td><a href='#!' class='js-product' data-index='"+index+"'>delete</a></td>" +
                 "</tr>");
 
             index++;
         }
-
     },
-    // instructions
-    addInstructionButton: function () {
-        console.log("view.addInstructionButton");
-        this.addInstructionEvent.notify({
-            name: this.$instructionNameTextBox.val()
-        });
-    },
-
+    /*---------------------------------------------------
+    ------- instructions
+    ----------------------------------------------------*/
     showInstructions: function () {
         this.buildInstructions();
     },
@@ -238,19 +368,18 @@ RecipeView.prototype = {
         var index = 0;
         for (var instruction in instructions) {
 
-            $instructionsTable.append("<tr><td>" + instructions[instruction].instructionNumber + "</td>" +
-                "<td>" + instructions[instruction].instructionName + "</td>" +
-                "<td>delete</td>" +
+            $instructionsTable.append("<tr><td>" + instructions[instruction].number + "</td>" +
+                "<td>" + instructions[instruction].name + "</td>" +
+                "<td><a href='#!' class='js-instruction' data-index='"+index+"'>delete</a></´td>" +
                 "</tr>");
 
             index++;
         }
-
     },
 
-
-
-    /* -------------------- Handlers From Event Dispatcher ----------------- */
+    /*****************************************************
+    ******* Handlers from event dispatcher
+    ******************************************************/
     clearProductTextBox: function () {
         this.$productNameTextBox.val('');
         this.$productMassTextBox.val('');
@@ -265,6 +394,11 @@ RecipeView.prototype = {
         this.showProducts();
     },
 
+    deleteProduct: function () {
+        console.log("view.deleteProduct()");
+        this.showProducts();
+    },
+
     deleteProducts: function () {
         this.showProducts();
     },
@@ -273,5 +407,8 @@ RecipeView.prototype = {
         this.showInstructions();
     },
 
-    /* -------------------- End Handlers From Event Dispatcher ----------------- */
+    deleteInstruction: function () {
+        console.log("view.deleteInstruction()");
+        this.showInstructions();
+    }
 };

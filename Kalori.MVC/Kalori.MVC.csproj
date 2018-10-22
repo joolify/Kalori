@@ -71,6 +71,10 @@
     <Content Include="Javascript\Apps\Recipe.js" />
     <Content Include="Javascript\Controllers\RecipeController.js" />
     <Content Include="Javascript\Helpers\EventDispatcher.js" />
+    <Content Include="Javascript\localforage\dist\localforage.js" />
+    <Content Include="Javascript\localforage\dist\localforage.min.js" />
+    <Content Include="Javascript\localforage\dist\localforage.nopromises.js" />
+    <Content Include="Javascript\localforage\dist\localforage.nopromises.min.js" />
     <Content Include="Javascript\Models\RecipeModel.js" />
     <Content Include="Javascript\Views\RecipeView.js" />
     <Content Include="Web.config" />

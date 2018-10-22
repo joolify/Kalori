@@ -1,21 +1,42 @@
 ﻿var RecipeModel = function () {
-    //recipe
+    /*---------------------------------------------------
+    ------- localStorage SET
+    ----------------------------------------------------*/
+    this.addToLocalStorageObject = function (key, value) {
+        var existing = localStorage.getItem('recipe');
+        existing = existing ? JSON.parse(existing) : this.recipe;
+        existing[key] = value;
+        localStorage.setItem('recipe', JSON.stringify(existing));
+    };
+    /*---------------------------------------------------
+    ------- recipe
+    ----------------------------------------------------*/
     this.recipe = {};
     this.recipe.name = "";
     this.recipe.cookingtimeH = "";
+    this.recipe.cookingtimeM = "";
+    this.recipe.portions = "";
 
-    //products
-    this.recipe.products = [];
+    /*---------------------------------------------------
+    ------- products
+    ----------------------------------------------------*/
+    this.recipe.products = new Array();
     this.selectedProducts = [];
     this.addProductEvent = new Event(this);
     this.setProductsAsCompletedEvent = new Event(this);
     this.deleteProductsEvent = new Event(this);
+    this.deleteProductEvent = new Event(this);
 
-    //instructions
+    /*---------------------------------------------------
+    ------- instructions
+    ----------------------------------------------------*/
     this.recipe.instructions = [];
     this.addInstructionEvent = new Event(this);
+    this.deleteInstructionEvent = new Event(this);
 
-    //check if stored data
+    /*---------------------------------------------------
+    ------- localStorage GET
+    ----------------------------------------------------*/
     var recipe = JSON.parse(localStorage.getItem('recipe'));
     if (recipe !== null)
         this.recipe = recipe;
@@ -25,22 +46,32 @@
 };
 
 RecipeModel.prototype = {
-    //recipe
-    // TODO Get item from localstorage
+    /*---------------------------------------------------
+    ------- recipe
+    ----------------------------------------------------*/
     addName: function (recipe) {
         console.log("model.addName()");
         this.recipe.name = recipe.name;
-        localStorage.setItem('recipe', JSON.stringify(recipe));
-        //this.recipeNameEvent.notify();
-    },
+        this.addToLocalStorageObject('name', this.recipe.name);
+   },
 
-    // TODO Get item from localstorage
     addCookingtimeH: function (recipe) {
-        console.log("model.addCookingtimeH)");
-        this.recipe.cookingtimeH = recipe.cookingTimeH;
-        localStorage.setItem('recipe', JSON.stringify(recipe));
-        //this.recipeNameEvent.notify();
-    },
+        console.log("model.addCookingtimeH()");
+        this.recipe.cookingtimeH = recipe.cookingtimeH;
+        this.addToLocalStorageObject('cookingtimeH', this.recipe.cookingtimeH);
+   },
+
+    addCookingtimeM: function (recipe) {
+        console.log("model.addCookingtimeM()");
+        this.recipe.cookingtimeM = recipe.cookingtimeM;
+        this.addToLocalStorageObject('cookingtimeM', this.recipe.cookingtimeM);
+   },
+
+    addPortions: function (recipe) {
+        console.log("model.addPortions()");
+        this.recipe.portions = recipe.portions;
+        this.addToLocalStorageObject('portions', this.recipe.portions);
+   },
 
     getName: function () {
         return this.recipe.name;
@@ -50,15 +81,26 @@ RecipeModel.prototype = {
         return this.recipe.cookingtimeH;
     },
 
-    //products
-    addProduct: function (ingredient) {
+    getCookingtimeM: function () {
+        return this.recipe.cookingtimeM;
+    },
+
+    getPortions: function () {
+        return this.recipe.portions;
+    },
+
+    /*---------------------------------------------------
+    ------- products
+    ----------------------------------------------------*/
+    addProduct: function (product) {
         this.recipe.products.push({
-            productName: ingredient.name,
-            productMass: ingredient.mass,
-            productPricePerKg: ingredient.pricePerKg,
-            productPriceTotal: ingredient.pricePerKg * (ingredient.mass / 1000),
-            productStatus: 'uncompleted'
+            name: product.name,
+            mass: product.mass,
+            pricePerKg: product.pricePerKg,
+            priceTotal: product.pricePerKg * (product.mass / 1000)
         });
+        console.log("model.addProduct()" + this.recipe.products.length);
+        this.addToLocalStorageObject('products', this.recipe.products);
         this.addProductEvent.notify();
     },
 
@@ -86,6 +128,12 @@ RecipeModel.prototype = {
 
     },
 
+    deleteProduct: function (products) {
+        console.log("model.deleteProduct() "+products.index);
+        this.recipe.products.splice(products.index, 1);
+        this.addToLocalStorageObject('products', this.recipe.products);
+        this.deleteProductEvent.notify();
+    },
 
     deleteProducts: function () {
         var selectedProducts = this.selectedProducts.sort();
@@ -101,16 +149,27 @@ RecipeModel.prototype = {
 
     },
 
-    //instructions
+    /*---------------------------------------------------
+    ------- instructions
+    ----------------------------------------------------*/
     addInstruction: function (instruction) {
         var length = Object.keys(this.recipe.instructions).length;
         this.recipe.instructions.push({
-            instructionId: length + 1,
-            instructionNumber: length + 1,
-            instructionName: instruction.name
+            id: length + 1,
+            number: length + 1,
+            name: instruction.name
         });
+        this.addToLocalStorageObject('instructions', this.recipe.instructions);
         this.addInstructionEvent.notify();
     },
+
+    deleteInstruction: function (instructions) {
+        console.log("model.deleteInstruction() "+instructions.index);
+        this.recipe.instructions.splice(instructions.index, 1);
+        this.addToLocalStorageObject('instructions', this.recipe.instructions);
+        this.deleteInstructionEvent.notify();
+    },
+
 
     getInstructions: function () {
         return this.recipe.instructions;
