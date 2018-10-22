@@ -6,18 +6,17 @@
 };
 
 RecipeController.prototype = {
-
-    init: function () {
+    init: function() {
         this.createChildren()
             .setupHandlers()
             .enable();
     },
 
-    createChildren: function () {
+    createChildren: function() {
         return this;
     },
 
-    setupHandlers: function () {
+    setupHandlers: function() {
 
         /*---------------------------------------------------
         ------- recipe
@@ -35,16 +34,20 @@ RecipeController.prototype = {
         this.unselectProductHandler = this.unselectProduct.bind(this);
         this.completeProductHandler = this.completeProduct.bind(this);
         this.deleteProductHandler = this.deleteProduct.bind(this);
+        this.editInstructionHandler = this.editInstruction.bind(this);
+        this.saveInstructionHandler = this.saveInstruction.bind(this);
 
         /*---------------------------------------------------
         ------- instructions
         ----------------------------------------------------*/
         this.addInstructionHandler = this.addInstruction.bind(this);
         this.deleteInstructionHandler = this.deleteInstruction.bind(this);
+        this.editInstructionHandler = this.editInstruction.bind(this);
+        this.saveInstructionHandler = this.saveInstruction.bind(this);
         return this;
     },
 
-    enable: function () {
+    enable: function() {
 
         /*---------------------------------------------------
         ------- recipe
@@ -68,28 +71,30 @@ RecipeController.prototype = {
         ----------------------------------------------------*/
         this.view.addInstructionEvent.attach(this.addInstructionHandler);
         this.view.deleteInstructionEvent.attach(this.deleteInstructionHandler);
+        this.view.editInstructionEvent.attach(this.editInstructionHandler);
+        this.view.saveInstructionEvent.attach(this.saveInstructionHandler);
         return this;
     },
 
     /*---------------------------------------------------
     ------- recipe
     ----------------------------------------------------*/
-    addName: function (sender, args) {
+    addName: function(sender, args) {
         console.log("controller.addName() " + args.name);
         this.model.addName(args);
     },
 
-    addCookingtimeH: function (sender, args) {
+    addCookingtimeH: function(sender, args) {
         console.log("controller.addCookingtimeH()");
         this.model.addCookingtimeH(args);
     },
 
-    addCookingtimeM: function (sender, args) {
+    addCookingtimeM: function(sender, args) {
         console.log("controller.addCookingtimeM()");
         this.model.addCookingtimeM(args);
     },
 
-    addPortions: function (sender, args) {
+    addPortions: function(sender, args) {
         console.log("controller.addPortions()");
         this.model.addPortions(args);
     },
@@ -97,41 +102,59 @@ RecipeController.prototype = {
     /*---------------------------------------------------
     ------- products
     ----------------------------------------------------*/
-    addProduct: function (sender, args) {
+    addProduct: function(sender, args) {
         console.log("controller.addProduct()" + args.name + ", " + args.mass + ", " + args.pricePerKg);
         this.model.addProduct(args);
     },
 
-    selectProduct: function (sender, args) {
+    selectProduct: function(sender, args) {
         console.log("controller.selectProduct()");
         this.model.setSelectedProduct(args.productIndex);
     },
 
-    unselectProduct: function (sender, args) {
+    unselectProduct: function(sender, args) {
         console.log("controller.unselectProduct()");
         this.model.unselectProduct(args.productIndex);
     },
 
-    completeProduct: function () {
+    completeProduct: function() {
         console.log("controller.completeProduct()");
         this.model.setProductsAsCompleted();
     },
 
-    deleteProduct: function (sender, args) {
+    deleteProduct: function(sender, args) {
         console.log("controller.deleteProduct() " + args.index);
         this.model.deleteProduct(args);
+    },
+
+    editProduct: function(sender, args) {
+        console.log("controller.editProduct() " + args.index);
+        this.model.editProduct(args);
+    },
+    saveProduct: function(sender, args) {
+        console.log("controller.saveProduct() " + args.index + ", " + args.name);
+        this.model.saveProduct(args);
     },
 
     /*---------------------------------------------------
     ------- instructions
     ----------------------------------------------------*/
-    addInstruction: function (sender, args) {
+    addInstruction: function(sender, args) {
         console.log("controller.addInstruction()" + args.name + ", " + args.mass + ", " + args.pricePerKg);
         this.model.addInstruction(args);
     },
 
-    deleteInstruction: function (sender, args) {
+    deleteInstruction: function(sender, args) {
         console.log("controller.deleteInstruction() " + args.index);
         this.model.deleteInstruction(args);
+    },
+
+    editInstruction: function(sender, args) {
+        console.log("controller.editInstruction() " + args.index);
+        this.model.editInstruction(args);
+    },
+    saveInstruction: function(sender, args) {
+        console.log("controller.saveInstruction() " + args.index + ", " + args.name);
+        this.model.saveInstruction(args);
     }
 };

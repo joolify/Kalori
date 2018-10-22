@@ -26,6 +26,8 @@
     this.setProductsAsCompletedEvent = new Event(this);
     this.deleteProductsEvent = new Event(this);
     this.deleteProductEvent = new Event(this);
+    this.editProductEvent = new Event(this);
+    this.saveProductEvent = new Event(this);
 
     /*---------------------------------------------------
     ------- instructions
@@ -33,6 +35,8 @@
     this.recipe.instructions = [];
     this.addInstructionEvent = new Event(this);
     this.deleteInstructionEvent = new Event(this);
+    this.editInstructionEvent = new Event(this);
+    this.saveInstructionEvent = new Event(this);
 
     /*---------------------------------------------------
     ------- localStorage GET
@@ -149,6 +153,20 @@ RecipeModel.prototype = {
 
     },
 
+    editProduct: function (instructions) {
+        console.log("model.editProduct() "+instructions.index);
+    },
+
+    saveProduct: function (products) {
+        console.log("model.saveProduct() "+ products.name);
+        this.recipe.products[products.index].name = products.name;
+        this.recipe.products[products.index].mass = products.mass;
+        this.recipe.products[products.index].pricePerKg = products.pricePerKg;
+        this.addToLocalStorageObject('products', this.recipe.products);
+        this.saveProductEvent.notify();
+    },
+
+
     /*---------------------------------------------------
     ------- instructions
     ----------------------------------------------------*/
@@ -170,6 +188,16 @@ RecipeModel.prototype = {
         this.deleteInstructionEvent.notify();
     },
 
+    editInstruction: function (instructions) {
+        console.log("model.editInstruction() "+instructions.index);
+    },
+
+    saveInstruction: function (instructions) {
+        console.log("model.saveInstruction() "+ instructions.name);
+        this.recipe.instructions[instructions.index].name = instructions.name;
+        this.addToLocalStorageObject('instructions', this.recipe.instructions);
+        this.saveInstructionEvent.notify();
+    },
 
     getInstructions: function () {
         return this.recipe.instructions;

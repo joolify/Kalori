@@ -1,9 +1,5 @@
 ﻿// <var>The recipe view</var>
 var RecipeView = function (model) {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="model">The model.</param>
     this.model = model;
 
     /*---------------------------------------------------
@@ -22,12 +18,16 @@ var RecipeView = function (model) {
     this.unselectProductEvent = new Event(this);
     this.completeProductEvent = new Event(this);
     this.deleteProductEvent = new Event(this);
+    this.editProductEvent = new Event(this);
+    this.saveProductEvent = new Event(this);
 
     /*---------------------------------------------------
     ------- instructions
     ----------------------------------------------------*/
     this.addInstructionEvent = new Event(this);
     this.deleteInstructionEvent = new Event(this);
+    this.editInstructionEvent = new Event(this);
+    this.saveInstructionEvent = new Event(this);
 
     this.init();
 };
@@ -97,6 +97,8 @@ RecipeView.prototype = {
         *----------------------------------------------------*/
         this.addProductButtonHandler = this.addProductButton.bind(this);
         this.deleteProductLinkHandler = this.deleteProductLink.bind(this);
+        this.editProductLinkHandler = this.editProductLink.bind(this);
+        this.saveProductLinkHandler = this.saveProductLink.bind(this);
         this.selectOrUnselectProductHandler = this.selectOrUnselectProduct.bind(this);
         this.completeProductButtonHandler = this.completeProductButton.bind(this);
         this.deleteProductButtonHandler = this.deleteProductButton.bind(this);
@@ -106,6 +108,8 @@ RecipeView.prototype = {
         *----------------------------------------------------*/
         this.addInstructionButtonHandler = this.addInstructionButton.bind(this);
         this.deleteInstructionLinkHandler = this.deleteInstructionLink.bind(this);
+        this.editInstructionLinkHandler = this.editInstructionLink.bind(this);
+        this.saveInstructionLinkHandler = this.saveInstructionLink.bind(this);
 
 
         /*****************************************************
@@ -161,7 +165,9 @@ RecipeView.prototype = {
         ----------------------------------------------------*/
         this.$addProductButton.click(this.addProductButtonHandler);
         //this.$container.on('click', '.js-product', this.selectOrUnselectProductHandler);
-        this.$container.on('click', '.js-product', this.deleteProductLinkHandler);
+        this.$container.on('click', '.js-delete-product', this.deleteProductLinkHandler);
+        this.$container.on('click', '.js-edit-product', this.editProductLinkHandler);
+        this.$container.on('click', '.js-save-product', this.saveProductLinkHandler);
         this.$container.on('click', '.js-complete-product-button', this.completeProductButtonHandler);
         this.$container.on('click', '.js-delete-product-button', this.deleteProductButtonHandler);
 
@@ -169,7 +175,9 @@ RecipeView.prototype = {
         ------- instructions
         ----------------------------------------------------*/
         this.$addInstructionButton.click(this.addInstructionButtonHandler);
-        this.$container.on('click', '.js-instruction', this.deleteInstructionLinkHandler);
+        this.$container.on('click', '.js-delete-instruction', this.deleteInstructionLinkHandler);
+        this.$container.on('click', '.js-edit-instruction', this.editInstructionLinkHandler);
+        this.$container.on('click', '.js-save-instruction', this.saveInstructionLinkHandler);
 
         /*****************************************************
         ******* Event dispatcher
@@ -247,6 +255,33 @@ RecipeView.prototype = {
         });
     },
 
+    editProductLink: function () {
+        $(event.target).removeClass().addClass("js-save-product");
+        $(event.target).text("save");
+        var tdName = $(event.target).closest('tr').find('.js-name-product');
+        var tdMass = $(event.target).closest('tr').find('.js-mass-product');
+        var tdPricePerKg = $(event.target).closest('tr').find('.js-pricePerKg-product');
+        var index = $(event.target).attr("data-index");
+        var name = tdName.text();
+        var mass = tdMass.text();
+        var pricePerKg = tdPricePerKg.text();
+        console.log("view.editProductLink() " + index + ", " + name + ", " + mass + ", " + pricePerKg);
+        tdName.html("").append("<input type='text' value=\"" + name + "\">");
+        tdMass.html("").append("<input type='text' value=\"" + mass + "\">");
+        tdPricePerKg.html("").append("<input type='text' value=\"" + pricePerKg + "\">");
+        this.editProductEvent.notify({
+            name: name,
+            mass: mass,
+            pricePerKg: pricePerKg
+        });
+    },
+
+    saveProductLink: function () {
+        console.log("view.saveProductLink()");
+    },
+
+
+
     completeProductButton: function () {
         this.completeProductEvent.notify();
     },
@@ -288,6 +323,35 @@ RecipeView.prototype = {
         console.log("view.deleteInstructionLink() " + index);
         this.deleteInstructionEvent.notify({
             index: index
+        });
+    },
+
+    editInstructionLink: function () {
+        $(event.target).removeClass().addClass("js-save-instruction");
+        $(event.target).text("save");
+        var td = $(event.target).closest('tr').find('.js-name-instruction');
+        var index = $(event.target).attr("data-index");
+        var name = td.text();
+        console.log("view.editInstructionLink() " + index + ", " + name);
+        td.html("").append("<input type='text' value=\"" + name + "\">");
+        this.editInstructionEvent.notify({
+            index: index
+        });
+    },
+
+    saveInstructionLink: function () {
+        var td = $(event.target).closest('tr').find('.js-name-instruction');
+        var index = $(event.target).attr("data-index");
+        var name = td.find('input').val();
+        obj.Id = $(this).find("input").val();
+        $(event.target).removeClass().addClass("js-edit-instruction");
+        $(event.target).text("edit");
+        console.log("view.saveInstructionLink() " + index);
+        console.log("view.saveInstructionLink() " + name);
+        td.html(name);
+        this.saveInstructionEvent.notify({
+            index: index,
+            name: name
         });
     },
 
@@ -340,11 +404,11 @@ RecipeView.prototype = {
 
         var index = 0;
         for (var product in products) {
-            $productsTable.append("<tr><td>" + products[product].name + "</td>" +
-                "<td>" + products[product].mass + "</td>" +
-                "<td>" + products[product].pricePerKg + "</td>" +
+            $productsTable.append("<tr><td class='js-name-product'>" + products[product].name + "</td>" +
+                "<td class='js-mass-product'>" + products[product].mass + "</td>" +
+                "<td class='js-pricePerKg-product'>" + products[product].pricePerKg + "</td>" +
                 "<td>" + products[product].priceTotal + "</td>" +
-                "<td><a href='#!' class='js-product' data-index='"+index+"'>delete</a></td>" +
+                "<td><a href='#!' class='js-delete-product' data-index='" + index + "'>delete</a> <a href='#!' class='js-edit-product' data-index='" + index + "'>edit</a></td>" +
                 "</tr>");
 
             index++;
@@ -359,8 +423,6 @@ RecipeView.prototype = {
 
     buildInstructions: function () {
         var instructions = this.model.getInstructions();
-        var html = "";
-        var $instructionsContainer = this.$instructionsContainer;
         var $instructionsTable = this.$instructionsTable;
 
         $instructionsTable.html('');
@@ -369,8 +431,8 @@ RecipeView.prototype = {
         for (var instruction in instructions) {
 
             $instructionsTable.append("<tr><td>" + instructions[instruction].number + "</td>" +
-                "<td>" + instructions[instruction].name + "</td>" +
-                "<td><a href='#!' class='js-instruction' data-index='"+index+"'>delete</a></´td>" +
+                "<td class='js-name-instruction'>" + instructions[instruction].name + "</td>" +
+                "<td><a href='#!' class='js-delete-instruction' data-index='" + index + "'>delete</a> <a href='#!' class='js-edit-instruction' data-index='" + index + "'>edit</a></td>" +
                 "</tr>");
 
             index++;
